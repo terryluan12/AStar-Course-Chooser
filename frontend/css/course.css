@@ -1,0 +1,91 @@
+.page-content .course-template {
+  padding-top: 8%;
+  background-color: #F2F4F8;
+}
+
+.course-template .col-item {
+  background-color: white;
+  border-radius: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.course-template .requisites-item {
+  background-color: #EFF3FB;
+  border-radius: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.course-template .course-title {
+  margin-bottom: 5%;
+}
+
+.course-template .row {
+  margin-bottom: 30px;
+}
+
+.course-template .division, .department {
+  height: 200px;
+
+}
+
+.course-template .minor, .syllabus {
+  height: 90px;
+}
+
+.course-template .col-item h3 {
+  margin-top: 30px;
+  margin-left: 5%;
+}
+
+.course-template .col-item h4 {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.course-template .col-item p {
+  margin-top: 20px;
+  margin-left: 5%;
+  color: #5C779C;
+}
+
+.course-template .course-description {
+  margin-left: 0;
+}
+
+.course-template .course-description p {
+  padding-bottom: 30px;
+}
+
+.course-template .course-requisites {
+  margin-left: 0;
+}
+
+.course-description-title h3 {
+  margin-top: 30px;
+  margin-left: 5%;
+}
+
+.row .requisite-item {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 0;
+  width: 100%;
+}
+
+.blue-column {
+  height: 120px;
+  margin-top: 0;
+  background-color: #EFF3FB;
+  margin-left: 5%;
+  border-radius: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.expand-button {
+  margin-top: -80px;
+}
