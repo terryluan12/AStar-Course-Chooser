@@ -1,0 +1,15 @@
+body {
+  font-family: 'Fredoka One', cursive !important;
+  letter-spacing: 3px !important;
+  color: #1C3E6E !important;
+}
+
+.page-content .left-panel {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.page-content .course-template {
+  padding-top: 8%;
+  background-color: #F2F4F8;
+}
