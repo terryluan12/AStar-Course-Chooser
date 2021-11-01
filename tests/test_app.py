@@ -10,6 +10,7 @@ def test_check_course_in_minor():
 
     assert result == minor
 
+# Cansin
 def test_app_connection():
     tester = app.test_client()
     response = tester.get("/", content_type="html/text")
