@@ -21,6 +21,10 @@ class Course(db.Document):
         return {"courseName": self.courseName,
                 "courseCode": self.courseCode}
 
+@app.route("/")
+def app_connect():
+    return "A-Star"
+
 # @app.route('/', methods=['GET'])
 # def query_records():
 #     courseName = request.args.get('name')
@@ -31,7 +35,7 @@ class Course(db.Document):
 #         return jsonify(course.to_json())
 
 # this saves to db
-Course(courseName='Software Engineering', courseCode='ECE444').save()
+#Course(courseName='Software Engineering', courseCode='ECE444').save()
 
 
 
