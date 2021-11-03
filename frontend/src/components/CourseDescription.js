@@ -42,6 +42,13 @@ class CourseDescriptionPage extends Component {
     }
   }
 
+  openLink = () => {
+    const newWindow = window.open(this.state.syllabus, '_blacnk', 'noopener,noreferrer');
+    if (newWindow) {
+      newWindow.opener = null;
+    }
+  }
+
 	render() {
 		return(
 
@@ -69,9 +76,11 @@ class CourseDescriptionPage extends Component {
                 <h4>Minor</h4>
                 <p>{this.state.minor}</p>
               </Row>
-              <Row className="col-item syllabus">
-                <h4>View Syllabus</h4>
-              </Row>
+              <a href={this.state.syllabus} target="_blank" className="syllabus-link">
+                <Row className="col-item syllabus">
+                  <h4>View Syllabus</h4>
+                </Row>
+              </a>
             </Col>
           </Row>
           <Row className="col-item course-description">
