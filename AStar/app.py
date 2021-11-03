@@ -1,11 +1,12 @@
 # this is the flask core
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 import json
 from flask import Flask, request, jsonify
 from flask_mongoengine import MongoEngine
 import json
 
+global app
 app = Flask(__name__)
 
 # MongoDB URI
@@ -13,6 +14,7 @@ DB_URI = "mongodb+srv://Cansin:cv190499@a-star.roe6s.mongodb.net/A-Star?retryWri
 
 app.config["MONGODB_HOST"] = DB_URI
 
+global db
 db = MongoEngine(app)
 
 class Course(db.Document):
