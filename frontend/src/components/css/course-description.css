@@ -26,6 +26,7 @@ p {
   margin-left: 10px;
   margin-top: 10px;
   margin-bottom: 2%;
+  padding-bottom: 2%;
 }
 
 .course-template .syllabus {
@@ -70,3 +71,8 @@ p {
 .expand_button {
   margin-top: -5%;
 }
+
+.syllabus-link {
+  text-decoration: none;
+}
+
