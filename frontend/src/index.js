@@ -5,11 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Navbar from './components/Navbar'
 import CourseDescriptionPage from './components/CourseDescription'
+import Wishlist from './components/Wishlist'
 
 ReactDOM.render(
   <React.StrictMode>
     <Navbar />
-    <CourseDescriptionPage />
+    <Wishlist />
   </React.StrictMode>,
   document.getElementById('root')
 );

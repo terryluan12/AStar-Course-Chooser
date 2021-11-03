@@ -16,13 +16,13 @@ class Navbar extends Component {
 
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="">HOME</a>
+              <a class="nav-link active" href="">Search</a>
             </li>
             <li class="nav-item ms-auto">
-              <a class="nav-link" href="">ABOUT US</a>
+              <a class="nav-link" href="">My Wishlist</a>
             </li>
             <li class="nav-item ms-auto">
-              <a class="nav-link" href="">OUR SOLUTION</a>
+              <a class="nav-link" href="">Log In</a>
             </li>
           </ul>
         </div>
