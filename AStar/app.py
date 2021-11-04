@@ -1,6 +1,5 @@
 # this is the flask core
-#!/usr/bin/env python3
-# encoding: utf-8
+
 import json
 from flask import Flask, request, jsonify
 from flask_mongoengine import MongoEngine
