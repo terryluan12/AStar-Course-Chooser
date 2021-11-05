@@ -3,7 +3,7 @@
 from config import app, db
 
 class Course(db.Document):
-    code = db.StringField(required=True, primary_key=True)
+    code = db.StringField(required=True, unique=True)
     name = db.StringField(required=True)
     description = db.StringField(required=True)
     syllabus = db.URLField()
@@ -14,7 +14,7 @@ class Course(db.Document):
 
     @classmethod
     def get(cls, code_):
-        return cls.objects(code=code_)
+        return cls.objects(code=code_).get()
     
     @classmethod
     def get_requisite_graph(cls, code_):
@@ -34,7 +34,7 @@ class Wishlist(db.Document):
 
 
 class User(db.Document):
-    username = db.StringField(primary_key=True)
+    username = db.StringField(required=True, unique=True)
     password = db.StringField(required=True)
     comments = db.DictField()
     wishlist = db.ReferenceField(Wishlist)
@@ -45,35 +45,35 @@ class User(db.Document):
 
     @classmethod
     def delete(cls, username_):
-        cls(username=username_).delete()
+        cls.objects(username=username_).delete()
 
     @classmethod
     def verify_password(cls, username_, password_) -> bool:
-        usr = cls(username=username_)
+        usr = cls.objects(username=username_)
         if usr.password == password_:
             return True
         return False
     
     @classmethod
     def get_wishlist(cls, username_):
-        return Wishlist(_id=cls(username=username_).wishlist)
+        return Wishlist.objects(_id=cls.objects(username=username_).get().wishlist)
 
     @classmethod
     def add_comment(cls, username_, code_, comment_):
-        usr = cls(username=username_)
+        usr = cls.objects(username=username_)
         usr.comments[code_] = comment_
         usr.save()
 
 
 class Minor(db.Document):
-    name = db.StringField(primary_key=True)
+    name = db.StringField(required=True, unique=True)
     description = db.StringField
     requisites = db.ListField(db.ListField(db.ListField)) 
             #[ (['code', 'code'], 2), (['code', 'code'], 1), ] 
 
     @classmethod
     def get(cls, name_):
-        return cls(name=name_)
+        return cls.objects(name=name_)
     
     @classmethod
     def check(cls, codes_):

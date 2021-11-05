@@ -25,9 +25,11 @@ class UserRegistration(Resource):
         
         try:
             User.create(username, password)
+            resp = jsonify({})
             resp.status_code = 200
             return resp
         except:
+            resp = jsonify({})
             resp.status_code = 400
             return resp
 
@@ -45,6 +47,7 @@ class ShowCourse(Resource):
             resp.status_code = 200
             return resp
         except:
+            resp = jsonify({})
             resp.status_code = 400
             return resp
         
