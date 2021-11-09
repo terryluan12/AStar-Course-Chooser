@@ -41,16 +41,24 @@ class User(db.Document):
 
     @classmethod
     def create(cls, username_, password_):
-        cls(username=username_, password=password_).save()
+        usr = cls.objects(username=username_)
+        usr.update_one(set__username=username_, 
+                       set__password=password_,
+                       upsert=True)
+        return True
 
     @classmethod
     def delete(cls, username_):
-        cls.objects(username=username_).delete()
+        usr = cls.objects(username=username_)
+        if usr:
+            usr.delete()
+            return True
+        return False
 
     @classmethod
-    def verify_password(cls, username_, password_) -> bool:
+    def verify_password(cls, username_, password_):
         usr = cls.objects(username=username_)
-        if usr.password == password_:
+        if usr and usr.password == password_:
             return True
         return False
     
@@ -61,8 +69,11 @@ class User(db.Document):
     @classmethod
     def add_comment(cls, username_, code_, comment_):
         usr = cls.objects(username=username_)
-        usr.comments[code_] = comment_
-        usr.save()
+        if usr:
+            usr.comments[code_] = comment_
+            usr.save()
+            return True
+        return False
 
 
 class Minor(db.Document):
