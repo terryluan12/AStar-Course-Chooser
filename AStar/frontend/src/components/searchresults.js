@@ -7,16 +7,28 @@ import CourseDescriptionPage from "./CourseDescription";
 import empty_star from "./img/star.png";
 import starred_star from "./img/starred.png";
 
+//this component should:
+// take list of courses, "courselist" from database (it is a list of courses that have a query)
+// when a course row is clicked, it takes the user to the course description page (render course description based on a given course code)
+// when the an EMPTY star is clicked, the course is added to the user's Wishlist data based
+// when a COLOURED star is clicked, the course is REMOVED for the user's wishlist data base
+
+
 function check_star_state(starred) {
   if (starred === "true") {
-    return starred_star;
+    return (
+      starred_star
+      
+      )
   }
   return empty_star;
 }
 
-function check_star(course) {
+function modifyWishlist(course) {
+  // alert("clicked" + course.Course_Code)
+
   return course;
-  // controller should update data
+  // controller should update data and add course to wishlist
 }
 
 function SearchResults() {
@@ -26,7 +38,7 @@ function SearchResults() {
       <tr
         className="trow"
         courselist-item={course}
-        onClick={<CourseDescriptionPage />}
+        onClick={<CourseDescriptionPage  />}
       >
         <td> {course.Course_Code} </td>
         <td> {course.Name} </td>
@@ -38,7 +50,7 @@ function SearchResults() {
           {" "}
           <img
             src={check_star_state(course.Starred)}
-            onCLick={check_star(course)}
+            onCLick={modifyWishlist(course)}
           ></img>
         </td>
       </tr>
