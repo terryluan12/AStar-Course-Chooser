@@ -2,34 +2,73 @@ import React, { Component } from 'react';
 import './css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from './img/logo.png'
+import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import Search from "./search.js";
+import SearchResults from "./searchresults";
+import Login from "./login.js";
+import CourseDescriptionPage from "./CourseDescription";
+import Wishlist from './Wishlist';
 
-class Navbar extends Component {
+export default class NavbarComp extends Component {
+  render() {
+    return (
+      <Router>
+        <div>
+          <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
+            <Navbar.Brand>
+              <img src={logo} style={{ height: 53, width: 36 }} />{" "}
+              <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
+                A* Course Finder
+              </Nav.Link>
+            </Navbar.Brand>
 
-	render() {
-		return(
-
-      <nav class="navbar navbar-expand justify-content-center">
-        <a class="navbar-brand" href="index.html">
-          <img src={logo} alt="logo"></img>
-        </a>
-        <div class="collapse navbar-collapse">
-
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="">Search</a>
-            </li>
-            <li class="nav-item ms-auto">
-              <a class="nav-link" href="">My Wishlist</a>
-            </li>
-            <li class="nav-item ms-auto">
-              <a class="nav-link" href="">Log In</a>
-            </li>
-          </ul>
+            <Navbar.Toggle />
+            <Navbar.Collapse>
+              <Nav>
+                <Nav.Link as={Link} to="/search">
+                  Search
+                </Nav.Link>
+                <Nav.Link as={Link} to="/searchresults">
+                  Search Results (remove later)
+                </Nav.Link>
+                <Nav.Link as={Link} to="/MyWishlist">
+                  My Wishlist
+                </Nav.Link>
+                <Nav.Link as={Link} to="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link as={Link} to="/CourseDescription">
+                  CourseDescription (remove later)
+                </Nav.Link>
+                
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
         </div>
-      </nav>
-
-		)
-	}
+        <div>
+          <Switch>
+            <Route path="/searchresults">
+              <SearchResults />
+            </Route>
+            <Route path="/CourseDescription">
+              <CourseDescriptionPage />
+            </Route>
+            <Route path="/MyWishlist">
+              <Wishlist />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/">
+              <Search />
+            </Route>
+            {/* <Route path="/jean_index.js">
+              <Home2 />
+            </Route> */}
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
-
-export default Navbar
