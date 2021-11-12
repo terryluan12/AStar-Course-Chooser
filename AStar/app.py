@@ -15,15 +15,18 @@ app.config["MONGODB_HOST"] = DB_URI
 
 config.init_app(app)
 config.init_db(app)
+config.init_cors(app)
 
 # API Endpoints
 import controller
 api = Api(app)
 api.add_resource(controller.UserRegistration, '/user/register')
+api.add_resource(controller.UserLogin, '/user/login')
+
 api.add_resource(controller.ShowCourse, '/course')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5444, extra_files=['app.py', 'controller.py', 'model.py'])
+    app.run(host='0.0.0.0', port=5000, extra_files=['app.py', 'controller.py', 'model.py'])
     # with open("test.json") as f:
     #     data = json.load(f)
     # for i in range(75):
