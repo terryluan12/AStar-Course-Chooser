@@ -56,7 +56,6 @@ class UserUpdatePwd(Resource):
             return resp
 
 class UserLogin(Resource):
-    # @cross_origin()
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('username', required=True)
