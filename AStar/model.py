@@ -49,7 +49,7 @@ class User(db.Document):
 
     @classmethod
     def delete(cls, username_):
-        usr = cls.objects(username=username_)
+        usr = cls.objects(username=username_).get()
         if usr:
             usr.delete()
             return True
@@ -68,7 +68,7 @@ class User(db.Document):
 
     @classmethod
     def add_comment(cls, username_, code_, comment_):
-        usr = cls.objects(username=username_)
+        usr = cls.objects(username=username_).get()
         if usr:
             usr.comments[code_] = comment_
             usr.save()
@@ -84,7 +84,7 @@ class Minor(db.Document):
 
     @classmethod
     def get(cls, name_):
-        return cls.objects(name=name_)
+        return cls.objects(name=name_).get()
     
     @classmethod
     def check(cls, codes_):
