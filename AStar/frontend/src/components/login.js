@@ -19,7 +19,7 @@ class Login extends Component {
   }
 
   insertArticle(event) {
-    APIService.InsertArticle(this.state.username, this.state.password)
+    APIService.insertArticle(this.state)
       .then((response) => event.insertedArticle(response))
       // should "event" be props?
       .catch((error) => console.log("error", error));
@@ -35,13 +35,14 @@ class Login extends Component {
   handleLogin(event) {
     console.log("entered here");
     event.preventDefault();
-    this.insertArticle(event);
-    alert(
-      "you submitted: " +
-        this.state.username +
-        " and pass: " +
-        this.state.password
-    );
+    // this.insertArticle(event); --> needs to be
+    this.insertArticle(event)
+    // alert(
+    //   "you submitted: " +
+    //     this.state.username +
+    //     " and pass: " +
+    //     this.state.password
+    // );
   }
   render() {
     return (

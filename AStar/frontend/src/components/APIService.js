@@ -1,15 +1,14 @@
 export default class APIService {
     // Insert an article
   
-    static InsertArticle(username, password) {
+    static insertArticle(body) {
       console.log("im in insertarticle");
-      return fetch(`http://localhost:5000/add`, {
+      return fetch(`http://localhost:5000/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        username: JSON.stringify(username),
-        password: JSON.stringify(password)
+        body: JSON.stringify(body)
       })
         .then((response) => response.json())
         .then(data => this.setState({userID: data.id}))

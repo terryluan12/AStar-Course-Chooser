@@ -57,9 +57,9 @@ class User(db.Document):
 
     @classmethod
     def verify_password(cls, username_, password_):
-        usr = cls.objects(username=username_)
+        usr = cls.objects(username=username_).get()
         if usr and usr.password == password_:
-            return True
+                return True
         return False
     
     @classmethod
