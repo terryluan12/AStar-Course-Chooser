@@ -36,13 +36,11 @@ class Wishlist(db.Document):
                        upsert=True)
         return True
 
-    @classmethod
     def add_course(self, code_):
-        # code_ is a course object
-        self.course.append(code_)
-        self.save(validate=False)
+        if code_ not in self.course:
+            self.course.append(code_)
+            self.save(validate=False)
     
-    @classmethod
     def remove_course(self, code_):
         if code_ in self.course:
             self.course.remove(code_)
@@ -99,7 +97,7 @@ class User(db.Document):
 class Minor(db.Document):
     name = db.StringField(required=True, unique=True)
     description = db.StringField()
-    requisites = db.ListField(db.ListField(db.ListField)) 
+    requisites = db.ListField(db.ListField(db.ListField())) 
             #[ (['code', 'code'], 2), (['code', 'code'], 1), ] 
 
     @classmethod
