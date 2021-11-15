@@ -2,8 +2,10 @@
 
 from flask import jsonify, request
 from flask_restful import Resource, reqparse
+# from flask_cors import cross_origin
 from config import app
 from model import *
+import sys
 
 @app.route("/")
 def app_connect():
@@ -64,12 +66,10 @@ class UserLogin(Resource):
         data = parser.parse_args()
         username = data['username']
         password = data['password']
-
         try:
             if User.verify_password(username, password):
-                resp = jsonify({})
+                resp = jsonify({'username': username})
                 resp.status_code = 200
-                return resp
             else:
                 resp = jsonify({'message': 'Login failed'})
                 resp.status_code = 401

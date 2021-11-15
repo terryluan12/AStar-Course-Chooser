@@ -1,0 +1,30 @@
+[
+    {
+      "Course_Code": "ECE444",
+      "Name": "Software Engineering",
+      "Description": "Removal of Nonaut Sub from Ureter, Perc Approach",
+      "Instructor": "Charin Haistwell",
+      "Syllabus": "https://wp.com/enim/leo/rhoncus/sed.xml?sed=erat&nisl=eros&nunc=viverra&rhoncus=eget&dui=congue&vel=eget&sem=semper&sed=rutrum&sagittis=nulla&nam=nunc&congue=purus&risus=phasellus&semper=in&porta=felis&volutpat=donec&quam=semper&pede=sapien&lobortis=a",
+      "Faculty": "Engineering",
+      "Starred": "true"
+    },
+    {
+      "Course_Code": "ECE343",
+      "Name": "Garwood",
+      "Description": "Revision of Infusion Device in Pancreat Duct, Open Approach",
+      "Instructor": "Garwood Frith",
+      "Syllabus": "http://prlog.org/at/velit/vivamus/vel/nulla/eget/eros.jsp?nam=felis&congue=sed&risus=interdum&semper=venenatis&porta=turpis&volutpat=enim&quam=blandit&pede=mi&lobortis=in&ligula=porttitor&sit=pede&amet=justo&eleifend=eu&pede=massa&libero=donec&quis=dapibus&orci=duis&nullam=at&molestie=velit&nibh=eu&in=est&lectus=congue&pellentesque=elementum&at=in&nulla=hac&suspendisse=habitasse&potenti=platea&cras=dictumst&in=morbi&purus=vestibulum&eu=velit&magna=id&vulputate=pretium&luctus=iaculis&cum=diam&sociis=erat&natoque=fermentum&penatibus=justo&et=nec&magnis=condimentum&dis=neque&parturient=sapien&montes=placerat&nascetur=ante&ridiculus=nulla&mus=justo&vivamus=aliquam&vestibulum=quis&sagittis=turpis&sapien=eget&cum=elit&sociis=sodales&natoque=scelerisque&penatibus=mauris&et=sit&magnis=amet&dis=eros&parturient=suspendisse&montes=accumsan&nascetur=tortor&ridiculus=quis&mus=turpis&etiam=sed&vel=ante&augue=vivamus",
+      "Faculty": "Engineering",
+      "Starred": "false"
+    },
+    {
+      "Course_Code": "MIE463",
+      "Name": "Garwood",
+      "Description": "Revision of Infusion Device in Pancreat Duct, Open Approach",
+      "Instructor": "Garwood Frith",
+      "Syllabus": "http://prlog.org/at/velit/vivamus/vel/nulla/eget/eros.jsp?nam=felis&congue=sed&risus=interdum&semper=venenatis&porta=turpis&volutpat=enim&quam=blandit&pede=mi&lobortis=in&ligula=porttitor&sit=pede&amet=justo&eleifend=eu&pede=massa&libero=donec&quis=dapibus&orci=duis&nullam=at&molestie=velit&nibh=eu&in=est&lectus=congue&pellentesque=elementum&at=in&nulla=hac&suspendisse=habitasse&potenti=platea&cras=dictumst&in=morbi&purus=vestibulum&eu=velit&magna=id&vulputate=pretium&luctus=iaculis&cum=diam&sociis=erat&natoque=fermentum&penatibus=justo&et=nec&magnis=condimentum&dis=neque&parturient=sapien&montes=placerat&nascetur=ante&ridiculus=nulla&mus=justo&vivamus=aliquam&vestibulum=quis&sagittis=turpis&sapien=eget&cum=elit&sociis=sodales&natoque=scelerisque&penatibus=mauris&et=sit&magnis=amet&dis=eros&parturient=suspendisse&montes=accumsan&nascetur=tortor&ridiculus=quis&mus=turpis&etiam=sed&vel=ante&augue=vivamus",
+      "Faculty": "Engineering",
+      "Starred": "false"
+    }
+  ]
+  
