@@ -10,8 +10,25 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import user_profile from './img/user.png'
 import minor_label from './img/label.png'
 
+
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import ListGroupItem from "react-bootstrap/ListGroupItem";
+import CourseCard from "./CourseCard";
+
+import courselist from "../db/MOCK_DATA.json";
+import APIService from "./APIService";
+
 class Wishlist extends Component {
 
+    insertArticle(event) {
+        APIService.insertArticle(this.state)
+          .then((response) => event.insertedArticle(response))
+          // should "event" be props?
+          .catch((error) => console.log("error", error));
+      }
+
+    
 	render() {
 		return(
 

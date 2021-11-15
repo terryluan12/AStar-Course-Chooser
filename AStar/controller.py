@@ -34,6 +34,9 @@ class UserRegistration(Resource):
             resp.status_code = 400
             return resp
 
+    def get(self):
+        code = request.args.get('code')
+
 class UserUpdatePwd(Resource):
     def post(self):
         parser = reqparse.RequestParser()
@@ -108,3 +111,157 @@ class SearchCourse(Resource):
         parser.add_argument('input', required=True)
         data = parser.parse_args()
         input = data['input']
+
+# ------------------------------------------------------------
+
+# -------------------- Wishlist related --------------------
+
+class UserWishlist(Resource):
+    def get(self):
+        username = request.args.get('username')
+        try:
+            resp = jsonify({'wishlist': User.get_wishlist(username_=username)})
+            resp.status_code = 200
+            return resp
+        except Exception as e: 
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+    
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', required=True)
+        parser.add_argument('wishlist', required=True)
+        parser.add_argument('course', required=True)
+        data = parser.parse_args()
+        wishlist = data['wishlist']
+        username = data['username']
+        course = data['course']
+        
+        try:
+            Wishlist.add_course(course) 
+            resp = jsonify({'wishlist': wishlist})
+            resp.status_code = 200
+            return resp    
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+
+
+class UserWishlistAdd(Resource):
+    def get(self):
+        #User.create(username_="aaa",password_="vvv")
+        username = request.args.get('username')
+        code = request.args.get('code')
+        try:
+            course = Course.get(code)
+            wl = User.get_wishlist(username_=username)
+            wl.add_course(course)
+            resp = jsonify({'wishlist': wl})
+            resp.status_code = 200
+            return resp
+        except Exception as e: 
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+
+    # def post(self):
+    #     parser = reqparse.RequestParser()
+    #     parser.add_argument('username', required=True)
+    #     parser.add_argument('wishlist', required=True)
+    #     parser.add_argument('course', required=True)
+    #     data = parser.parse_args()
+    #     wishlist = data['wishlist']
+    #     username = data['username']
+    #     course = data['course']
+        
+    #     try:
+    #         Wishlist.add_course(course) 
+    #         resp = jsonify({'wishlist': wishlist})
+    #         resp.status_code = 200
+    #         return resp    
+    #     except Exception as e:
+    #         resp = jsonify({'error': e})
+    #         resp.status_code = 400
+    #         return resp
+
+
+class UserWishlistRemove(Resource):
+    def get(self):
+        username = request.args.get('username')
+        code = request.args.get('code')
+        try:
+            course = Course.get(code)
+            wl = User.get_wishlist(username_=username)
+            wl.remove_course(course)
+            resp = jsonify({'wishlist': wl})
+            resp.status_code = 200
+            return resp
+        except Exception as e: 
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+    
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', required=True)
+        parser.add_argument('wishlist', required=True)
+        parser.add_argument('course', required=True)
+        data = parser.parse_args()
+        wishlist = data['wishlist']
+        username = data['username']
+        course = data['course']
+        
+        try:
+            Wishlist.add_course(course) 
+            resp = jsonify({'wishlist': wishlist})
+            resp.status_code = 200
+            return resp    
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+
+
+class UserWishlistMinorCheck(Resource):
+    def get(self):
+        username = request.args.get('username')
+
+        try:
+            wl = User.get_wishlist(username_=username)
+            courses = [c.code for c in wl.course]
+            print(courses)
+            check = Minor.check(codes_=courses)
+            print(check)
+            resp = jsonify({'minorCheck': check})
+            resp.status_code = 200
+            return resp
+        except Exception as e: 
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+    
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', required=True)
+        parser.add_argument('wishlist', required=True)
+        parser.add_argument('course', required=True)
+        data = parser.parse_args()
+        wishlist = data['wishlist']
+        username = data['username']
+        course = data['course']
+        
+        try:
+            Wishlist.add_course(course) 
+            resp = jsonify({'wishlist': wishlist})
+            resp.status_code = 200
+            return resp    
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+            

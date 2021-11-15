@@ -2,4 +2,5 @@
 Flask
 pymongo[srv]
 flask-mongoengine
-lask_restful
+flask_restful
+flask_cors

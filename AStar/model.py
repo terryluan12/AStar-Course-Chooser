@@ -21,16 +21,32 @@ class Course(db.Document):
         # TODO
         return
 
-class Wishlist(db.Document):
-    name = db.StringField()
-    course = db.ListField(Course)
 
+def val_course(stuff):
+    return
+
+class Wishlist(db.Document):
+    username = db.StringField()
+    course = db.ListField(db.ReferenceField(Course))
+
+    @classmethod
+    def create(cls,username_):
+        usr = cls.objects(username=username_)
+        usr.update_one(set__course=[],
+                       upsert=True)
+        return True
+
+    @classmethod
     def add_course(self, code_):
-        self.course += [code_]
+        # code_ is a course object
+        self.course.append(code_)
+        self.save(validate=False)
     
+    @classmethod
     def remove_course(self, code_):
         if code_ in self.course:
             self.course.remove(code_)
+            self.save(validate=False)
 
 
 class User(db.Document):
@@ -42,9 +58,13 @@ class User(db.Document):
     @classmethod
     def create(cls, username_, password_):
         usr = cls.objects(username=username_)
+        Wishlist.create(username_)
+        wishlist_ = Wishlist.objects(username=username_).get()
         usr.update_one(set__username=username_, 
                        set__password=password_,
+                       set__wishlist=wishlist_,
                        upsert=True)
+
         return True
 
     @classmethod
@@ -64,7 +84,7 @@ class User(db.Document):
     
     @classmethod
     def get_wishlist(cls, username_):
-        return Wishlist.objects(_id=cls.objects(username=username_).get().wishlist)
+        return Wishlist.objects(username=username_).get()
 
     @classmethod
     def add_comment(cls, username_, code_, comment_):
@@ -78,7 +98,7 @@ class User(db.Document):
 
 class Minor(db.Document):
     name = db.StringField(required=True, unique=True)
-    description = db.StringField
+    description = db.StringField()
     requisites = db.ListField(db.ListField(db.ListField)) 
             #[ (['code', 'code'], 2), (['code', 'code'], 1), ] 
 
@@ -89,7 +109,9 @@ class Minor(db.Document):
     @classmethod
     def check(cls, codes_):
         ret = []
+
         for mn in cls.objects:
+            print(f"checking {mn}")
             yes = True
             for req in mn.requisites:
                 if len(set(req[0]).intersection(set(codes_))) < req[1]:

@@ -21,6 +21,10 @@ import controller
 api = Api(app)
 api.add_resource(controller.UserRegistration, '/user/register')
 api.add_resource(controller.ShowCourse, '/course')
+api.add_resource(controller.UserWishlist, '/user/wishlist')
+api.add_resource(controller.UserWishlistAdd, '/user/wishlist/addCourse')
+api.add_resource(controller.UserWishlistRemove, '/user/wishlist/removeCourse')
+api.add_resource(controller.UserWishlistMinorCheck, '/user/wishlist/minorCheck')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5444, extra_files=['app.py', 'controller.py', 'model.py'])
