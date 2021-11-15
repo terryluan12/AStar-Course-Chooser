@@ -35,10 +35,10 @@ function SearchResults() {
   const courseDisplay = courselist.map((course) => {
     return (
       //should go to course page when row is clicked
+      <a href={`/CourseDescription?code=${course.Course_Code}`}>
       <tr
         className="trow"
-        courselist-item={course}
-        onClick={<CourseDescriptionPage  />}
+        courselist-item={course} 
       >
         <td> {course.Course_Code} </td>
         <td> {course.Name} </td>
@@ -50,10 +50,11 @@ function SearchResults() {
           {" "}
           <img
             src={check_star_state(course.Starred)}
-            onCLick={modifyWishlist(course)}
+            onClick={modifyWishlist(course)}
           ></img>
         </td>
       </tr>
+      </a>
     );
   });
 

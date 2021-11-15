@@ -37,9 +37,9 @@ class Wishlist(db.Document):
         return True
 
     def add_course(self, code_):
-        # code_ is a course object
-        self.course.append(code_)
-        self.save(validate=False)
+        if code_ not in self.course:
+            self.course.append(code_)
+            self.save(validate=False)
     
     def remove_course(self, code_):
         if code_ in self.course:

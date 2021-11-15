@@ -152,7 +152,6 @@ class UserWishlist(Resource):
 
 class UserWishlistAdd(Resource):
     def get(self):
-        #User.create(username_="aaa",password_="vvv")
         username = request.args.get('username')
         code = request.args.get('code')
         try:

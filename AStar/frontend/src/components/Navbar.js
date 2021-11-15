@@ -3,12 +3,25 @@ import './css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from './img/logo.png'
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
 import Search from "./search.js";
 import SearchResults from "./searchresults";
 import Login from "./login.js";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
+
+function CourseDescription () {
+  let query = useQuery();
+  console.log("query: ", query.get("code"))
+  return <CourseDescriptionPage code={query.get("code")}/>;
+}
+
+function useQuery() {
+  const { search } = useLocation();
+  console.log("useLocation: ", search)
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default class NavbarComp extends Component {
   render() {
@@ -52,7 +65,7 @@ export default class NavbarComp extends Component {
               <SearchResults />
             </Route>
             <Route path="/CourseDescription">
-              <CourseDescriptionPage />
+              <CourseDescription />
             </Route>
             <Route path="/MyWishlist">
               <Wishlist />
