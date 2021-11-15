@@ -103,8 +103,8 @@ class ShowCourse(Resource):
 class SearchCourse(Resource):
     def get(self):
         input = request.args.get('input')
-
-
+        resp = jsonify({'course_name': f"Software Engineering"})
+        return resp
 
     def post(self):
         parser = reqparse.RequestParser()

@@ -31,7 +31,7 @@ class CourseDescriptionPage extends Component {
   componentDidMount() {
     console.log("props: ", this.props.code)
 
-    axios.get(`http://localhost:5000/CourseDescription?code=${this.props.code + "H1"}`, {
+    axios.get(`http://localhost:5000/CourseDescription?code=${this.props.code}`, {
       code: this.props.course_code
     })
       .then(res => {
@@ -78,6 +78,8 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
+        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code + "H1"
+        this.setState({syllabus : syllabus_link})
 
         
     })

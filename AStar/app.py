@@ -29,6 +29,8 @@ api.add_resource(controller.UserWishlistAdd, '/user/wishlist/addCourse')
 api.add_resource(controller.UserWishlistRemove, '/user/wishlist/removeCourse')
 api.add_resource(controller.UserWishlistMinorCheck, '/user/wishlist/minorCheck')
 
+api.add_resource(controller.SearchCourse, '/SearchCourse')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, extra_files=['app.py', 'controller.py', 'model.py'])
     # with open("test.json") as f:

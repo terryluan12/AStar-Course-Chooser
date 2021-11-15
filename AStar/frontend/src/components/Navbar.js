@@ -9,6 +9,8 @@ import SearchResults from "./searchresults";
 import Login from "./login.js";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
+import Result from './Results'
+import SearchResultDisplay from './ResultDisplay'
 
 function CourseDescription () {
   let query = useQuery();
@@ -62,7 +64,7 @@ export default class NavbarComp extends Component {
         <div>
           <Switch>
             <Route path="/searchresults">
-              <SearchResults />
+              <SearchResultDisplay />
             </Route>
             <Route path="/CourseDescription">
               <CourseDescription />
