@@ -5,11 +5,11 @@ import logo from './img/logo.png'
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
 import Search from "./search.js";
-import SearchResults from "./searchresults";
 import Login from "./login.js";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
-import wishlist_data from "../db/Wishlist_MOCK_data.json";
+import SignUp from './SignUp'
+import SearchResultDisplay from './ResultDisplay'
 
 
 function CourseDescription (username) {
@@ -60,6 +60,7 @@ export default class NavbarComp extends Component {
 
   render() {
     return (
+      
       <Router>
         <div>
           <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
@@ -85,6 +86,9 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/login">
                   Login
                 </Nav.Link>
+                <Nav.Link as={Link} to="/signup">
+                  Sign Up
+                </Nav.Link>
                 <Nav.Link as={Link} to="/CourseDescription">
                   CourseDescription (remove later)
                 </Nav.Link>
@@ -96,7 +100,7 @@ export default class NavbarComp extends Component {
         <div>
           <Switch>
             <Route path="/searchresults">
-              <SearchResults />
+              <SearchResultDisplay />
             </Route>
           
             <Route exact
@@ -122,15 +126,19 @@ export default class NavbarComp extends Component {
               <Login />
             </Route> */}
 
-<Route exact path="/login"
-     render={props => (
-       
-     <Login {...props} setUsername={this.setUsername} 
-    //  setPassword={this.setPassword}
-     />
-     )}
-     >
-     </Route>
+            <Route exact path="/login"
+                render={props => (
+                  
+                <Login {...props} setUsername={this.setUsername} 
+                //  setPassword={this.setPassword}
+                />
+                )}
+                >
+     
+            </Route>
+            <Route path="/signup">
+              <SignUp />
+            </Route>
             <Route path="/">
               <Search />
             </Route>
