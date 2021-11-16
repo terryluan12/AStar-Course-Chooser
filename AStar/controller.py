@@ -5,7 +5,8 @@ from flask_restful import Resource, reqparse
 # from flask_cors import cross_origin
 from config import app
 from model import *
-import sys
+from metaphone import doublemetaphone
+import re
 
 @app.route("/")
 def app_connect():
@@ -81,10 +82,52 @@ class UserLogin(Resource):
 # ------------------------------------------------------------
 
 # -------------------- Course related --------------------
+class SearchCourse(Resource):
+    def get(self):
+        print(Course.list_indexes())
+        print(User.list_indexes())
+        input = request.args.get('input')
+        code = re.findall('[a-zA-Z]{3}\d{3}[hH]?\d?', input)
+        if code:
+            code = code[0].upper()
+            if len(code) == 6:
+                code += 'H1'
+            elif len(code) == 5:
+                code += '1'
+            if Course.objects(code=code):
+                try:
+                    resp = jsonify({'course': Course.get(code)})
+                    resp.status_code = 200
+                    return resp
+                except Exception as e:
+                    resp = jsonify({'error': e})
+                    resp.status_code = 400
+                    return resp
+        
+        input = ' '.join([doublemetaphone(w)[0] for w in input.split()])
+        try:
+            print('\n\n', input, '\n\n')
+            search = Course.objects.search_text('electronics')
+            print('\n\n', search, '\n\n')
+            search = {'dummy': 'hello world'}
+            resp = jsonify(search)
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+
+    # def post(self):
+    #     parser = reqparse.RequestParser()
+    #     parser.add_argument('input', required=True)
+    #     data = parser.parse_args()
+    #     input = data['input']
+
+
 class ShowCourse(Resource):
     def get(self):
         code = request.args.get('code')
-
         if not Course.objects(code=code):
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
@@ -99,18 +142,16 @@ class ShowCourse(Resource):
             resp.status_code = 400
             return resp
 
-    
-class SearchCourse(Resource):
+
+class ShowGraph(Resource):
     def get(self):
-        input = request.args.get('input')
+        code = request.args.get('code')
+        if not Course.objects(code=code):
+            resp = jsonify({'message': f"Course {code} doesn't exist"})
+            resp.status_code = 404
+            return resp
 
 
-
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('input', required=True)
-        data = parser.parse_args()
-        input = data['input']
 
 # ------------------------------------------------------------
 

@@ -10,7 +10,11 @@ class Course(db.Document):
     prereq = db.ListField()
     coreq = db.ListField()
     exclusion = db.ListField()
-    keyword = db.ListField(required=True)
+    keyword = db.StringField(required=True)
+    
+    meta = {'indexes': [
+        '$keyword'
+    ]}
 
     @classmethod
     def get(cls, code_):
@@ -21,9 +25,6 @@ class Course(db.Document):
         # TODO
         return
 
-
-def val_course(stuff):
-    return
 
 class Wishlist(db.Document):
     username = db.StringField()
