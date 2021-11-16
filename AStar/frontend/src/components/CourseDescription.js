@@ -14,24 +14,33 @@ let star = empty_star;
 
 class CourseDescriptionPage extends Component {
 
-  state = {
-    course_code: "",
-    course_name: "",
-    division: "Faculty of Applied Science and Engineering",
-    department: "Department of Edward S. Rogers Sr. Dept. of Electrical & Computer Engineering",
-    minor : "",
-    course_description: "",
-    syllabus: "",
-    prerequisites: "",
-    corequisites: "",
-    exclusions: "",
-    starred: false
+  constructor(props){
+    super(props)
+
+    this.state = {
+      // course_code: "",
+      course_code: "ECE568H1",
+      course_name: "",
+      division: "Faculty of Applied Science and Engineering",
+      department: "Department of Edward S. Rogers Sr. Dept. of Electrical & Computer Engineering",
+      minor : "",
+      course_description: "",
+      syllabus: "",
+      prerequisites: "",
+      corequisites: "",
+      exclusions: "",
+      starred: false,
+      // username:"aaa"
+      username: this.props.username
+    }
   }
+
+  
 
   componentDidMount() {
     console.log("props: ", this.props.code)
 
-    axios.get(`http://localhost:5000/CourseDescription?code=${this.props.code + "H1"}`, {
+    axios.get(`http://localhost:5000/course/details?code=${this.props.code + "H1"}`, {
       code: this.props.course_code
     })
       .then(res => {
@@ -86,16 +95,57 @@ class CourseDescriptionPage extends Component {
   }
 
   check_star = () => {
-    if (this.state.starred == false) {
-      this.setState({starred: true});
-      console.log('Starred the course');
-      star = starred;
 
-    } else {
-      this.setState({starred: false});
-      console.log('Unstar the course');
-      star = empty_star;
-    }
+    console.log("username: ", this.state.username)
+
+    // if (this.props.username){
+    if(this.state.username){
+      if (this.state.starred == false) { //if user is logged in, add to course
+        
+         
+        //add course to wishlist
+        console.log("username/code", this.state)
+        axios.post(`http://localhost:5000/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+          'code': this.state.course_code, 'username':this.state.username
+        })
+        .then(resp =>{
+          if(resp.status == 200){
+            console.log("successfully added course and starred")
+            star = starred;
+            this.setState({starred: true});
+
+          }else{
+            console.log("error occured while modifying wishlist: ", resp.status)
+          }
+
+
+        })
+
+      } else {
+        
+        //remove course from wishlist
+        axios.post(`http://localhost:5000/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+          'code': this.state.course_code, 'username':this.state.username
+        })
+        .then(resp =>{
+          if(resp.status==200){
+            console.log("successfully REMOVED course and unstarred")
+            star = empty_star;
+            this.setState({starred: false});
+          }else{
+            console.log("error occured while modifying wishlist: ", resp.status)
+          }
+
+        })
+
+       
+        
+      }
+
+      }else{ //else, notify
+        alert("You must login to save a course.")
+      }
+      
   }
 
   openLink = () => {
@@ -107,9 +157,13 @@ class CourseDescriptionPage extends Component {
 
 	render() {
     console.log('render state:', this.state)
+    console.log('coursedesp state: ', this.props)
 		return(
 
       <div className="page-content">
+
+
+
         <Container className="course-template">
           <Row float="center" className="course-title">
             <Col xs={8}>

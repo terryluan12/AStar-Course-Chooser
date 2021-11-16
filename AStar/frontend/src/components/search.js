@@ -69,7 +69,7 @@ class SearchQuery extends Component{
             <Button type="submit" className="myButton"> Search</Button>
           </Form>
         </div>
-        <SearchResults />
+        {/* <SearchResults /> */}
       </div>
     );
   }

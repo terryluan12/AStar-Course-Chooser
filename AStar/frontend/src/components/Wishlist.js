@@ -19,14 +19,55 @@ import CourseCard from "./CourseCard";
 
 import courselist from "../db/MOCK_DATA.json";
 import APIService from "./APIService";
+import wishlist_data2 from "../db/Wishlist_MOCK_data.json";
+import axios from "axios"
 
 class Wishlist extends Component {
 
-    insertArticle(event) {
-        APIService.insertArticle(this.state)
-          .then((response) => event.insertedArticle(response))
-          // should "event" be props?
-          .catch((error) => console.log("error", error));
+    // insertArticle(event) {
+    //     APIService.insertArticle(this.state)
+    //       .then((response) => event.insertedArticle(response))
+    //       // should "event" be props?
+    //       .catch((error) => console.log("error", error));
+    //   }
+
+    constructor(props){
+        super(props)
+
+        this.state={
+            wishlist_data:[],
+            // wishlist_data: wishlist_data2,
+            // username: this.props.username
+            username: this.props.username
+
+        }
+        
+    }
+
+    componentDidMount() {
+        console.log("props: ", this.props.code)
+    
+        axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`, {
+            'username': this.state.username
+        })
+          .then(res => {
+            console.log("wishlit", res.data.wishlist)
+            console.log("res: ", res)
+
+            if(res.status ==200){
+                this.setState({wishlist_data: res.data.wishlist.course})
+                console.log("wishlist saved: ", this.state.wishlist_data)
+            }
+            else{
+                console.log("Error Returning Wishlist_data")
+                return []
+            }
+    
+        })
+
+        // axios.get(`http://localhost:5000/CourseDescription`)
+      
+        console.log("new state: ", this.state)
       }
 
     
@@ -37,8 +78,11 @@ class Wishlist extends Component {
                  <div className="left-panel">
           <Container>
             <h1 className="wishlist-title">My Wishlist</h1>
+            <h2> Hi {this.props.username} pass: {this.props.password} wishlist: {this.props.wishlist_data}</h2>
 
-            <CourseCard style={{ display: "flex", flexDirection: "row" }} />
+            <CourseCard style={{ display: "flex", flexDirection: "row" }} 
+            wishlist_data={this.state.wishlist_data}  />
+
             {/* {CourseCard} */}
           </Container>
         </div>

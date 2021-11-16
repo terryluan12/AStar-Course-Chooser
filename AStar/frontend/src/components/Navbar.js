@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from './img/logo.png'
@@ -9,11 +9,13 @@ import SearchResults from "./searchresults";
 import Login from "./login.js";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
+import wishlist_data from "../db/Wishlist_MOCK_data.json";
 
-function CourseDescription () {
+
+function CourseDescription (username) {
   let query = useQuery();
   console.log("query: ", query.get("code"))
-  return <CourseDescriptionPage code={query.get("code")}/>;
+  return <CourseDescriptionPage code={query.get("code")} username={username}/>;
 }
 
 function useQuery() {
@@ -24,6 +26,38 @@ function useQuery() {
 }
 
 export default class NavbarComp extends Component {
+
+  constructor(props){
+    super(props)
+
+  
+
+  this.state={
+    username: "",
+    // username: "aaa"
+    // password:"",
+    // wishlist_data: wishlist_data
+  }
+
+  this.setUsername = this.setUsername.bind(this);
+  // this.setPassword = this.setPassword.bind(this);
+  }
+
+  setUsername = (username) => {
+    // console.log("data retrieved: " + data[0].username + "pass:" +data[0].password)
+    this.setState({
+      username: username
+    })
+    console.log("navbar state:", this.state)
+  }
+
+  // setPassword = (password) => {
+  //     this.setState({
+  //       password: password
+  //     });
+  // }
+
+
   render() {
     return (
       <Router>
@@ -45,7 +79,7 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/searchresults">
                   Search Results (remove later)
                 </Nav.Link>
-                <Nav.Link as={Link} to="/MyWishlist">
+                <Nav.Link as={Link} to="/Wishlist">
                   My Wishlist
                 </Nav.Link>
                 <Nav.Link as={Link} to="/login">
@@ -64,15 +98,39 @@ export default class NavbarComp extends Component {
             <Route path="/searchresults">
               <SearchResults />
             </Route>
-            <Route path="/CourseDescription">
-              <CourseDescription />
+          
+            <Route exact
+            path="/course/details"
+            render={props =>(
+
+              
+              <CourseDescriptionPage {...props} username={this.state.username}/>
+              // <CourseDescription(this.state.username) />
+              )}>
+            
+
             </Route>
-            <Route path="/MyWishlist">
-              <Wishlist />
+            {/* {console.log("wishlist data: ", wishlist_data)} */}
+            <Route exact 
+            path="/Wishlist"
+              render={props =>(
+                <Wishlist {...props} username={this.state.username} wishlist={this.state.wishlist_data}/>
+              )}
+              >
             </Route>
-            <Route path="/login">
+            {/* <Route path="/login">
               <Login />
-            </Route>
+            </Route> */}
+
+<Route exact path="/login"
+     render={props => (
+       
+     <Login {...props} setUsername={this.setUsername} 
+    //  setPassword={this.setPassword}
+     />
+     )}
+     >
+     </Route>
             <Route path="/">
               <Search />
             </Route>
