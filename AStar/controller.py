@@ -84,8 +84,6 @@ class UserLogin(Resource):
 # -------------------- Course related --------------------
 class SearchCourse(Resource):
     def get(self):
-        print(Course.list_indexes())
-        print(User.list_indexes())
         input = request.args.get('input')
         code = re.findall('[a-zA-Z]{3}\d{3}[hH]?\d?', input)
         if code:
@@ -107,9 +105,7 @@ class SearchCourse(Resource):
         input = ' '.join([doublemetaphone(w)[0] for w in input.split()])
         try:
             print('\n\n', input, '\n\n')
-            search = Course.objects.search_text('electronics')
-            print('\n\n', search, '\n\n')
-            search = {'dummy': 'hello world'}
+            search = Course.objects.search_text(input)
             resp = jsonify(search)
             resp.status_code = 200
             return resp
