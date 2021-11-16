@@ -37,8 +37,6 @@ class UserRegistration(Resource):
             resp.status_code = 400
             return resp
 
-    def get(self):
-        code = request.args.get('code')
 
 class UserUpdatePwd(Resource):
     def post(self):
@@ -48,7 +46,6 @@ class UserUpdatePwd(Resource):
         data = parser.parse_args()
         username = data['username']
         password = data['password']
-
         try:
             User.create(username, password)
             resp = jsonify({})
@@ -58,6 +55,7 @@ class UserUpdatePwd(Resource):
             resp = jsonify({'error': e})
             resp.status_code = 400
             return resp
+
 
 class UserLogin(Resource):
     def post(self):
@@ -196,18 +194,15 @@ class ShowGraph(Resource):
         if not Course.objects(code=code):
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
-            return resp
-
-
+            return resp        
 # ------------------------------------------------------------
 
 # -------------------- Wishlist related --------------------
-
 class UserWishlist(Resource):
     def get(self):
         username = request.args.get('username')
         try:
-            resp = jsonify({'wishlist': User.get_wishlist(username_=username)})
+            resp = jsonify({'wishlist': User.get_wishlist(username_=username).expand()})
             resp.status_code = 200
             return resp
         except Exception as e: 
@@ -221,7 +216,7 @@ class UserWishlist(Resource):
         data = parser.parse_args()
         username = data['username']
         try:
-            resp = jsonify({'wishlist': User.get_wishlist(username_=username)})
+            resp = jsonify({'wishlist': User.get_wishlist(username_=username).expand()})
             resp.status_code = 200
             return resp
         except Exception as e: 
@@ -238,7 +233,7 @@ class UserWishlistAdd(Resource):
             course = Course.get(code)
             wl = User.get_wishlist(username_=username)
             wl.add_course(course)
-            resp = jsonify({'wishlist': wl})
+            resp = jsonify({'wishlist': wl.expand()})
             resp.status_code = 200
             return resp
         except Exception as e: 
@@ -257,7 +252,7 @@ class UserWishlistAdd(Resource):
             course = Course.get(code)
             wl = User.get_wishlist(username_=username)
             wl.add_course(course)
-            resp = jsonify({'wishlist': wl})
+            resp = jsonify({'wishlist': wl.expand()})
             resp.status_code = 200
             return resp
         except Exception as e: 
@@ -274,7 +269,7 @@ class UserWishlistRemove(Resource):
             course = Course.get(code)
             wl = User.get_wishlist(username_=username)
             wl.remove_course(course)
-            resp = jsonify({'wishlist': wl})
+            resp = jsonify({'wishlist': wl.expand()})
             resp.status_code = 200
             return resp
         except Exception as e: 
@@ -293,7 +288,7 @@ class UserWishlistRemove(Resource):
             course = Course.get(code)
             wl = User.get_wishlist(username_=username)
             wl.remove_course(course)
-            resp = jsonify({'wishlist': wl})
+            resp = jsonify({'wishlist': wl.expand()})
             resp.status_code = 200
             return resp
         except Exception as e: 

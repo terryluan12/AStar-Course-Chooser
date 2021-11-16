@@ -27,8 +27,9 @@ class Course(db.Document):
 
 
 class Wishlist(db.Document):
-    username = db.StringField()
+    username = db.StringField(required=True, unique=True)
     course = db.ListField(db.ReferenceField(Course))
+    comments = db.DictField()
 
     @classmethod
     def create(cls,username_):
@@ -36,34 +37,35 @@ class Wishlist(db.Document):
         usr.update_one(set__course=[],
                        upsert=True)
         return True
-
-    def add_course(self, code_):
-        if code_ not in self.course:
-            self.course.append(code_)
-            self.save(validate=False)
     
-    def remove_course(self, code_):
-        if code_ in self.course:
-            self.course.remove(code_)
-            self.save(validate=False)
+    def add_course(self, course_):
+        if course_ not in self.course:
+            self.update(add_to_set__course=course_)
+    
+    def remove_course(self, course_):
+        if course_ in self.course:
+            self.course.remove(course_)
+
+    def expand(self):
+        ret = {
+            'username': self.username,
+            'course': self.course,
+            'comments': self.comments
+        }
+        return ret
 
 
 class User(db.Document):
     username = db.StringField(required=True, unique=True)
     password = db.StringField(required=True)
-    comments = db.DictField()
-    wishlist = db.ReferenceField(Wishlist)
 
     @classmethod
     def create(cls, username_, password_):
         usr = cls.objects(username=username_)
         Wishlist.create(username_)
-        wishlist_ = Wishlist.objects(username=username_).get()
         usr.update_one(set__username=username_, 
                        set__password=password_,
-                       set__wishlist=wishlist_,
                        upsert=True)
-
         return True
 
     @classmethod
@@ -71,6 +73,9 @@ class User(db.Document):
         usr = cls.objects(username=username_).get()
         if usr:
             usr.delete()
+            wl = Wishlist.objects(username=username_).get()
+            if wl:
+                wl.delete()
             return True
         return False
 
