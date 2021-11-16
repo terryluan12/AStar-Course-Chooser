@@ -24,7 +24,6 @@ class Result extends Component{
       faculty: "Faculty of Applied Science and Engineering",
       starred: false
     };
-    console.log("props", this.props.course_name)
     if (this.state.starred == false) {
         star = unstarred
     } else {
@@ -51,7 +50,7 @@ class Result extends Component{
   render(){
     return (
       <Container>
-        <a href={`/CourseDescription?code=${this.props.course_code}`} className={"search-result-item"} style={{textDecoration: "none"}}>
+        <a href={`/course/details?code=${this.props.course_code}`} className={"search-result-item"} style={{textDecoration: "none"}}>
         <Row className={"result-display"}>
             <Col>
                 <h5>{this.state.course_code}</h5>  

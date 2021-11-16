@@ -5,11 +5,10 @@ import logo from './img/logo.png'
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
 import Search from "./search.js";
-import SearchResults from "./searchresults";
 import Login from "./login.js";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
-import Result from './Results'
+import SignUp from './SignUp'
 import SearchResultDisplay from './ResultDisplay'
 
 function CourseDescription () {
@@ -28,6 +27,7 @@ function useQuery() {
 export default class NavbarComp extends Component {
   render() {
     return (
+      
       <Router>
         <div>
           <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
@@ -53,6 +53,9 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/login">
                   Login
                 </Nav.Link>
+                <Nav.Link as={Link} to="/signup">
+                  Sign Up
+                </Nav.Link>
                 <Nav.Link as={Link} to="/CourseDescription">
                   CourseDescription (remove later)
                 </Nav.Link>
@@ -66,7 +69,7 @@ export default class NavbarComp extends Component {
             <Route path="/searchresults">
               <SearchResultDisplay />
             </Route>
-            <Route path="/CourseDescription">
+            <Route path="/course/details">
               <CourseDescription />
             </Route>
             <Route path="/MyWishlist">
@@ -74,6 +77,9 @@ export default class NavbarComp extends Component {
             </Route>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/signup">
+              <SignUp />
             </Route>
             <Route path="/">
               <Search />
