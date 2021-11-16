@@ -31,7 +31,7 @@ class CourseDescriptionPage extends Component {
   componentDidMount() {
     console.log("props: ", this.props.code)
 
-    axios.get(`http://localhost:5000/CourseDescription?code=${this.props.code}`, {
+    axios.get(`http://localhost:5000/course/details?code=${this.props.code}`, {
       code: this.props.course_code
     })
       .then(res => {
