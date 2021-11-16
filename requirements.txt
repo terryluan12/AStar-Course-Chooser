@@ -4,5 +4,4 @@ pymongo[srv]
 flask-mongoengine
 flask_restful
 flask_cors
-Metaphone
 fuzzy

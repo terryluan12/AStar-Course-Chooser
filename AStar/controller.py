@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 # from flask_cors import cross_origin
 from config import app
 from model import *
-from metaphone import doublemetaphone
+from fuzzy import nysiis
 import re
 
 @app.route("/")
@@ -101,11 +101,9 @@ class SearchCourse(Resource):
                     resp = jsonify({'error': e})
                     resp.status_code = 400
                     return resp
-        
-        input = ' '.join([doublemetaphone(w)[0] for w in input.split()])
+        input = ' '.join([nysiis(w) for w in input.split()])
         try:
-            print('\n\n', input, '\n\n')
-            search = Course.objects.search_text(input)
+            search = Course.objects.search_text(input).order_by('$text_score')
             resp = jsonify(search)
             resp.status_code = 200
             return resp
@@ -114,11 +112,37 @@ class SearchCourse(Resource):
             resp.status_code = 400
             return resp
 
-    # def post(self):
-    #     parser = reqparse.RequestParser()
-    #     parser.add_argument('input', required=True)
-    #     data = parser.parse_args()
-    #     input = data['input']
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('input', required=True)
+        data = parser.parse_args()
+        input = data['input']
+        code = re.findall('[a-zA-Z]{3}\d{3}[hH]?\d?', input)
+        if code:
+            code = code[0].upper()
+            if len(code) == 6:
+                code += 'H1'
+            elif len(code) == 5:
+                code += '1'
+            if Course.objects(code=code):
+                try:
+                    resp = jsonify({'course': Course.get(code)})
+                    resp.status_code = 200
+                    return resp
+                except Exception as e:
+                    resp = jsonify({'error': e})
+                    resp.status_code = 400
+                    return resp
+        input = ' '.join([nysiis(w) for w in input.split()])
+        try:
+            search = Course.objects.search_text(input).order_by('$text_score')
+            resp = jsonify(search)
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
 
 
 class ShowCourse(Resource):
@@ -128,7 +152,24 @@ class ShowCourse(Resource):
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
             return resp
-
+        try:
+            resp = jsonify({'course': Course.get(code)})
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+    
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('code', required=True)
+        data = parser.parse_args()
+        code = data['code']
+        if not Course.objects(code=code):
+            resp = jsonify({'message': f"Course {code} doesn't exist"})
+            resp.status_code = 404
+            return resp
         try:
             resp = jsonify({'course': Course.get(code)})
             resp.status_code = 200
@@ -147,6 +188,15 @@ class ShowGraph(Resource):
             resp.status_code = 404
             return resp
 
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('code', required=True)
+        data = parser.parse_args()
+        code = data['code']
+        if not Course.objects(code=code):
+            resp = jsonify({'message': f"Course {code} doesn't exist"})
+            resp.status_code = 404
+            return resp
 
 
 # ------------------------------------------------------------
