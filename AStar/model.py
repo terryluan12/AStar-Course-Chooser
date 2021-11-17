@@ -45,6 +45,7 @@ class Wishlist(db.Document):
     def remove_course(self, course_):
         if course_ in self.course:
             self.course.remove(course_)
+            self.save()
 
     def expand(self):
         ret = {
@@ -122,5 +123,5 @@ class Minor(db.Document):
                     yes = False
                     break
             if yes:
-                ret.append(mn.name)
+                ret.append(mn)
         return ret
