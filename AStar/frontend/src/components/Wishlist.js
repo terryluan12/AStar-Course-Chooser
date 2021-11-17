@@ -30,9 +30,7 @@ class Wishlist extends Component {
         this.state={
             wishlist_data:[],
             username: localStorage.getItem('username')
-
         }
-        
     }
 
     componentDidMount() {
@@ -59,8 +57,6 @@ class Wishlist extends Component {
             }
     
         })
-
-        // axios.get(`http://localhost:5000/CourseDescription`)
       
         console.log("new state: ", this.state)
       }
@@ -70,20 +66,11 @@ class Wishlist extends Component {
 		return(
 
             <div className="wishlist-page-content">
-                 <div className="left-panel">
-          <Container>
-            <h1 className="wishlist-title">My Wishlist</h1>
-            {/* <h2> Hi {this.props.username} pass: {this.props.password} wishlist: {this.props.wishlist_data}</h2> */}
-            
+                <div className="left-panel">
+                <h1 className="wishlist-title">My Wishlist</h1>          
+                <CourseCard className={"course-card-container"} wishlist_data={this.state.wishlist_data}></CourseCard>
 
-            <CourseCard style={{ display: "flex", flexDirection: "row" }} 
-            
-            //send wishlist
-            wishlist_data={this.state.wishlist_data}  />
-
-            {/* {CourseCard} */}
-          </Container>
-        </div>
+                </div>
                 <div className="right-panel">
                     <div className="centered">
                         <img src={user_profile}></img>
@@ -91,19 +78,8 @@ class Wishlist extends Component {
                         <p>Computer Engineering Student</p>
                         <br></br>
                         <br></br>
-                        <h4>Minor/Certificate Progress</h4>
-                        <img src={minor_label} width="100%"></img>
-                        <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic" className="add-button">
-                            + Add Minor/Certificate
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <Dropdown.Item href="#/action-1">Artificial Intelligence Minor</Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">Engineering Business Minor</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Biomedical Engineering Minor</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <h4>Minor Fulfillment</h4>
+                        
                     </div>
                 </div>
 

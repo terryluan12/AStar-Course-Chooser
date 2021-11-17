@@ -91,3 +91,8 @@ Dropdown.Item:hover {
     background-color: #1C3E6E;
     color: white;
 }
+
+.course-card-container {
+    overflow-x: scroll;
+    width: 80%;
+}
