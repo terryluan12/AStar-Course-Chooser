@@ -31,8 +31,6 @@ class Result extends Component{
   componentDidMount() {
     axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)
     .then(res => {
-      console.log("get data: ", res.data.wishlist.course[1].code)
-
       let len = res.data.wishlist.course.length
       for (let i = 0; i < len; i++) {
         if (res.data.wishlist.course[i].code === this.state.course_code) {

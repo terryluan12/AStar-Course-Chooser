@@ -19,7 +19,6 @@ class CourseDescriptionPage extends Component {
 
     this.state = {
       course_code: "",
-      // course_code: "ECE568H1",
       course_name: "",
       division: "Faculty of Applied Science and Engineering",
       department: "Department of Edward S. Rogers Sr. Dept. of Electrical & Computer Engineering",
@@ -91,6 +90,23 @@ class CourseDescriptionPage extends Component {
         this.setState({syllabus : syllabus_link})
 
         
+    })
+
+    axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)
+    .then(res => {
+      let len = res.data.wishlist.course.length
+      for (let i = 0; i < len; i++) {
+        console.log("checking: ", res.data.wishlist.course[i].code)
+        console.log("course: ", this.props.code)
+        if (res.data.wishlist.course[i].code === this.props.code) {
+          star = starred
+          this.setState({starred: true})
+          
+        }
+      }
+
+      console.log("current star: ", this.state.starred)
+
     })
   
     console.log("new state: ", this.state)
