@@ -1,58 +1,56 @@
 import React, { Component } from 'react';
 import './css/wishlist.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Form, FormControl } from "react-bootstrap";
-
 import user_profile from './img/user.png'
-import minor_label from './img/label.png'
-
-
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 import CourseCard from "./CourseCard";
-
-import courselist from "../db/MOCK_DATA.json";
+import axios from "axios"
 
 class Wishlist extends Component {
 
+    constructor(props){
+        super(props)
+        this.state={
+            wishlist_data:[],
+            username: localStorage.getItem('username')
+        }
+    }
+
+    componentDidMount() {
+
+        this.setState({username: localStorage.getItem('username')})
+
+        axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`, {
+            'username': this.state.username
+        })
+        .then(res => {
+            if(res.status === 200){
+                this.setState({wishlist_data: res.data.wishlist.course})
+            }
+            else {
+                alert("The system cannot return wishlist at the moment. Please try again later.")
+            }
+        })      
+    }
+
+    
 	render() {
 		return(
 
             <div className="wishlist-page-content">
-                 <div className="left-panel">
-          <Container>
-            <h1 className="wishlist-title">My Wishlist</h1>
+                <div className="left-panel">
+                <h1 className="wishlist-title">My Wishlist</h1>          
+                <CourseCard className={"course-card-container"} wishlist_data={this.state.wishlist_data}></CourseCard>
 
-            <CourseCard style={{ display: "flex", flexDirection: "row" }} />
-            {/* {CourseCard} */}
-          </Container>
-        </div>
+                </div>
                 <div className="right-panel">
                     <div className="centered">
                         <img src={user_profile}></img>
-                        <h3>John Doe</h3>
+                        <h3>{this.state.username}</h3>
                         <p>Computer Engineering Student</p>
                         <br></br>
                         <br></br>
-                        <h4>Minor/Certificate Progress</h4>
-                        <img src={minor_label} width="100%"></img>
-                        <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic" className="add-button">
-                            + Add Minor/Certificate
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <Dropdown.Item href="#/action-1">Artificial Intelligence Minor</Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">Engineering Business Minor</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Biomedical Engineering Minor</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <h4>Minor Fulfillment</h4>
+                        
                     </div>
                 </div>
 
