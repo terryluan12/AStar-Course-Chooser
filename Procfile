@@ -1,1 +1,1 @@
-web: gunicorn wsgi
+web: gunicorn --chdir AStar app:app
