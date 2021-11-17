@@ -34,6 +34,7 @@ class Login extends Component {
   //     .catch((error) => console.log("error", error));
   // }
 
+
   handleChange(event) {
     console.log("in handle change");
     this.setState({
@@ -56,39 +57,22 @@ class Login extends Component {
     // const userInfo = [this.state.username, this.state.password]
 
 
-    fetch(`http://localhost:5000/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-          ,
-          "Access-Control-Allow-Origin": "*"
-        },
-        body: JSON.stringify(this.state)
-      })
-        .then((resp) => resp.json())
-       
-        .then(resp =>{
-          if (resp.status== 200){
-            console.log("login successful")
+    axios.post(`http://localhost:5000/user/login`, {
+        'username': this.state.username,
+        'password': this.state.password
+    })
+    .then(res => {
+        console.log("create status: ", res.status)
+        if (res.status === 200) {
+            this.setState({login: true})
+            console.log("username:" , this.state.username)
             this.props.setUsername(this.state.username);
-            
             this.props.history.push('/Wishlist');
-            console.log("passed wishlist push")
-          }else if (resp.status==401){
-            console.log("login verified but failed")
-            alert("Login Failed. Please Try Again.")
-          }else{
-            console.log("login failed due to error: ", resp.error)
-            alert("Login Failed. Please Try Again.")
-    
-          }
-        })
-        .catch((error) => console.log(error));
-    }
-    
-      
-
-    
+            alert("Login Successfully!")
+        }
+        
+    })
+  }
    
   
   render() {

@@ -30,19 +30,16 @@ export default class NavbarComp extends Component {
 
   constructor(props){
     super(props)
-
-  
-
-  this.state={
-    username: ""
-    // , isLoggedIn: false
-   
-  }
-  // this.CourseDescription = this.CourseDescription.bind(this)
-  this.setUsername = this.setUsername.bind(this)
+    this.state = {
+      login: false
+    }
+    this.setLogin = this.setLogin.bind(this)
   }
 
-
+  setLogin() {
+    this.setState({login : true})
+    console.log("new state: ", this.state.login)
+  }
   // CourseDescription =(username) =>{
   //   // function CourseDescription (username) {
   //     let query = useQuery();
@@ -54,12 +51,11 @@ export default class NavbarComp extends Component {
   
   
 
-  setUsername = (username) => {
+  setUsername(username){
     // console.log("data retrieved: " + data[0].username + "pass:" +data[0].password)
-    this.setState({
-      username: username
-      // , isLoggedIn: true
-    })
+    console.log("before setting: ", username)
+    this.setState({username: username})
+    console.log("setUser:", this.state.username)
     console.log("navbar state:", this.state)
   }
 
@@ -147,7 +143,7 @@ export default class NavbarComp extends Component {
             <Route exact path="/login"
                 render={props => (
                   
-                <LogIn {...props} setUsername={this.setUsername} 
+                <LogIn {...props} setLogin={this.setLogin} 
                 //  setPassword={this.setPassword}
                 />
                 )}

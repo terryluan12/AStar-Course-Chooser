@@ -8,8 +8,8 @@ import { Redirect } from 'react-router'
 class LogIn extends Component {
     
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: "",
       password: "",
@@ -40,7 +40,9 @@ class LogIn extends Component {
     console.log("state: ", this.state)
     event.preventDefault();
     this.createAccount(this.state.username, this.state.password)
-    
+    localStorage.setItem('username', this.state.username);
+
+    this.props.history.push('/Wishlist');
   }
 
   createAccount = (username, password) => {
@@ -52,6 +54,7 @@ class LogIn extends Component {
         console.log("create status: ", res.status)
         if (res.status === 200) {
             this.setState({login: true})
+            console.log("username:" , this.state.username)
             alert("Login Successfully!")
         }
         

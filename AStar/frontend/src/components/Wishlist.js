@@ -24,21 +24,12 @@ import axios from "axios"
 
 class Wishlist extends Component {
 
-    // insertArticle(event) {
-    //     APIService.insertArticle(this.state)
-    //       .then((response) => event.insertedArticle(response))
-    //       // should "event" be props?
-    //       .catch((error) => console.log("error", error));
-    //   }
-
     constructor(props){
         super(props)
 
         this.state={
             wishlist_data:[],
-            // wishlist_data: wishlist_data2,
-            // username: this.props.username
-            username: this.props.username
+            username: localStorage.getItem('username')
 
         }
         
@@ -46,6 +37,10 @@ class Wishlist extends Component {
 
     componentDidMount() {
         console.log("props: ", this.props.code)
+
+        this.setState({username: localStorage.getItem('username')})
+        console.log("wishlist username: ", this.state.username )
+
     
         axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`, {
             'username': this.state.username

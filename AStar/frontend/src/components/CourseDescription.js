@@ -31,7 +31,7 @@ class CourseDescriptionPage extends Component {
       exclusions: "",
       starred: false,
       // username:"aaa"
-      username: this.props.username
+      username: localStorage.getItem('username')
     }
   }
 
