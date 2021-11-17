@@ -182,6 +182,14 @@ class ShowGraph(Resource):
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
             return resp
+        try:
+            resp = jsonify({'graph': Course.get_requisite_graph(code)})
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -191,7 +199,16 @@ class ShowGraph(Resource):
         if not Course.objects(code=code):
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
-            return resp        
+            return resp
+        try:
+            resp = jsonify({'graph': Course.get_requisite_graph(code)})
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': e})
+            resp.status_code = 400
+            return resp
+
 # ------------------------------------------------------------
 
 # -------------------- Wishlist related --------------------
