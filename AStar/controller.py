@@ -175,7 +175,7 @@ class ShowCourse(Resource):
             return resp
 
 
-class ShowGraphGraph(Resource):
+class ShowCourseGraph(Resource):
     def get(self):
         code = request.args.get('code')
         if not Course.objects(code=code):
