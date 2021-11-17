@@ -2,22 +2,54 @@ import React, { Component } from 'react';
 import './css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from './img/logo.png'
-import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import Search from "./search.js";
-import SearchResults from "./searchresults";
-import Login from "./login.js";
+import { Navbar, Nav } from "react-bootstrap";
+import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
+import LogIn from "./LogIn.jsx";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
+import SignUp from './SignUp'
+import SearchResultDisplay from './ResultDisplay'
+
+function CourseDescription (props) {
+  let query = useQuery();
+  return <CourseDescriptionPage code={query.get("code")} />;
+}
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 
 export default class NavbarComp extends Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      username: localStorage.getItem('username'),
+      login: false
+    }
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem('username') !== "") {
+      this.setState({username: localStorage.getItem('username')})
+    }
+  }
+
+  logOut = () => {
+    localStorage.setItem('username', "");
+    this.setState({username: ""})
+  }
+
   render() {
     return (
       <Router>
         <div>
           <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
             <Navbar.Brand>
-              <img src={logo} style={{ height: 53, width: 36 }} />{" "}
+              <img src={logo} />{" "}
               <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
                 A* Course Finder
               </Nav.Link>
@@ -29,17 +61,22 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/search">
                   Search
                 </Nav.Link>
-                <Nav.Link as={Link} to="/searchresults">
-                  Search Results (remove later)
-                </Nav.Link>
-                <Nav.Link as={Link} to="/MyWishlist">
+                <Nav.Link as={Link} to="/Wishlist">
                   My Wishlist
                 </Nav.Link>
-                <Nav.Link as={Link} to="/login">
-                  Login
-                </Nav.Link>
-                <Nav.Link as={Link} to="/CourseDescription">
-                  CourseDescription (remove later)
+
+                {this.state.username === "" ?
+                  <Nav.Link as={Link} to="/login">
+                    Login
+                  </Nav.Link>
+                  :
+                  <Nav.Link onClick={this.logOut} as={Link} to="/">
+                    Logout
+                  </Nav.Link>
+                }
+
+                <Nav.Link as={Link} to="/signup">
+                  Sign Up
                 </Nav.Link>
                 
               </Nav>
@@ -48,24 +85,30 @@ export default class NavbarComp extends Component {
         </div>
         <div>
           <Switch>
-            <Route path="/searchresults">
-              <SearchResults />
+            <Route path="/search">
+              <SearchResultDisplay />
             </Route>
-            <Route path="/CourseDescription">
-              <CourseDescriptionPage />
+            <Route exact
+              path="/course/details"
+              render={props =>(<CourseDescription {...props} />)}>
             </Route>
-            <Route path="/MyWishlist">
-              <Wishlist />
+            <Route exact 
+              path="/Wishlist"
+              render={props =>(
+                <Wishlist {...props} wishlist={this.state.wishlist_data}/>
+              )}>
             </Route>
-            <Route path="/login">
-              <Login />
+            <Route exact path="/login"
+                render={props => (
+                  <LogIn {...props} />
+                )}>
+            </Route>
+            <Route path="/signup">
+              <SignUp />
             </Route>
             <Route path="/">
-              <Search />
+              <SearchResultDisplay />
             </Route>
-            {/* <Route path="/jean_index.js">
-              <Home2 />
-            </Route> */}
           </Switch>
         </div>
       </Router>

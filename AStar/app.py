@@ -24,7 +24,14 @@ api = Api(app)
 api.add_resource(controller.UserRegistration, '/user/register')
 api.add_resource(controller.UserLogin, '/user/login')
 
-api.add_resource(controller.ShowCourse, '/course')
+api.add_resource(controller.SearchCourse, '/search')
+api.add_resource(controller.ShowCourse, '/course/details')
+
+
+api.add_resource(controller.UserWishlist, '/user/wishlist')
+api.add_resource(controller.UserWishlistAdd, '/user/wishlist/addCourse')
+api.add_resource(controller.UserWishlistRemove, '/user/wishlist/removeCourse')
+api.add_resource(controller.UserWishlistMinorCheck, '/user/wishlist/minorCheck')
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')

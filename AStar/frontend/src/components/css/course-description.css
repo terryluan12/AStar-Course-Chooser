@@ -73,6 +73,14 @@ p {
 }
 
 .syllabus-link {
-  text-decoration: none;
+  margin-top: 2%;
+    border-radius: 15px;
+    background-color: #1C3E6E;
+    color: white;
+    width: 8em;
+    height: 3em;
+    border: none;
+    font-size: 1.2em;
+    text-align: center;
 }
 

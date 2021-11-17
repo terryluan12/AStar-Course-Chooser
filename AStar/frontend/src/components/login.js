@@ -1,49 +1,80 @@
 import React, { Component, useState } from "react";
 // import { propTypes } from "react-bootstrap/esm/Image";
 import { render } from "react-dom";
-// import { useState } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import APIService from "./APIService";
+import Wishlist from "./Wishlist";
+import NavbarComp from "./Navbar";
+// import Routes from "../routes";
+import App from "../App";
+import axios from "axios";
 
 class Login extends Component {
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: "",
       password: ""
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    // this.setAccount=this.props.setAccount.bind(this);
+    // this.history=useHistory()
   }
 
-  insertArticle(event) {
-    APIService.insertArticle(this.state)
-      .then((response) => event.insertedArticle(response))
-      // should "event" be props?
-      .catch((error) => console.log("error", error));
-  }
+ 
+
+  // insertArticle(event) {
+  //   APIService.insertArticle(this.state)
+  //     .then((response) => event.insertedArticle(response))
+  //     // should "event" be props?
+  //     .catch((error) => console.log("error", error));
+  // }
+
 
   handleChange(event) {
     console.log("in handle change");
     this.setState({
       [event.target.name]: event.target.value
     });
+    console.log("login state: ", this.state)
   }
 
   handleLogin(event) {
-    console.log("entered here");
+    console.log("entered handle login with states: ", this.state);
     event.preventDefault();
-    // this.insertArticle(event); --> needs to be
-    this.insertArticle(event)
     // alert(
     //   "you submitted: " +
     //     this.state.username +
     //     " and pass: " +
     //     this.state.password
     // );
+
+    // const userInfo = [{username: this.state.username, password: this.state.password}]
+    // const userInfo = [this.state.username, this.state.password]
+
+
+    axios.post(`http://localhost:5000/user/login`, {
+        'username': this.state.username,
+        'password': this.state.password
+    })
+    .then(res => {
+        console.log("create status: ", res.status)
+        if (res.status === 200) {
+            this.setState({login: true})
+            console.log("username:" , this.state.username)
+            this.props.setUsername(this.state.username);
+            this.props.history.push('/Wishlist');
+            alert("Login Successfully!")
+        }
+        
+    })
   }
+   
+  
   render() {
     return (
       <div style={{ marginTop: "20%" }}>
@@ -51,7 +82,8 @@ class Login extends Component {
         <form onSubmit={this.handleLogin}>
           <input
             name="username"
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
+            onChange={(e)=>this.setState({username: e.target.value})}
             required
             type="text"
             placeholder="Username"
@@ -60,7 +92,8 @@ class Login extends Component {
           <br />
           <input
             name="password"
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
+            onChange={(e)=>this.setState({password: e.target.value})}
             required
             type="text"
             placeholder="Password"
@@ -76,13 +109,10 @@ class Login extends Component {
           </button>
         </form>
 
-        {/* <h1>
-          {" "}
-          username: {this.state.username} pass: {this.state.password}
-        </h1> */}
       </div>
     );
   }
 }
+
 
 export default Login;

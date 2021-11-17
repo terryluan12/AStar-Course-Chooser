@@ -10,7 +10,11 @@ class Course(db.Document):
     prereq = db.ListField()
     coreq = db.ListField()
     exclusion = db.ListField()
-    keyword = db.ListField(required=True)
+    keyword = db.StringField(required=True)
+    
+    meta = {'indexes': [
+        '$keyword'
+    ]}
 
     @classmethod
     def get(cls, code_):
@@ -21,27 +25,45 @@ class Course(db.Document):
         # TODO
         return
 
-class Wishlist(db.Document):
-    name = db.StringField()
-    course = db.ListField(Course)
 
-    def add_course(self, code_):
-        self.course += [code_]
+class Wishlist(db.Document):
+    username = db.StringField(required=True, unique=True)
+    course = db.ListField(db.ReferenceField(Course))
+    comments = db.DictField()
+
+    @classmethod
+    def create(cls,username_):
+        usr = cls.objects(username=username_)
+        usr.update_one(set__course=[],
+                       upsert=True)
+        return True
     
-    def remove_course(self, code_):
-        if code_ in self.course:
-            self.course.remove(code_)
+    def add_course(self, course_):
+        if course_ not in self.course:
+            self.update(add_to_set__course=course_)
+    
+    def remove_course(self, course_):
+        if course_ in self.course:
+            self.course.remove(course_)
+            self.save()
+
+    def expand(self):
+        ret = {
+            'username': self.username,
+            'course': self.course,
+            'comments': self.comments
+        }
+        return ret
 
 
 class User(db.Document):
     username = db.StringField(required=True, unique=True)
     password = db.StringField(required=True)
-    comments = db.DictField()
-    wishlist = db.ReferenceField(Wishlist)
 
     @classmethod
     def create(cls, username_, password_):
         usr = cls.objects(username=username_)
+        Wishlist.create(username_)
         usr.update_one(set__username=username_, 
                        set__password=password_,
                        upsert=True)
@@ -52,6 +74,9 @@ class User(db.Document):
         usr = cls.objects(username=username_).get()
         if usr:
             usr.delete()
+            wl = Wishlist.objects(username=username_).get()
+            if wl:
+                wl.delete()
             return True
         return False
 
@@ -64,7 +89,7 @@ class User(db.Document):
     
     @classmethod
     def get_wishlist(cls, username_):
-        return Wishlist.objects(_id=cls.objects(username=username_).get().wishlist)
+        return Wishlist.objects(username=username_).get()
 
     @classmethod
     def add_comment(cls, username_, code_, comment_):
@@ -78,8 +103,8 @@ class User(db.Document):
 
 class Minor(db.Document):
     name = db.StringField(required=True, unique=True)
-    description = db.StringField
-    requisites = db.ListField(db.ListField(db.ListField)) 
+    description = db.StringField()
+    requisites = db.ListField(db.ListField(db.ListField())) 
             #[ (['code', 'code'], 2), (['code', 'code'], 1), ] 
 
     @classmethod
@@ -89,12 +114,14 @@ class Minor(db.Document):
     @classmethod
     def check(cls, codes_):
         ret = []
+
         for mn in cls.objects:
+            print(f"checking {mn}")
             yes = True
             for req in mn.requisites:
                 if len(set(req[0]).intersection(set(codes_))) < req[1]:
                     yes = False
                     break
             if yes:
-                ret.append(mn.name)
+                ret.append(mn)
         return ret
