@@ -1,6 +1,6 @@
 # this is the controller
 
-from flask import jsonify, request
+from flask import jsonify, request, send_from_directory
 from flask_restful import Resource, reqparse
 # from flask_cors import cross_origin
 from config import app
@@ -9,7 +9,7 @@ import sys
 
 @app.route("/")
 def app_connect():
-    return "A-Star"
+    return send_from_directory("frontend/public", "index.html")
 
 # -------------------- User related --------------------
 class UserRegistration(Resource):
