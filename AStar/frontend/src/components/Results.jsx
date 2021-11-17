@@ -26,7 +26,9 @@ class Result extends Component{
       username: localStorage.getItem('username')
     };
     star = unstarred
+    console.log("result page code: ", this.props.course_code)
   }
+  
 
   componentDidMount() {
     axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)

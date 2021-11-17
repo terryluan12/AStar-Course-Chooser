@@ -15,10 +15,6 @@ class SearchResultDisplay extends Component{
     super();
     this.state = {
       input: "",
-      course_code : "",
-      course_name: "",
-      code: [],
-      name: [],
       results: []
     };
     this.handleChange = this.handleChange.bind(this);
@@ -38,40 +34,38 @@ class SearchResultDisplay extends Component{
   }
 
   getData = (input) => {
+    console.log("input")
     axios.get(`http://localhost:5000/search?input=${input}`)
       .then(res => {
         console.log("finish search")
-        console.log("return data: ",res.data)
+        console.log("return data: ",res)
 
-        if (res.data.length > 0) {
-            let len = res.data.length
+        if (res.status === 200) {
+          this.setState({results: []})
+          
+
+          if (res.data.length > 0) {
+              let len = res.data.length
+              let result_temp = []
+              result_temp.push(<Label></Label>)
+              for (let i = 0; i < len; i++) {
+                  result_temp.push(<Result course_code={res.data[i].code} course_name={res.data[i].name}></Result>)
+                  console.log(res.data[i].code)
+              }
+              this.setState({results: result_temp})
+          } else if (res.data.length === 0) {
+            alert("Course not found")
+          }else {
             let result_temp = []
-            let name_temp = []
-            let code_temp = []
             result_temp.push(<Label></Label>)
-            for (let i = 0; i < len; i++) {
-                code_temp.push(res.data[i].code)
-                name_temp.push(res.data[i].name)
-                result_temp.push(<Result course_code={res.data[i].code} course_name={res.data[i].name}></Result>)
-                console.log(res.data[i].code)
-            }
-            console.log(result_temp)
-            console.log("code temp: ", code_temp)
-            this.setState({code: code_temp})
-            this.setState({name: name_temp})
+            result_temp.push(<Result course_code={res.data.course.code} course_name={res.data.course.name}></Result>)
             this.setState({results: result_temp})
-        } else {
-          let result_temp = []
-          console.log("res: ", res.data)
-          result_temp.push(<Label></Label>)
-          this.setState({code: res.data.course.code})
-          this.setState({name: res.data.course.name})
-          result_temp.push(<Result course_code={res.data.course.code} course_name={res.data.course.name}></Result>)
-          this.setState({results: result_temp})
-        }
+            
+          }
 
-        
-        console.log("result:", this.state.results)
+        } else if (res.status === 400) {
+          alert("System Error. Please refresh")
+        }
     })
   }
   
