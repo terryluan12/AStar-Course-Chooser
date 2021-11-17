@@ -87,7 +87,7 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code + "H1"
+        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
         this.setState({syllabus : syllabus_link})
 
         
@@ -184,16 +184,9 @@ class CourseDescriptionPage extends Component {
               <h3>Department</h3>
               <p>{this.state.department}</p>
             </Col>
-            <Col>
-              <Row className="col-item">
-                <h4>Minor</h4>
-                <p>{this.state.minor}</p>
-              </Row>
-              <a href={this.state.syllabus} target="_blank" className="syllabus-link">
-                <Row className="col-item syllabus">
-                  <h4>View Syllabus</h4>
-                </Row>
-              </a>
+            <Col className="col-item">
+              <h3>Division</h3>
+              <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
           </Row>
           <Row className="col-item course-description">
