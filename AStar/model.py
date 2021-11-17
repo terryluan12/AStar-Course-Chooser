@@ -11,12 +11,8 @@ class Course(db.Document):
     coreq = db.ListField()
     exclusion = db.ListField()
     keyword = db.StringField(required=True)
-<<<<<<< HEAD
     graph = db.StringField(required=True)
 
-=======
-    
->>>>>>> origin/master
     meta = {'indexes': [
         '$keyword'
     ]}

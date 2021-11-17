@@ -26,11 +26,7 @@ api.add_resource(controller.UserLogin, '/user/login')
 
 api.add_resource(controller.SearchCourse, '/search')
 api.add_resource(controller.ShowCourse, '/course/details')
-<<<<<<< HEAD
 api.add_resource(controller.ShowCourseGraph, '/course/graph')
-=======
-
->>>>>>> origin/master
 
 api.add_resource(controller.UserWishlist, '/user/wishlist')
 api.add_resource(controller.UserWishlistAdd, '/user/wishlist/addCourse')
