@@ -13,7 +13,6 @@ import starred_star from "./img/starred.png";
 // when the an EMPTY star is clicked, the course is added to the user's Wishlist data based
 // when a COLOURED star is clicked, the course is REMOVED for the user's wishlist data base
 
-
 function check_star_state(starred) {
   if (starred === "true") {
     return (
@@ -35,7 +34,7 @@ function SearchResults() {
   const courseDisplay = courselist.map((course) => {
     return (
       //should go to course page when row is clicked
-      <a href={`/CourseDescription?code=${course.Course_Code}`}>
+      <a href={`/course/details?code=${course.Course_Code}`}>
       <tr
         className="trow"
         courselist-item={course} 

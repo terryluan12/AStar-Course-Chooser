@@ -5,17 +5,18 @@ import logo from './img/logo.png'
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
 import Search from "./search.js";
-import Login from "./login.js";
+// import Login from "./login.js";
+import LogIn from "./LogIn.jsx";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
 import SignUp from './SignUp'
 import SearchResultDisplay from './ResultDisplay'
 
 
-function CourseDescription (username) {
+function CourseDescription (props) {
   let query = useQuery();
   console.log("query: ", query.get("code"))
-  return <CourseDescriptionPage code={query.get("code")} username={username}/>;
+  return <CourseDescriptionPage code={query.get("code")} username={props.username}/>;
 }
 
 function useQuery() {
@@ -33,30 +34,34 @@ export default class NavbarComp extends Component {
   
 
   this.state={
-    username: "",
-    // username: "aaa"
-    // password:"",
-    // wishlist_data: wishlist_data
+    username: ""
+    // , isLoggedIn: false
+   
+  }
+  // this.CourseDescription = this.CourseDescription.bind(this)
+  this.setUsername = this.setUsername.bind(this)
   }
 
-  this.setUsername = this.setUsername.bind(this);
-  // this.setPassword = this.setPassword.bind(this);
-  }
+
+  // CourseDescription =(username) =>{
+  //   // function CourseDescription (username) {
+  //     let query = useQuery();
+  //     console.log("query: ", query.get("code"))
+  //     return <CourseDescriptionPage code={query.get("code")} username={username}/>;
+  //   // }
+  // }
+
+  
+  
 
   setUsername = (username) => {
     // console.log("data retrieved: " + data[0].username + "pass:" +data[0].password)
     this.setState({
       username: username
+      // , isLoggedIn: true
     })
     console.log("navbar state:", this.state)
   }
-
-  // setPassword = (password) => {
-  //     this.setState({
-  //       password: password
-  //     });
-  // }
-
 
   render() {
     return (
@@ -77,15 +82,25 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/search">
                   Search
                 </Nav.Link>
-                <Nav.Link as={Link} to="/searchresults">
-                  Search Results (remove later)
-                </Nav.Link>
                 <Nav.Link as={Link} to="/Wishlist">
                   My Wishlist
                 </Nav.Link>
-                <Nav.Link as={Link} to="/login">
+
+                {!this.state.username ?
+                <Nav.Link 
+                // onClick={this.setState({username: "aaa"})}
+                as={Link} to="/login">
                   Login
                 </Nav.Link>
+                :
+                <Nav.Link 
+                onClick={this.setState({username: ""})}
+                 as={Link} to="/">
+                  Logout
+                </Nav.Link>
+
+                }
+              
                 <Nav.Link as={Link} to="/signup">
                   Sign Up
                 </Nav.Link>
@@ -99,7 +114,7 @@ export default class NavbarComp extends Component {
         </div>
         <div>
           <Switch>
-            <Route path="/searchresults">
+            <Route path="/search">
               <SearchResultDisplay />
             </Route>
           
@@ -108,7 +123,8 @@ export default class NavbarComp extends Component {
             render={props =>(
 
               
-              <CourseDescriptionPage {...props} username={this.state.username}/>
+              // <CourseDescriptionPage {...props} username={this.state.username}/>
+              <CourseDescription {...props} username={this.state.username} />
               // <CourseDescription(this.state.username) />
               )}>
             
@@ -126,25 +142,26 @@ export default class NavbarComp extends Component {
               <Login />
             </Route> */}
 
+            {/* if username is not null, login will render */}
+             
             <Route exact path="/login"
                 render={props => (
                   
-                <Login {...props} setUsername={this.setUsername} 
+                <LogIn {...props} setUsername={this.setUsername} 
                 //  setPassword={this.setPassword}
                 />
                 )}
                 >
      
             </Route>
+
+              
             <Route path="/signup">
               <SignUp />
             </Route>
             <Route path="/">
-              <Search />
+              <SearchResultDisplay />
             </Route>
-            {/* <Route path="/jean_index.js">
-              <Home2 />
-            </Route> */}
           </Switch>
         </div>
       </Router>

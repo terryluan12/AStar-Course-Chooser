@@ -7,105 +7,7 @@ import Wishlist from "./Wishlist";
 import NavbarComp from "./Navbar";
 // import Routes from "../routes";
 import App from "../App";
-
-// function Login (props) {
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-//   const history = useHistory();
-
-//   const handleChange = (event) =>{
-//     console.log("in handle change");
-//     this.setState({
-//       [event.target.name]: event.target.value
-//     });
-    
-//   }
-
-//   const handleLogin = (event) =>{
-   
-//           console.log("entered in handlelogin");
-//           event.preventDefault();
-//           // this.insertArticle(event); --> needs to be
-//           // this.insertArticle(event)
-//           // alert(
-//           //   "you submitted: " +
-//           //     username +
-//           //     " and pass: " +
-//           //     password
-//           // );
-
-//           // let data = this.username
-//           this.props.setAccount(this.username)
-//           history.push('/Wishlist')
-
-
-
-
-//           // fetch('http://localhost:5000/login',{
-//           //   method: 'POST',
-//           //   headers:{ "Content-Type": "application/json"},
-//           //   body: JSON.stringify({username:username, password: password})
-//           // }).then((response)=>{
-//           //   console.log("login details sent")
-//           //   //if verified, redirect to mywishlist
-
-
-//           // }).then((response)=>{
-//           //     if(response.status_code == 200){
-
-//           //       //login verified, go to wishlist with data ()
-//           //       // history.push('/Wishlist')
-//           //       alert("login verified")
-//           //       return response;
-//           //     }else if(response.status_code == 401){
-//           //       alert("Incorrect Login Details. Try again.")
-//           //       return response;
-//           //     }
-//           // }).catch( (error)=>{
-//           //   console.log("Login error: " +error)
-//           // })
-
-//   }
-
-//   return (
-//     <div style={{ marginTop: "20%" }}>
-//             <h1> Login</h1>
-//             <form onSubmit={(e) =>handleLogin(e)}>
-//               <input
-//                 name="username"
-//                 onChange={(e) =>setUsername(e.target.value)}
-//                 required
-//                 type="text"
-//                 placeholder="Username"
-//                 style={{ marginTop: "5%" }}
-//               />
-//               <br />
-//               <input
-//                 name="password"
-//                 onChange={(e) =>setPassword(e.target.value)}
-//                 required
-//                 type="text"
-//                 placeholder="Password"
-//                 style={{ marginTop: "5%" }}
-//               />
-//               <br />
-//               <button
-//                 type="submit"
-//                 className="myButton"
-//                 style={{ marginTop: "5%" }}
-//               >
-//                 Login
-//               </button>
-//             </form>
-    
-//           </div>
-//         );
-//   }
-
-
-
-
-
+import axios from "axios";
 
 class Login extends Component {
   // const [username, setUsername] = useState("");
@@ -137,10 +39,11 @@ class Login extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+    console.log("login state: ", this.state)
   }
 
   handleLogin(event) {
-    console.log("entered here");
+    console.log("entered handle login with states: ", this.state);
     event.preventDefault();
     // alert(
     //   "you submitted: " +
@@ -151,12 +54,43 @@ class Login extends Component {
 
     // const userInfo = [{username: this.state.username, password: this.state.password}]
     // const userInfo = [this.state.username, this.state.password]
-    this.props.setUsername(this.state.username);
-    // this.props.setPassword(this.state.password);
 
-    // this.props.history.push('/Wishlist');
+
+    fetch(`http://localhost:5000/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+          ,
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify(this.state)
+      })
+        .then((resp) => resp.json())
+       
+        .then(resp =>{
+          if (resp.status== 200){
+            console.log("login successful")
+            this.props.setUsername(this.state.username);
+            
+            this.props.history.push('/Wishlist');
+            console.log("passed wishlist push")
+          }else if (resp.status==401){
+            console.log("login verified but failed")
+            alert("Login Failed. Please Try Again.")
+          }else{
+            console.log("login failed due to error: ", resp.error)
+            alert("Login Failed. Please Try Again.")
+    
+          }
+        })
+        .catch((error) => console.log(error));
+    }
+    
+      
+
+    
    
-  }
+  
   render() {
     return (
       <div style={{ marginTop: "20%" }}>
@@ -164,7 +98,8 @@ class Login extends Component {
         <form onSubmit={this.handleLogin}>
           <input
             name="username"
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
+            onChange={(e)=>this.setState({username: e.target.value})}
             required
             type="text"
             placeholder="Username"
@@ -173,7 +108,8 @@ class Login extends Component {
           <br />
           <input
             name="password"
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
+            onChange={(e)=>this.setState({password: e.target.value})}
             required
             type="text"
             placeholder="Password"
