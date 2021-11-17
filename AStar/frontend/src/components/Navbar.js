@@ -61,9 +61,14 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/search">
                   Search
                 </Nav.Link>
+                
+                {this.state.username !== "" &&
                 <Nav.Link as={Link} to="/Wishlist">
-                  My Wishlist
-                </Nav.Link>
+                My Wishlist
+              </Nav.Link>
+                
+              }
+                
 
                 {this.state.username === "" ?
                   <Nav.Link as={Link} to="/login">
@@ -75,9 +80,12 @@ export default class NavbarComp extends Component {
                   </Nav.Link>
                 }
 
+
+                {this.state.username === "" &&
                 <Nav.Link as={Link} to="/signup">
                   Sign Up
                 </Nav.Link>
+                }
                 
               </Nav>
             </Navbar.Collapse>
