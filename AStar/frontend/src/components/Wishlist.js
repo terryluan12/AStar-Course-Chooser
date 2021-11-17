@@ -73,9 +73,12 @@ class Wishlist extends Component {
                  <div className="left-panel">
           <Container>
             <h1 className="wishlist-title">My Wishlist</h1>
-            <h2> Hi {this.props.username} pass: {this.props.password} wishlist: {this.props.wishlist_data}</h2>
+            {/* <h2> Hi {this.props.username} pass: {this.props.password} wishlist: {this.props.wishlist_data}</h2> */}
+            
 
             <CourseCard style={{ display: "flex", flexDirection: "row" }} 
+            
+            //send wishlist
             wishlist_data={this.state.wishlist_data}  />
 
             {/* {CourseCard} */}
@@ -84,7 +87,7 @@ class Wishlist extends Component {
                 <div className="right-panel">
                     <div className="centered">
                         <img src={user_profile}></img>
-                        <h3>John Doe</h3>
+                        <h3>{this.state.username}</h3>
                         <p>Computer Engineering Student</p>
                         <br></br>
                         <br></br>

@@ -1,3 +1,6 @@
+.coursecard{
+  color: red;
+}
 .tags {
     color: black;
     align-items: left;
@@ -7,4 +10,5 @@
     text-align: left;
     font-size: 70%;
   }
+
   
