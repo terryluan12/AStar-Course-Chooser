@@ -8,9 +8,6 @@ from model import *
 from fuzzy import nysiis
 import re
 
-@app.route("/")
-def app_connect():
-    return "A-Star"
 
 # -------------------- User related --------------------
 class UserRegistration(Resource):
