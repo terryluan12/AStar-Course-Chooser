@@ -28,22 +28,34 @@ class LogIn extends Component {
   handleLogin(event) {
     event.preventDefault();
     this.createAccount(this.state.username, this.state.password)
-    localStorage.setItem('username', this.state.username);
-    this.props.history.push('/Wishlist');
-  }
+    // if(this.state.login){
+      localStorage.setItem('username', this.state.username);
+      this.props.history.push('/Wishlist');
 
+    // }
+    
+  }
   createAccount = (username, password) => {
+    
+
+    
     axios.post(`http://localhost:5000/user/login`, {
         'username': this.state.username,
         'password': this.state.password
     })
     .then(res => {
         if (res.status === 200) {
+            
+            // alert("Login Successfully!")
+            
             this.setState({login: true})
-            alert("Login Successfully!")
+        }else{
+          console.log("reached here")
+          alert("Login Failed. Try Again.")
         }
         
     })
+ 
   }
 
   render() {

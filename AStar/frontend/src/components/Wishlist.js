@@ -38,7 +38,8 @@ class Wishlist extends Component {
 
             <div className="wishlist-page-content">
                 <div className="left-panel">
-                <h1 className="wishlist-title">My Wishlist</h1>          
+                <h1 className="wishlist-title">My Wishlist</h1>    
+                {!this.state.wishlist_data.length && <h4 style={{color: '#8198B8'}}>Search for courses and add them to your wishlist.</h4>}      
                 <CourseCard className={"course-card-container"} wishlist_data={this.state.wishlist_data}></CourseCard>
 
                 </div>

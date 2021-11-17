@@ -11,7 +11,8 @@ class Course(db.Document):
     coreq = db.ListField()
     exclusion = db.ListField()
     keyword = db.StringField(required=True)
-    
+    graph = db.StringField(required=True)
+
     meta = {'indexes': [
         '$keyword'
     ]}
@@ -22,8 +23,8 @@ class Course(db.Document):
     
     @classmethod
     def get_requisite_graph(cls, code_):
-        # TODO
-        return
+        return cls.objects(code=code_).get().graph
+
 
 
 class Wishlist(db.Document):
