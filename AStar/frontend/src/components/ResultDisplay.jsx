@@ -42,11 +42,8 @@ class SearchResultDisplay extends Component{
       .then(res => {
         console.log("finish search")
         console.log("return data: ",res.data)
-        if (res.data.length === 1) {
-            this.setState({course_name : res.data.course.name})
-            this.setState({course_code : res.data.course.code}) 
-        }
-        if (res.data.length > 1) {
+
+        if (res.data.length > 0) {
             let len = res.data.length
             let result_temp = []
             let name_temp = []
@@ -59,10 +56,20 @@ class SearchResultDisplay extends Component{
                 console.log(res.data[i].code)
             }
             console.log(result_temp)
+            console.log("code temp: ", code_temp)
             this.setState({code: code_temp})
             this.setState({name: name_temp})
             this.setState({results: result_temp})
+        } else {
+          let result_temp = []
+          console.log("res: ", res.data)
+          result_temp.push(<Label></Label>)
+          this.setState({code: res.data.course.code})
+          this.setState({name: res.data.course.name})
+          result_temp.push(<Result course_code={res.data.course.code} course_name={res.data.course.name}></Result>)
+          this.setState({results: result_temp})
         }
+
         
         console.log("result:", this.state.results)
     })

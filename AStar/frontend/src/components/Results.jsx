@@ -22,30 +22,30 @@ class Result extends Component{
       course_name: this.props.course_name,
       division: "Division of Computer Engineering",
       faculty: "Faculty of Applied Science and Engineering",
-      starred: false
+      starred: false,
+      username: localStorage.getItem('username')
     };
-    if (this.state.starred == false) {
-        star = unstarred
-    } else {
-        star = starred
-    }
+    star = unstarred
   }
 
-  setStar = () => {
-      if (this.state.starred === false) {
-          console.log("starred the course")
-          this.setState({starred : true})
+  componentDidMount() {
+    axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)
+    .then(res => {
+      console.log("get data: ", res.data.wishlist.course[1].code)
+
+      let len = res.data.wishlist.course.length
+      for (let i = 0; i < len; i++) {
+        if (res.data.wishlist.course[i].code === this.state.course_code) {
           star = starred
-          console.log("state: ", this.state.starred)
-      } else {
-          console.log("unstarred the course")
-          this.setState({starred : false})
-          star = unstarred
-          console.log("state: ", this.state.starred)
-          
+          this.setState({starred: true})
+        }
       }
-  }
 
+    })
+
+    console.log("course: ", this.state.course_code)
+    console.log("star: ", this.state.starred)
+  }
 
   render(){
     return (
@@ -60,7 +60,7 @@ class Result extends Component{
             </Col>
             <Col>{this.state.division}</Col>
             <Col>{this.state.faculty}</Col>
-            <Col><img src={star} onClick={this.setStar}></img></Col>
+            <Col><img src={star}></img></Col>
         </Row>
         </a>
       </Container>
