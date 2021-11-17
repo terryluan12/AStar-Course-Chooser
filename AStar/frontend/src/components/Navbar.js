@@ -1,72 +1,55 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import './css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from './img/logo.png'
-import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
-import Search from "./search.js";
-// import Login from "./login.js";
 import LogIn from "./LogIn.jsx";
 import CourseDescriptionPage from "./CourseDescription";
 import Wishlist from './Wishlist';
 import SignUp from './SignUp'
 import SearchResultDisplay from './ResultDisplay'
 
-
 function CourseDescription (props) {
   let query = useQuery();
-  console.log("query: ", query.get("code"))
-  return <CourseDescriptionPage code={query.get("code")} username={props.username}/>;
+  return <CourseDescriptionPage code={query.get("code")} />;
 }
 
 function useQuery() {
   const { search } = useLocation();
-  console.log("useLocation: ", search)
 
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
+
 
 export default class NavbarComp extends Component {
 
   constructor(props){
     super(props)
     this.state = {
+      username: localStorage.getItem('username'),
       login: false
     }
-    this.setLogin = this.setLogin.bind(this)
   }
 
-  setLogin() {
-    this.setState({login : true})
-    console.log("new state: ", this.state.login)
+  componentDidMount() {
+    if (localStorage.getItem('username') !== "") {
+      this.setState({username: localStorage.getItem('username')})
+    }
   }
-  // CourseDescription =(username) =>{
-  //   // function CourseDescription (username) {
-  //     let query = useQuery();
-  //     console.log("query: ", query.get("code"))
-  //     return <CourseDescriptionPage code={query.get("code")} username={username}/>;
-  //   // }
-  // }
 
-  
-  
-
-  setUsername(username){
-    // console.log("data retrieved: " + data[0].username + "pass:" +data[0].password)
-    console.log("before setting: ", username)
-    this.setState({username: username})
-    console.log("setUser:", this.state.username)
-    console.log("navbar state:", this.state)
+  logOut = () => {
+    localStorage.setItem('username', "");
+    this.setState({username: ""})
   }
 
   render() {
     return (
-      
       <Router>
         <div>
           <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
             <Navbar.Brand>
-              <img src={logo} style={{ height: 53, width: 36 }} />{" "}
+              <img src={logo} />{" "}
               <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
                 A* Course Finder
               </Nav.Link>
@@ -82,26 +65,18 @@ export default class NavbarComp extends Component {
                   My Wishlist
                 </Nav.Link>
 
-                {!this.state.username ?
-                <Nav.Link 
-                // onClick={this.setState({username: "aaa"})}
-                as={Link} to="/login">
-                  Login
-                </Nav.Link>
-                :
-                <Nav.Link 
-                onClick={this.setState({username: ""})}
-                 as={Link} to="/">
-                  Logout
-                </Nav.Link>
-
+                {this.state.username === "" ?
+                  <Nav.Link as={Link} to="/login">
+                    Login
+                  </Nav.Link>
+                  :
+                  <Nav.Link onClick={this.logOut} as={Link} to="/">
+                    Logout
+                  </Nav.Link>
                 }
-              
+
                 <Nav.Link as={Link} to="/signup">
                   Sign Up
-                </Nav.Link>
-                <Nav.Link as={Link} to="/CourseDescription">
-                  CourseDescription (remove later)
                 </Nav.Link>
                 
               </Nav>
@@ -113,45 +88,21 @@ export default class NavbarComp extends Component {
             <Route path="/search">
               <SearchResultDisplay />
             </Route>
-          
             <Route exact
-            path="/course/details"
-            render={props =>(
-
-              
-              // <CourseDescriptionPage {...props} username={this.state.username}/>
-              <CourseDescription {...props} username={this.state.username} />
-              // <CourseDescription(this.state.username) />
-              )}>
-            
-
+              path="/course/details"
+              render={props =>(<CourseDescription {...props} />)}>
             </Route>
-            {/* {console.log("wishlist data: ", wishlist_data)} */}
             <Route exact 
-            path="/Wishlist"
+              path="/Wishlist"
               render={props =>(
-                <Wishlist {...props} username={this.state.username} wishlist={this.state.wishlist_data}/>
-              )}
-              >
+                <Wishlist {...props} wishlist={this.state.wishlist_data}/>
+              )}>
             </Route>
-            {/* <Route path="/login">
-              <Login />
-            </Route> */}
-
-            {/* if username is not null, login will render */}
-             
             <Route exact path="/login"
                 render={props => (
-                  
-                <LogIn {...props} setLogin={this.setLogin} 
-                //  setPassword={this.setPassword}
-                />
-                )}
-                >
-     
+                  <LogIn {...props} />
+                )}>
             </Route>
-
-              
             <Route path="/signup">
               <SignUp />
             </Route>

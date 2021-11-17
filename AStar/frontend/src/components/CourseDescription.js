@@ -29,7 +29,6 @@ class CourseDescriptionPage extends Component {
       corequisites: "",
       exclusions: "",
       starred: false,
-      // username:"aaa"
       username: localStorage.getItem('username')
     }
   }
@@ -52,7 +51,7 @@ class CourseDescriptionPage extends Component {
           let prereq_str = ""
           for (let i = 0; i < prereq_len; i++) {
             prereq_str += res.data.course.prereq[i] 
-            if (i != prereq_len - 1) {
+            if (i !== prereq_len - 1) {
               prereq_str += ", "
             }
           }
@@ -65,7 +64,7 @@ class CourseDescriptionPage extends Component {
           let coreq_str = ""
           for (let i = 0; i < coreq_str; i++) {
             coreq_str += res.data.course.coreq[i] 
-            if (i != coreq_len - 1) {
+            if (i !== coreq_len - 1) {
               coreq_str += ", "
             }
           }
@@ -78,7 +77,7 @@ class CourseDescriptionPage extends Component {
           let exclusion_str = ""
           for (let i = 0; i < exclusion_str; i++) {
             exclusion_str += res.data.course.exclusion[i] 
-            if (i != exclusion_len - 1) {
+            if (i !== exclusion_len - 1) {
               exclusion_str += ", "
             }
           }
@@ -114,20 +113,16 @@ class CourseDescriptionPage extends Component {
 
   check_star = () => {
 
-    console.log("username: ", this.state.username)
-
-    // if (this.props.username){
     if(this.state.username){
-      if (this.state.starred == false) { //if user is logged in, add to course
+      if (this.state.starred === false) { //if user is logged in, add to course
         
-         
         //add course to wishlist
         console.log("username/code", this.state)
         axios.post(`http://localhost:5000/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{
-          if(resp.status == 200){
+          if(resp.status === 200){
             console.log("successfully added course and starred")
             star = starred;
             this.setState({starred: true});
@@ -135,10 +130,7 @@ class CourseDescriptionPage extends Component {
           }else{
             console.log("error occured while modifying wishlist: ", resp.status)
           }
-
-
         })
-
       } else {
         
         //remove course from wishlist
@@ -146,24 +138,19 @@ class CourseDescriptionPage extends Component {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{
-          if(resp.status==200){
+          if(resp.status === 200){
             console.log("successfully REMOVED course and unstarred")
             star = empty_star;
             this.setState({starred: false});
           }else{
             console.log("error occured while modifying wishlist: ", resp.status)
           }
-
         })
-
-       
-        
       }
 
-      }else{ //else, notify
-        alert("You must login to save a course.")
-      }
-      
+    }else{ //else, notify
+      alert("You must login to save a course.")
+    }
   }
 
   openLink = () => {
@@ -179,9 +166,6 @@ class CourseDescriptionPage extends Component {
 		return(
 
       <div className="page-content">
-
-
-
         <Container className="course-template">
           <Row float="center" className="course-title">
             <Col xs={8}>

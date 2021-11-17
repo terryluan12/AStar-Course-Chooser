@@ -1,32 +1,14 @@
 import React, { Component } from 'react';
 import './css/wishlist.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Form, FormControl } from "react-bootstrap";
-
 import user_profile from './img/user.png'
-import minor_label from './img/label.png'
-
-
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 import CourseCard from "./CourseCard";
-
-import courselist from "../db/MOCK_DATA.json";
-import APIService from "./APIService";
-import wishlist_data2 from "../db/Wishlist_MOCK_data.json";
 import axios from "axios"
 
 class Wishlist extends Component {
 
     constructor(props){
         super(props)
-
         this.state={
             wishlist_data:[],
             username: localStorage.getItem('username')
@@ -34,32 +16,21 @@ class Wishlist extends Component {
     }
 
     componentDidMount() {
-        console.log("props: ", this.props.code)
 
         this.setState({username: localStorage.getItem('username')})
-        console.log("wishlist username: ", this.state.username )
 
-    
         axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`, {
             'username': this.state.username
         })
-          .then(res => {
-            console.log("wishlit", res.data.wishlist)
-            console.log("res: ", res)
-
-            if(res.status ==200){
+        .then(res => {
+            if(res.status === 200){
                 this.setState({wishlist_data: res.data.wishlist.course})
-                console.log("wishlist saved: ", this.state.wishlist_data)
             }
-            else{
-                console.log("Error Returning Wishlist_data")
-                return []
+            else {
+                alert("The system cannot return wishlist at the moment. Please try again later.")
             }
-    
-        })
-      
-        console.log("new state: ", this.state)
-      }
+        })      
+    }
 
     
 	render() {

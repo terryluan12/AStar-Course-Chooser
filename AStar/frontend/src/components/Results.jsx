@@ -1,17 +1,13 @@
 import React, { Component } from "react";
-import "./css/styles.css";
-import SearchResults from "./searchresults.js";
-import APIService from "./APIService";
 import axios from 'axios'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import './Result.css'
-
 import unstarred from './img/star.png'
 import starred from './img/starred.png'
-let star;
 
+let star;
 
 class Result extends Component{
 
@@ -26,10 +22,8 @@ class Result extends Component{
       username: localStorage.getItem('username')
     };
     star = unstarred
-    console.log("result page code: ", this.props.course_code)
   }
   
-
   componentDidMount() {
     axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)
     .then(res => {
@@ -40,11 +34,7 @@ class Result extends Component{
           this.setState({starred: true})
         }
       }
-
     })
-
-    console.log("course: ", this.state.course_code)
-    console.log("star: ", this.state.starred)
   }
 
   render(){
@@ -66,8 +56,6 @@ class Result extends Component{
       </Container>
     );
   }
-
 }
-
 
 export default Result;

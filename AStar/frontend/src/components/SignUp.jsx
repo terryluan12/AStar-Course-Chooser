@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import axios from "axios"
 import './SignUp.css'
 
@@ -16,22 +16,14 @@ class SignUp extends Component {
   }
 
   handleUsernameChange(event) {
-    console.log("in handle change");
-    console.log("pass username in", event.target.value)
     this.setState({username: event.target.value})
-
   }
 
   handlePasswordChange(event) {
-    console.log("in handle change");
-    console.log("pass in", event.target.value)
     this.setState({password: event.target.value})
-
   }
 
   handleLogin(event) {
-    console.log("handle login");
-    console.log("state: ", this.state)
     event.preventDefault();
     this.createAccount(this.state.username, this.state.password)
   }
@@ -76,7 +68,6 @@ class SignUp extends Component {
           <button
             type="submit"
             className="signup-button"
-
           >
             Sign Up
           </button>
