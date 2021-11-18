@@ -12,7 +12,7 @@
 
 .left-panel {
     width: 75%; 
-    position: fixed; 
+    position: absolute; 
     z-index: 1; 
     overflow-x: hidden; 
     padding-top: 20px; 
@@ -23,14 +23,16 @@
 }
   
 .right-panel {
-    height: 100vh;
+    height: 100%;
     width: 25%;
-    position: fixed;
+    position: absolute;
     z-index: 1;
     overflow-x: hidden;
     padding-top: 20px;
     right: 0;
     background-color: #F1F6FD;
+    margin-bottom: -100%;
+    padding-bottom: 100%;
 }
 
 .right-panel h3 {
