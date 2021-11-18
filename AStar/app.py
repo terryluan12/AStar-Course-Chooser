@@ -44,11 +44,12 @@ def serve(path):
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, extra_files=['app.py', 'controller.py', 'model.py'])
+    app.run(threaded=True, port=5000)
     # with open("test.json") as f:
     #     data = json.load(f)
     # for i in range(75):
     #     i = str(i)
     #     Course(name=data["name"][i], code=data["code"][i], description=data["description"][i], prereq=data["prereq"][i], coreq=data["coreq"][i], exclusion=data["exclusion"][i]).save()
 
-    pass
+    
     
