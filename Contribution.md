@@ -42,7 +42,7 @@ Ensure that when you write a bug report that you include a [reprex](https://stac
 People *love* thorough bug reports. I'm not even kidding.
 
 ## Use a Consistent Coding Style
-For this Project, we will be using coding guidelines from Python's official standards the [PEP8 Standard](https://www.python.org/dev/peps/pep-0008/)
+For this Project, we will be using coding guidelines from Python's official standards the [PEP8 Standard](https://www.python.org/dev/peps/pep-0008/). You can easily check to see how close you are to the PEP8 Standard by using pylint!
 
 
 ## License
