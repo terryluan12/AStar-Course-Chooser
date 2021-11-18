@@ -36,12 +36,10 @@ class CourseDescriptionPage extends Component {
   
 
   componentDidMount() {
-    console.log("pass in course code: ", this.props.code)
-
-    axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.code}`, {
-      code: this.props.course_code
-    })
-      .then(res => {
+    alert("Hfsjad;faksl");
+    axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.code}`, {code: this.props.course_code})
+    .then(res => {
+        alert(`res is ${res}, code is ${this.props.code}`)
         console.log(res.data)
         this.setState({course_code: res.data.course.code})
         this.setState({course_name: res.data.course.name})
@@ -98,6 +96,7 @@ class CourseDescriptionPage extends Component {
 
     axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`)
     .then(res => {
+      console.log(`res is ${res}`)
       let len = res.data.wishlist.course.length
       for (let i = 0; i < len; i++) {
         console.log("checking: ", res.data.wishlist.course[i].code)
@@ -165,8 +164,6 @@ class CourseDescriptionPage extends Component {
   }
 
 	render() {
-    console.log('render state:', this.state)
-    console.log('coursedesp state: ', this.props)
 		return(
 
       <div className="page-content">
@@ -176,7 +173,7 @@ class CourseDescriptionPage extends Component {
               <h1>{this.state.course_code} : {this.state.course_name}</h1>
             </Col>
             <Col xs={4}>
-              <img src={star} onClick={this.check_star}></img>
+              <img src={star} onClick={this.check_star} alt="" />
             </Col>
           </Row>
           <Row>
@@ -217,8 +214,8 @@ class CourseDescriptionPage extends Component {
             </Row>
             <Row>
               <div className={"req-graph"}>
-                <img style={{width: "70%", marginBottom: "3%"}} src={requisite_label}></img>
-                <img src={`data:image/jpeg;base64,${this.state.graph}`} ></img>
+                <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label}></img>
+                <img src={`data:image/jpeg;base64,${this.state.graph}`} alt="" ></img>
               </div>
             </Row>
           </Row>

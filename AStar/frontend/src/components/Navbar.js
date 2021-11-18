@@ -12,7 +12,6 @@ import SearchResultDisplay from './ResultDisplay'
 
 function CourseDescription (props) {
   let query = useQuery();
-  console.log("navbar call course description")
   return <CourseDescriptionPage code={query.get("code")} />;
 }
 
@@ -50,7 +49,7 @@ export default class NavbarComp extends Component {
         <div>
           <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
             <Navbar.Brand>
-              <img src={logo} />{" "}
+              <img src={logo} alt="" />{" "}
               <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
                 A* Course Finder
               </Nav.Link>
@@ -99,7 +98,7 @@ export default class NavbarComp extends Component {
             </Route>
             <Route exact
               path="/course/details"
-              render={props =>(<CourseDescriptionPage {...props} />)}>
+              render={props =>(<CourseDescription {...props} />)}>
             </Route>
             <Route exact 
               path="/Wishlist"

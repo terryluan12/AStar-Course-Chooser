@@ -62,7 +62,7 @@ class Wishlist extends Component {
                 </div>
                 <div className="right-panel">
                     <div className="centered">
-                        <img src={user_profile}></img>
+                        <img src={user_profile} alt=""/>
                         <h3>{this.state.username}</h3>
                         <p>Computer Engineering Student</p>
                         <br></br>

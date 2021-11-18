@@ -58,7 +58,7 @@ class Result extends Component{
             </Col>
             <Col>{this.state.division}</Col>
             <Col>{this.state.faculty}</Col>
-            <Col><img src={star}></img></Col>
+            <Col><img src={star} alt=""/></Col>
         </Row>
         </a>
       </Container>
