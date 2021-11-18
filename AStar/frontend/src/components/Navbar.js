@@ -99,7 +99,7 @@ export default class NavbarComp extends Component {
             </Route>
             <Route exact
               path="/course/details"
-              render={props =>(<CourseDescription {...props} />)}>
+              render={props =>(<CourseDescriptionPage {...props} />)}>
             </Route>
             <Route exact 
               path="/Wishlist"
