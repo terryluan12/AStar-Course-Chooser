@@ -25,6 +25,7 @@ class Result extends Component{
   }
 
   redirectCourse = () => {
+    console.log("result: here")
     this.props.history.push('/course/details/${this.props.course_code}', {course_code: this.props.course_code})
   }
   
@@ -48,7 +49,7 @@ class Result extends Component{
   render(){
     return (
       <Container>
-        <a href={`/course/details?code=${this.state.course_code}`} onClick={this.redirectCourse} className={"search-result-item"} style={{textDecoration: "none"}}>
+        <a onClick={this.redirectCourse} className={"search-result-item"} style={{textDecoration: "none"}}>
         <Row className={"result-display"}>
             <Col>
                 <h5>{this.state.course_code}</h5>  
