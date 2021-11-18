@@ -36,7 +36,7 @@ class CourseDescriptionPage extends Component {
   
 
   componentDidMount() {
-    console.log("props: ", this.props.code)
+    console.log("pass in course code: ", this.props.code)
 
     axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.code}`, {
       code: this.props.course_code
