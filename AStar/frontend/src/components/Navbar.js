@@ -12,6 +12,7 @@ import SearchResultDisplay from './ResultDisplay'
 
 function CourseDescription (props) {
   let query = useQuery();
+  console.log("navbar call course description")
   return <CourseDescriptionPage code={query.get("code")} />;
 }
 
