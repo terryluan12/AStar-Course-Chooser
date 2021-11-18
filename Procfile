@@ -1,1 +1,1 @@
-web: gunicorn --chdir AStar app
+web: gunicorn --chdir AStar app:app
