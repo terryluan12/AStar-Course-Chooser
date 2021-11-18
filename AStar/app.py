@@ -50,4 +50,5 @@ if __name__ == '__main__':
     #     i = str(i)
     #     Course(name=data["name"][i], code=data["code"][i], description=data["description"][i], prereq=data["prereq"][i], coreq=data["coreq"][i], exclusion=data["exclusion"][i]).save()
 
+    pass
     
