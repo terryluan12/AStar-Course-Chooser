@@ -21,7 +21,7 @@ class Wishlist extends Component {
 
         this.setState({username: localStorage.getItem('username')})
 
-        axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`, {
+        axios.get(`http://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`, {
             'username': this.state.username
         })
         .then(res => {
@@ -33,7 +33,7 @@ class Wishlist extends Component {
             }
         })      
 
-        axios.get(`http://localhost:5000/user/wishlist/minorCheck?username=${this.state.username}`, {
+        axios.get(`http://astarchooser.herokuapp.com/user/wishlist/minorCheck?username=${this.state.username}`, {
             'username': this.state.username
         })
         .then(res => {
