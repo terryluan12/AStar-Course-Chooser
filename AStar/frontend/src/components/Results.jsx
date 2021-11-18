@@ -25,7 +25,7 @@ class Result extends Component{
   }
 
   redirectCourse = () => {
-    this.props.history.push('/course/details', {course_code: this.props.course_code})
+    this.props.history.push('/course/details/${this.props.course_code}', {course_code: this.props.course_code})
   }
   
   componentDidMount() {
