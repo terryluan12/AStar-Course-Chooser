@@ -61,14 +61,14 @@ export default class NavbarComp extends Component {
                 <Nav.Link as={Link} to="/search">
                   Search
                 </Nav.Link>
-                
+
                 {this.state.username !== "" &&
                 <Nav.Link as={Link} to="/Wishlist">
                 My Wishlist
               </Nav.Link>
-                
+
               }
-                
+
 
                 {this.state.username === "" ?
                   <Nav.Link as={Link} to="/login">
@@ -86,7 +86,7 @@ export default class NavbarComp extends Component {
                   Sign Up
                 </Nav.Link>
                 }
-                
+
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -97,10 +97,10 @@ export default class NavbarComp extends Component {
               <SearchResultDisplay />
             </Route>
             <Route exact
-              path="/course/details"
-              render={props =>(<CourseDescription {...props} />)}>
+              path="/courseDetails/:code"
+              render={props =>(<CourseDescriptionPage {...props} />)}>
             </Route>
-            <Route exact 
+            <Route exact
               path="/Wishlist"
               render={props =>(
                 <Wishlist {...props} wishlist={this.state.wishlist_data}/>

@@ -33,13 +33,15 @@ class CourseDescriptionPage extends Component {
     }
   }
 
-  
+
 
   componentDidMount() {
-    alert("Hfsjad;faksl");
-    axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.code}`, {code: this.props.course_code})
-    .then(res => {
-        alert(`res is ${res}, code is ${this.props.code}`)
+    console.log("pass in course code: ", this.props.match.params.code)
+
+    axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
+      code: this.props.course_code
+    })
+      .then(res => {
         console.log(res.data)
         this.setState({course_code: res.data.course.code})
         this.setState({course_name: res.data.course.name})
@@ -49,7 +51,7 @@ class CourseDescriptionPage extends Component {
         if (prereq_len > 1) {
           let prereq_str = ""
           for (let i = 0; i < prereq_len; i++) {
-            prereq_str += res.data.course.prereq[i] 
+            prereq_str += res.data.course.prereq[i]
             if (i !== prereq_len - 1) {
               prereq_str += ", "
             }
@@ -62,7 +64,7 @@ class CourseDescriptionPage extends Component {
         if (coreq_len > 1) {
           let coreq_str = ""
           for (let i = 0; i < coreq_str; i++) {
-            coreq_str += res.data.course.coreq[i] 
+            coreq_str += res.data.course.coreq[i]
             if (i !== coreq_len - 1) {
               coreq_str += ", "
             }
@@ -75,7 +77,7 @@ class CourseDescriptionPage extends Component {
         if (exclusion_len > 1) {
           let exclusion_str = ""
           for (let i = 0; i < exclusion_str; i++) {
-            exclusion_str += res.data.course.exclusion[i] 
+            exclusion_str += res.data.course.exclusion[i]
             if (i !== exclusion_len - 1) {
               exclusion_str += ", "
             }
@@ -91,7 +93,7 @@ class CourseDescriptionPage extends Component {
         //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
         this.setState({graphics: temp_graph})
 
-        
+
     })
 
     axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`)
@@ -104,12 +106,12 @@ class CourseDescriptionPage extends Component {
         if (res.data.wishlist.course[i].code === this.props.code) {
           star = starred
           this.setState({starred: true})
-          
+
         }
       }
     })
-  
-    
+
+
 
     console.log("new state: ", this.state)
   }
@@ -118,7 +120,7 @@ class CourseDescriptionPage extends Component {
 
     if(this.state.username){
       if (this.state.starred === false) { //if user is logged in, add to course
-        
+
         //add course to wishlist
         console.log("username/code", this.state)
         axios.post(`https://astarchooser.herokuapp.com/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
@@ -135,7 +137,7 @@ class CourseDescriptionPage extends Component {
           }
         })
       } else {
-        
+
         //remove course from wishlist
         axios.post(`https://astarchooser.herokuapp.com/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
