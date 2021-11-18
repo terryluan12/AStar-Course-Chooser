@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios"
-import './LogIn.css'
+import './css/LogIn.css'
 
 class LogIn extends Component {
     
@@ -15,7 +15,6 @@ class LogIn extends Component {
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
-  
 
   handleUsernameChange(event) {
     this.setState({username: event.target.value})
@@ -28,12 +27,6 @@ class LogIn extends Component {
   handleLogin(event) {
     event.preventDefault();
     this.createAccount(this.state.username, this.state.password)
-    // if(this.state.login){
-      localStorage.setItem('username', this.state.username);
-      this.props.history.push('/Wishlist');
-
-    // }
-    
   }
   createAccount = (username, password) => {
     
@@ -44,16 +37,15 @@ class LogIn extends Component {
         'password': this.state.password
     })
     .then(res => {
-        if (res.status === 200) {
-            
-            // alert("Login Successfully!")
-            
+        if (res.status === 200) {            
             this.setState({login: true})
-        }else{
-          console.log("reached here")
-          alert("Login Failed. Try Again.")
+            localStorage.setItem('username', this.state.username);
+            this.props.history.push('/Wishlist');    
         }
         
+    })
+    .catch(function (error) {
+      alert("Invalid Username and Password. Please try again")
     })
  
   }

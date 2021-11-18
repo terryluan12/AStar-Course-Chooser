@@ -189,7 +189,7 @@ class CourseDescriptionPage extends Component {
               <p>{this.state.department}</p>
             </Col>
             <Col className="col-item">
-              <h3>Division</h3>
+              <h3>Past Tests and Syllabi</h3>
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
           </Row>
