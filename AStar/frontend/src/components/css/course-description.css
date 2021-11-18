@@ -14,9 +14,13 @@ p {
   background-color: #F2F4F8;
 }
 
+.course-template {
+  padding-bottom: 3%;
+}
+
 .course-template .course-title {
   padding-top: 5%;;
-  margin-bottom: 3%;
+  padding-bottom: 3%;
 }
 
 .col-item {
@@ -61,7 +65,7 @@ p {
   height: 120px;
   margin-top: 2%;
   background-color: #EFF3FB;
-  margin-left: 5%;
+  margin-left: 3%;
   border-radius: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -84,3 +88,10 @@ p {
     text-align: center;
 }
 
+.req-graph {
+  border: none;
+  width: 60%;
+  margin-left: 5%;
+  justify-content: center;
+  margin-bottom: 2%;
+}

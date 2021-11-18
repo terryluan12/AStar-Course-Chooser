@@ -4,10 +4,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-
+import requisite_label from './img/requisite-label.png'
 import empty_star from './img/star.png'
 import starred from './img/starred.png'
-import expand_button from './img/expand-button.png'
 import axios from "axios"
 
 let star = empty_star;
@@ -22,13 +21,14 @@ class CourseDescriptionPage extends Component {
       course_name: "",
       division: "Faculty of Applied Science and Engineering",
       department: "Department of Edward S. Rogers Sr. Dept. of Electrical & Computer Engineering",
-      minor : "",
+      graph : "",
       course_description: "",
       syllabus: "",
       prerequisites: "",
       corequisites: "",
       exclusions: "",
       starred: false,
+      graphics: [],
       username: localStorage.getItem('username')
     }
   }
@@ -38,7 +38,7 @@ class CourseDescriptionPage extends Component {
   componentDidMount() {
     console.log("props: ", this.props.code)
 
-    axios.get(`http://localhost:5000/course/details?code=${this.props.code}`, {
+    axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.code}`, {
       code: this.props.course_code
     })
       .then(res => {
@@ -46,6 +46,7 @@ class CourseDescriptionPage extends Component {
         this.setState({course_code: res.data.course.code})
         this.setState({course_name: res.data.course.name})
         this.setState({course_description : res.data.course.description})
+        this.setState({graph: res.data.course.graph})
         let prereq_len = res.data.course.prereq.length
         if (prereq_len > 1) {
           let prereq_str = ""
@@ -88,10 +89,14 @@ class CourseDescriptionPage extends Component {
         let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
         this.setState({syllabus : syllabus_link})
 
+        let temp_graph = []
+        //temp_graph.push(<ShowGraph graph_src={this.state.graph}></ShowGraph>)
+        this.setState({graphics: temp_graph})
+
         
     })
 
-    axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)
+    axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`)
     .then(res => {
       let len = res.data.wishlist.course.length
       for (let i = 0; i < len; i++) {
@@ -103,11 +108,10 @@ class CourseDescriptionPage extends Component {
           
         }
       }
-
-      console.log("current star: ", this.state.starred)
-
     })
   
+    
+
     console.log("new state: ", this.state)
   }
 
@@ -118,7 +122,7 @@ class CourseDescriptionPage extends Component {
         
         //add course to wishlist
         console.log("username/code", this.state)
-        axios.post(`http://localhost:5000/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+        axios.post(`https://astarchooser.herokuapp.com/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{
@@ -134,7 +138,7 @@ class CourseDescriptionPage extends Component {
       } else {
         
         //remove course from wishlist
-        axios.post(`http://localhost:5000/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+        axios.post(`https://astarchooser.herokuapp.com/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{
@@ -211,11 +215,12 @@ class CourseDescriptionPage extends Component {
                 <p>{this.state.exclusions}</p>
               </Col>
             </Row>
-          </Row>
-          <Row>
-            <Col className="text-center center-block">
-              <img src={expand_button} className="expand_button"></img>
-            </Col>
+            <Row>
+              <div className={"req-graph"}>
+                <img style={{width: "70%", marginBottom: "3%"}} src={requisite_label}></img>
+                <img src={`data:image/jpeg;base64,${this.state.graph}`} ></img>
+              </div>
+            </Row>
           </Row>
         </Container>
       </div>

@@ -3,7 +3,7 @@ export default class APIService {
   
     static insertArticle(body) {
       console.log("im in insertarticle");
-      return fetch(`http://localhost:5000/user/login`, {
+      return fetch(`https://astarchooser.herokuapp.com/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -17,7 +17,7 @@ export default class APIService {
 
     static postQuery(query) {
       console.log("im in postQuery");
-      return fetch(`http://localhost:5000/add`, {
+      return fetch(`https://astarchooser.herokuapp.com/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

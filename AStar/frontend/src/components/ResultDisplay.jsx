@@ -28,8 +28,9 @@ class SearchResultDisplay extends Component{
   }
 
   getData = (input) => {
-    axios.get(`http://localhost:5000/search?input=${input}`)
+    axios.get(`https://astarchooser.herokuapp.com/search?input=${input}`)
       .then(res => {
+        console.log(`it is ${res.status}`)
         if (res.status === 200) {
           this.setState({results: []})
           

@@ -29,7 +29,7 @@ class SignUp extends Component {
   }
 
   createAccount = (username, password) => {
-    axios.post(`http://localhost:5000/user/register`, {
+    axios.post(`https://astarchooser.herokuapp.com/user/register`, {
         'username': this.state.username,
         'password': this.state.password
     })

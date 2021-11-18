@@ -25,7 +25,7 @@ class Result extends Component{
   }
   
   componentDidMount() {
-    axios.get(`http://localhost:5000/user/wishlist?username=${this.state.username}`)
+    axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`)
     .then(res => {
       let len = res.data.wishlist.course.length
       for (let i = 0; i < len; i++) {

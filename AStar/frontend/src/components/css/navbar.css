@@ -1,4 +1,5 @@
 .navbar {
+  display: block;
   position: fixed;
   background: #1C3E6F;
 }
