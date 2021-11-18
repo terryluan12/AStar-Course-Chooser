@@ -96,3 +96,8 @@ Dropdown.Item:hover {
     overflow-x: scroll;
     width: 80%;
 }
+
+
+.minor-display {
+    margin-top: 5%;
+}
