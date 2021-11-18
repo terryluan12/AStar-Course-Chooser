@@ -36,7 +36,7 @@ class Wishlist extends Component {
 	render() {
 		return(
 
-            <div className="wishlist-page-content">
+            <div className="wishlist-page-content" overflow="scroll">
                 <div className="left-panel">
                 <h1 className="wishlist-title">My Wishlist</h1>    
                 {!this.state.wishlist_data.length && <h4 style={{color: '#8198B8'}}>Search for courses and add them to your wishlist.</h4>}      

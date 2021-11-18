@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useImperativeHandle } from "react";
 import axios from 'axios'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import './Result.css'
+import './css/Result.css'
 import unstarred from './img/star.png'
 import starred from './img/starred.png'
 
@@ -36,6 +36,10 @@ class Result extends Component{
       }
     })
   }
+
+
+
+
 
   render(){
     return (

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios'
 import Result from './Results'
-import './Result.css'
+import './css/Result.css'
 import Label from './Label'
 import "./css/styles.css";
 

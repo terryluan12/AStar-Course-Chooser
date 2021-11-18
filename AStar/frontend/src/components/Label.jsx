@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import './Label.css'
+import './css/Label.css'
 
+//header for SearchResultsDisplay
 class Label extends Component{
 
   constructor(props) {
