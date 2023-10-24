@@ -1,17 +1,18 @@
 # This is the model
 
 from config import app, db
+from mongoengine import Document, StringField, URLField, ListField, DictField, ReferenceField
 
-class Course(db.Document):
-    code = db.StringField(required=True, unique=True)
-    name = db.StringField(required=True)
-    description = db.StringField(required=True)
-    syllabus = db.URLField()
-    prereq = db.ListField()
-    coreq = db.ListField()
-    exclusion = db.ListField()
-    keyword = db.StringField(required=True)
-    graph = db.StringField(required=True)
+class Course(Document):
+    code = StringField(required=True, unique=True)
+    name = StringField(required=True)
+    description = StringField(required=True)
+    syllabus = URLField()
+    prereq = ListField()
+    coreq = ListField()
+    exclusion = ListField()
+    keyword = StringField(required=True)
+    graph = StringField(required=True)
 
     meta = {'indexes': [
         '$keyword'
@@ -27,10 +28,10 @@ class Course(db.Document):
 
 
 
-class Wishlist(db.Document):
-    username = db.StringField(required=True, unique=True)
-    course = db.ListField(db.ReferenceField(Course))
-    comments = db.DictField()
+class Wishlist(Document):
+    username = StringField(required=True, unique=True)
+    course = ListField(ReferenceField(Course))
+    comments = DictField()
 
     @classmethod
     def create(cls,username_):
@@ -57,9 +58,9 @@ class Wishlist(db.Document):
         return ret
 
 
-class User(db.Document):
-    username = db.StringField(required=True, unique=True)
-    password = db.StringField(required=True)
+class User(Document):
+    username = StringField(required=True, unique=True)
+    password = StringField(required=True)
 
     @classmethod
     def create(cls, username_, password_):
@@ -102,10 +103,10 @@ class User(db.Document):
         return False
 
 
-class Minor(db.Document):
-    name = db.StringField(required=True, unique=True)
-    description = db.StringField()
-    requisites = db.ListField(db.ListField(db.ListField())) 
+class Minor(Document):
+    name = StringField(required=True, unique=True)
+    description = StringField()
+    requisites = ListField(ListField(ListField())) 
             #[ (['code', 'code'], 2), (['code', 'code'], 1), ] 
 
     @classmethod

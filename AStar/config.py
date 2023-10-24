@@ -1,6 +1,6 @@
 # This is to prevent circular imports
 
-from flask_mongoengine import MongoEngine
+from mongoengine import connect
 from flask_cors import CORS
 
 app = None
@@ -14,7 +14,7 @@ def init_app(app_):
 
 def init_db(app):
     global db
-    db = MongoEngine(app)
+    connect(host=app.config["MONGODB_HOST"])
     return db
 
 def init_cors(app):
