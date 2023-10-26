@@ -160,7 +160,7 @@ class CourseDescriptionPage extends Component {
   }
 
   openLink = () => {
-    const newWindow = window.open(this.state.syllabus, '_blacnk', 'noopener,noreferrer');
+    const newWindow = window.open(this.state.syllabus, '_blank', 'noopener,noreferrer');
     if (newWindow) {
       newWindow.opener = null;
     }

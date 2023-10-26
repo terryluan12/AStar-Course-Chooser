@@ -13,13 +13,13 @@ class CourseCard extends Component{
     return (
       <div className={"course-card-render"}>
         {this.props.wishlist_data.map((course)=>(
-          <a href={`/courseDetails/${course.code}`} className={"wishlist-link"}>
+          <Link to={`/courseDetails/${course.code}`} className={"wishlist-link"}>
             <Col className={"text-center wishlist-card"}>
               <h5>
                 {course.code}: {course.name}
               </h5>
             </Col>
-          </a>
+          </Link>
         ))} 
       </div>
     )

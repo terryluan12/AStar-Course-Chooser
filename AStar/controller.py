@@ -2,7 +2,7 @@
 
 from flask import jsonify, request
 from flask_restful import Resource, reqparse
-# from flask_cors import cross_origin
+import json
 from config import app
 from model import *
 from fuzzy import nysiis
@@ -89,7 +89,7 @@ class SearchCourse(Resource):
                 code += '1'
             if Course.objects(code=code):
                 try:
-                    resp = jsonify({'course': Course.get(code)})
+                    resp = jsonify({'course': json.loads(Course.get(code).to_json())})
                     resp.status_code = 200
                     return resp
                 except Exception as e:
@@ -99,7 +99,7 @@ class SearchCourse(Resource):
         input = ' '.join([nysiis(w) for w in input.split()])
         try:
             search = Course.objects.search_text(input).order_by('$text_score')
-            resp = jsonify(search)
+            resp = jsonify(json.loads(search.to_json()))
             resp.status_code = 200
             return resp
         except Exception as e:
@@ -121,7 +121,7 @@ class SearchCourse(Resource):
                 code += '1'
             if Course.objects(code=code):
                 try:
-                    resp = jsonify({'course': Course.get(code)})
+                    resp = jsonify({'course': json.loads(Course.get(code).to_json())})
                     resp.status_code = 200
                     return resp
                 except Exception as e:
@@ -131,7 +131,7 @@ class SearchCourse(Resource):
         input = ' '.join([nysiis(w) for w in input.split()])
         try:
             search = Course.objects.search_text(input).order_by('$text_score')
-            resp = jsonify(search)
+            resp = jsonify(json.loads(search.to_json()))
             resp.status_code = 200
             return resp
         except Exception as e:
@@ -148,7 +148,7 @@ class ShowCourse(Resource):
             resp.status_code = 404
             return resp
         try:
-            resp = jsonify({'course': Course.get(code)})
+            resp = jsonify({'course': json.loads(Course.get(code).to_json())})
             resp.status_code = 200
             return resp
         except Exception as e:

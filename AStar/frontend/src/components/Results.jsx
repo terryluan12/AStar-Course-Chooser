@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import './css/Result.css'
 import unstarred from './img/star.png'
 import starred from './img/starred.png'
+import { Link } from 'react-router-dom';
 
 let star;
 
@@ -24,12 +25,9 @@ class Result extends Component{
     star = unstarred
   }
 
-  redirectCourse = () => {
-    this.props.history.push(`/course/details/${this.props.course_code}`, {course_code: this.props.course_code})
-  }
   
   componentDidMount() {
-    if(this.state.username){
+if(this.state.username){
       axios.get(`${process.env.REACT_APP_API_URL}/user/wishlist?username=${this.state.username}`)
       .then(res => {
         let len = res.data.wishlist.course.length
@@ -40,7 +38,7 @@ class Result extends Component{
           }
         }
       })
-    }
+}
   }
 
 
@@ -50,7 +48,7 @@ class Result extends Component{
   render(){
     return (
       <Container>
-        <a href={`courseDetails/${this.state.course_code}`} onClick={this.redirectCourse} className={"search-result-item"} style={{textDecoration: "none"}}>
+        <Link to={`courseDetails/${this.state.course_code}`} className={"search-result-item"} style={{textDecoration: "none"}}>
         <Row className={"result-display"}>
             <Col>
                 <h5>{this.state.course_code}</h5>  
@@ -62,7 +60,7 @@ class Result extends Component{
             <Col>{this.state.faculty}</Col>
             <Col><img src={star} alt=""/></Col>
         </Row>
-        </a>
+        </Link>
       </Container>
     );
   }

@@ -13,6 +13,11 @@ class Course(Document):
     exclusion = ListField()
     keyword = StringField(required=True)
     graph = StringField(required=True)
+    tags = ListField()
+    ratings_difficulty = ListField()
+    ratings_courseload = ListField()
+    comments = ListField()
+    ratings_engagement = ListField()
 
     meta = {'indexes': [
         '$keyword'

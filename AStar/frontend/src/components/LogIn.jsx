@@ -73,11 +73,11 @@ class LogIn extends Component {
             className={"signup-input"}
           />
           <br />
-          <a href={`/?username=${this.state.username}`} style={{textDecoration: "none"}}>
+          <Link to={`/?username=${this.state.username}`} style={{textDecoration: "none"}}>
             <button type="submit" className="signup-button">
                 Log In
             </button>
-          </a>
+          </Link>
         </form>      
       </div>
     );
