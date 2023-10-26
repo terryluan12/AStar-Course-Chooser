@@ -32,7 +32,7 @@ class LogIn extends Component {
     
 
     
-    axios.post(`https://astarchooser.herokuapp.com/user/login`, {
+    axios.post(`${process.env.REACT_APP_API_URL}/user/login`, {
         'username': this.state.username,
         'password': this.state.password
     })

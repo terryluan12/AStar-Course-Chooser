@@ -1,6 +1,8 @@
 .idea/
 *.DS_Store
 .venv
+.env
+build
 env/
 *.pyc
 __pycache__

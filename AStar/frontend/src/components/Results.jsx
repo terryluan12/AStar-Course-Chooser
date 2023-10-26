@@ -29,16 +29,18 @@ class Result extends Component{
   }
   
   componentDidMount() {
-    axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`)
-    .then(res => {
-      let len = res.data.wishlist.course.length
-      for (let i = 0; i < len; i++) {
-        if (res.data.wishlist.course[i].code === this.state.course_code) {
-          star = starred
-          this.setState({starred: true})
+    if(this.state.username){
+      axios.get(`${process.env.REACT_APP_API_URL}/user/wishlist?username=${this.state.username}`)
+      .then(res => {
+        let len = res.data.wishlist.course.length
+        for (let i = 0; i < len; i++) {
+          if (res.data.wishlist.course[i].code === this.state.course_code) {
+            star = starred
+            this.setState({starred: true})
+          }
         }
-      }
-    })
+      })
+    }
   }
 
 

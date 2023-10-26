@@ -38,7 +38,7 @@ class CourseDescriptionPage extends Component {
   componentDidMount() {
     console.log("pass in course code: ", this.props.match.params.code)
 
-    axios.get(`https://astarchooser.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
+    axios.get(`${process.env.REACT_APP_API_URL}/course/details?code=${this.props.match.params.code}`, {
       code: this.props.course_code
     })
       .then(res => {
@@ -95,21 +95,22 @@ class CourseDescriptionPage extends Component {
 
 
     })
+    if(this.state.username){
+      axios.get(`${process.env.REACT_APP_API_URL}/user/wishlist?username=${this.state.username}`)
+      .then(res => {
+        console.log(`res is ${res}`)
+        let len = res.data.wishlist.course.length
+        for (let i = 0; i < len; i++) {
+          console.log("checking: ", res.data.wishlist.course[i].code)
+          console.log("course: ", this.props.code)
+          if (res.data.wishlist.course[i].code === this.props.code) {
+            star = starred
+            this.setState({starred: true})
 
-    axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`)
-    .then(res => {
-      console.log(`res is ${res}`)
-      let len = res.data.wishlist.course.length
-      for (let i = 0; i < len; i++) {
-        console.log("checking: ", res.data.wishlist.course[i].code)
-        console.log("course: ", this.props.code)
-        if (res.data.wishlist.course[i].code === this.props.code) {
-          star = starred
-          this.setState({starred: true})
-
+          }
         }
-      }
-    })
+      })
+    }
 
 
 
@@ -123,7 +124,7 @@ class CourseDescriptionPage extends Component {
 
         //add course to wishlist
         console.log("username/code", this.state)
-        axios.post(`https://astarchooser.herokuapp.com/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+        axios.post(`${process.env.REACT_APP_API_URL}/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{
@@ -139,7 +140,7 @@ class CourseDescriptionPage extends Component {
       } else {
 
         //remove course from wishlist
-        axios.post(`https://astarchooser.herokuapp.com/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+        axios.post(`${process.env.REACT_APP_API_URL}/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{

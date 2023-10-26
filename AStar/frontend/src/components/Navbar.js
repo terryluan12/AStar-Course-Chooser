@@ -62,7 +62,7 @@ export default class NavbarComp extends Component {
                   Search
                 </Nav.Link>
 
-                {this.state.username !== "" &&
+                {this.state.username &&
                 <Nav.Link as={Link} to="/Wishlist">
                 My Wishlist
               </Nav.Link>
@@ -70,7 +70,7 @@ export default class NavbarComp extends Component {
               }
 
 
-                {this.state.username === "" ?
+                {!this.state.username ?
                   <Nav.Link as={Link} to="/login">
                     Login
                   </Nav.Link>
@@ -81,7 +81,7 @@ export default class NavbarComp extends Component {
                 }
 
 
-                {this.state.username === "" &&
+                {!this.state.username &&
                 <Nav.Link as={Link} to="/signup">
                   Sign Up
                 </Nav.Link>

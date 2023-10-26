@@ -4,15 +4,17 @@ from flask import Flask, send_from_directory
 from flask_restful import Api
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import config
 
 app = Flask(__name__, static_folder='frontend/build')
-app.config['ENV'] = 'development'
-app.config['DEBUG'] = True
-app.config['TESTING'] = True
+app.config['ENV'] = os.environ.get("STATUS", default="development")
+app.config['DEBUG'] = os.environ.get("DEBUG", default=True)
+app.config['TESTING'] = os.environ.get("TESTING", default=True)
 # MongoDB URI
-DB_URI = "mongodb+srv://Cansin:cv190499@a-star.roe6s.mongodb.net/A-Star?retryWrites=true&w=majority"
-app.config["MONGODB_HOST"] = DB_URI
+app.config["MONGODB_HOST"] = os.environ.get("DB_HOST")
 
 config.init_app(app)
 config.init_db(app)
@@ -43,8 +45,7 @@ def serve(path):
 
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=5000, extra_files=['app.py', 'controller.py', 'model.py'])
-    app.run(threaded=True, port=5000)
+    app.run(threaded=True, port=os.environ.get("port", default=5000))
     # with open("test.json") as f:
     #     data = json.load(f)
     # for i in range(75):

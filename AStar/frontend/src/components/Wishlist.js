@@ -20,33 +20,34 @@ class Wishlist extends Component {
     componentDidMount() {
 
         this.setState({username: localStorage.getItem('username')})
+        if (this.state.username){
+            axios.get(`${process.env.REACT_APP_API_URL}/user/wishlist?username=${this.state.username}`, {
+                'username': this.state.username
+            })
+            .then(res => {
+                if(res.status === 200){
+                    this.setState({wishlist_data: res.data.wishlist.course})
+                }
+                else {
+                    alert("The system cannot return wishlist at the moment. Please try again later.")
+                }
+            })      
 
-        axios.get(`https://astarchooser.herokuapp.com/user/wishlist?username=${this.state.username}`, {
-            'username': this.state.username
-        })
-        .then(res => {
-            if(res.status === 200){
-                this.setState({wishlist_data: res.data.wishlist.course})
-            }
-            else {
-                alert("The system cannot return wishlist at the moment. Please try again later.")
-            }
-        })      
+            axios.get(`${process.env.REACT_APP_API_URL}/user/wishlist/minorCheck?username=${this.state.username}`, {
+                'username': this.state.username
+            })
+            .then(res => {
+                console.log("res: ", res.data.minorCheck)
+                let len = res.data.minorCheck.length
+                let temp_minor_list = []
+                for (let i = 0; i < len; i++) {
+                    temp_minor_list.push(<MinorListCard minor_name={res.data.minorCheck[i].name}></MinorListCard>)
+                }
 
-        axios.get(`https://astarchooser.herokuapp.com/user/wishlist/minorCheck?username=${this.state.username}`, {
-            'username': this.state.username
-        })
-        .then(res => {
-            console.log("res: ", res.data.minorCheck)
-            let len = res.data.minorCheck.length
-            let temp_minor_list = []
-            for (let i = 0; i < len; i++) {
-                temp_minor_list.push(<MinorListCard minor_name={res.data.minorCheck[i].name}></MinorListCard>)
-            }
-
-            this.setState({minor_list: temp_minor_list})
-           
-        })      
+                this.setState({minor_list: temp_minor_list})
+            
+            })
+        }
     }
 
     
