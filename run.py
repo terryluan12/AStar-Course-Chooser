@@ -7,9 +7,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-import config
+import astar.config as config
+import astar.controller as controller
 
-app = Flask(__name__, static_folder='frontend/build')
+app = Flask(__name__, static_folder='astar/frontend/build')
 app.config['ENV'] = os.environ.get("STATUS", default="development")
 app.config['DEBUG'] = os.environ.get("DEBUG", default=True)
 app.config['TESTING'] = os.environ.get("TESTING", default=True)
@@ -21,7 +22,6 @@ config.init_db(app)
 config.init_cors(app)
 
 # API Endpoints
-import controller
 api = Api(app)
 api.add_resource(controller.UserRegistration, '/user/register')
 api.add_resource(controller.UserLogin, '/user/login')
