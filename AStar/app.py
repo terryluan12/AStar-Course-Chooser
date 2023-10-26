@@ -45,7 +45,7 @@ def serve(path):
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=os.environ.get("port", default=5000))
+    app.run(threaded=True, port=os.environ.get("PORT", default=5000))
     # with open("test.json") as f:
     #     data = json.load(f)
     # for i in range(75):
