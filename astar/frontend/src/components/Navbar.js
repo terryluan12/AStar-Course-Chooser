@@ -1,3 +1,5 @@
+'use client'
+
 import React, { Component } from 'react';
 import './css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
@@ -5,10 +7,10 @@ import logo from './img/logo.png'
 import { Navbar, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch, Link, useLocation } from "react-router-dom";
 import LogIn from "./LogIn.jsx";
-import CourseDescriptionPage from "./CourseDescription";
+import CourseDescriptionPage from "../app/CourseDescription";
 import Wishlist from './Wishlist';
 import SignUp from './SignUp'
-import SearchResultDisplay from './ResultDisplay'
+import SearchResultDisplay from '../app/ResultDisplay'
 
 function CourseDescription (props) {
   let query = useQuery();

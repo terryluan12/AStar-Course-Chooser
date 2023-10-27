@@ -3,9 +3,9 @@ import axios from 'axios'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import './css/Result.css'
-import unstarred from './img/star.png'
-import starred from './img/starred.png'
+import '../css/Result.css'
+import unstarred from '../img/star.png'
+import starred from '../img/starred.png'
 import { Link } from 'react-router-dom';
 
 let star;
