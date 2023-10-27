@@ -1,3 +1,5 @@
+'use client'
+
 import React, { Component } from "react";
 import axios from 'axios'
 import Result from './Results'
@@ -28,7 +30,7 @@ class SearchResultDisplay extends Component{
   }
 
   getData = (input) => {
-    axios.get(`${process.env.REACT_APP_API_URL}/searchc?input=${input}`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/searchc?input=${input}`)
       .then(res => {
         if (res.status === 200) {
           this.setState({results: []})
