@@ -3,9 +3,9 @@
 import React, { Component } from "react";
 import axios from 'axios'
 import Result from './Results'
-import '../css/Result.css'
+import '../../css/Result.css'
 import Label from './Label'
-import "../css/styles.css";
+import "../../css/styles.css";
 
 
 class SearchResultDisplay extends Component{
