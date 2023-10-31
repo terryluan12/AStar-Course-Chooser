@@ -37,17 +37,17 @@ class SearchResultDisplay extends Component{
           if (res.data.length > 0) {
             let len = res.data.length
             let result_temp = []
-            result_temp.push(<Label></Label>)
+            result_temp.push(<Label key="empty"></Label>)
             for (let i = 0; i < len; i++) {
-                result_temp.push(<Result course_code={res.data[i].code} course_name={res.data[i].name}></Result>)
+                result_temp.push(<Result course_code={res.data[i].code} course_name={res.data[i].name} key={res.data[i].code}></Result>)
             }
             this.setState({results: result_temp})
           } else if (res.data.length === 0) {
             alert("Course not found")
           }else {
             let result_temp = []
-            result_temp.push(<Label></Label>)
-            result_temp.push(<Result course_code={res.data.course.code} course_name={res.data.course.name}></Result>)
+            result_temp.push(<Label key="empty"></Label>)
+            result_temp.push(<Result course_code={res.data.course.code} course_name={res.data.course.name} key={res.data[i].code}></Result>)
             this.setState({results: result_temp})
           }
 

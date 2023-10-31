@@ -7,10 +7,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-import astar.config as config
-import astar.controller as controller
+import config as config
+import controller as controller
 
-app = Flask(__name__, static_folder='astar/frontend/build')
+app = Flask(__name__)
 app.config['ENV'] = os.environ.get("STATUS", default="development")
 app.config['DEBUG'] = os.environ.get("DEBUG", default=True)
 app.config['TESTING'] = os.environ.get("TESTING", default=True)
@@ -46,11 +46,5 @@ def serve(path):
 
 if __name__ == '__main__':
     app.run(threaded=True, port=os.environ.get("PORT", default=5000))
-    # with open("test.json") as f:
-    #     data = json.load(f)
-    # for i in range(75):
-    #     i = str(i)
-    #     Course(name=data["name"][i], code=data["code"][i], description=data["description"][i], prereq=data["prereq"][i], coreq=data["coreq"][i], exclusion=data["exclusion"][i]).save()
-
     
     
