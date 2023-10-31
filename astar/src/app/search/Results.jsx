@@ -49,7 +49,7 @@ if(this.state.username){
   render(){
     return (
       <Container>
-        <Link href={`courseDetails/${this.state.course_code}`} className={"search-result-item"} style={{textDecoration: "none"}}>
+        <Link href={`/courseDetails/${this.state.course_code}`} className={"search-result-item"} style={{textDecoration: "none"}}>
         <Row className={"result-display"}>
             <Col>
                 <h5>{this.state.course_code}</h5>  

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../css/coursecard.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Col from 'react-bootstrap/Col'
+import Link from 'next/link'
 
 // this function should:
 // receive  a list of courses called wishlist_data from the database
@@ -13,13 +14,13 @@ class CourseCard extends Component{
     return (
       <div className={"course-card-render"}>
         {this.props.wishlist_data.map((course)=>(
-          <a href={`/astar/courseDetails/${course.code}`} className={"wishlist-link"}>
+          <Link href={`/courseDetails/${course.code}`} className={"wishlist-link"}>
             <Col className={"text-center wishlist-card"}>
               <h5>
                 {course.codddde}: {course.name}
               </h5>
             </Col>
-          </a>
+          </Link>
         ))} 
       </div>
     )
