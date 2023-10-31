@@ -1,6 +1,6 @@
 # This is the model
 
-from astar.config import app, db
+from config import app, db
 from mongoengine import Document, StringField, URLField, ListField, DictField, ReferenceField
 
 class Course(Document):

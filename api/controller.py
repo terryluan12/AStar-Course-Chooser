@@ -3,8 +3,8 @@
 from flask import jsonify, request
 from flask_restful import Resource, reqparse
 import json
-from astar.config import app
-from astar.model import *
+from config import app
+from model import *
 from fuzzy import nysiis
 import re
 
