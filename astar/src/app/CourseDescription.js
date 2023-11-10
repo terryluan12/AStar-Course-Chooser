@@ -38,7 +38,7 @@ class CourseDescriptionPage extends Component {
   componentDidMount() {
     console.log("pass in course code: ", this.props.match.params.code)
 
-    axios.get(`${process.env.REACT_APP_API_URL}/course/details?code=${this.props.match.params.code}`, {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/course/details?code=${this.props.match.params.code}`, {
       code: this.props.course_code
     })
       .then(res => {
@@ -96,7 +96,7 @@ class CourseDescriptionPage extends Component {
 
     })
     if(this.state.username){
-      axios.get(`${process.env.REACT_APP_API_URL}/user/wishlist?username=${this.state.username}`)
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${this.state.username}`)
       .then(res => {
         console.log(`res is ${res}`)
         let len = res.data.wishlist.course.length
@@ -124,7 +124,7 @@ class CourseDescriptionPage extends Component {
 
         //add course to wishlist
         console.log("username/code", this.state)
-        axios.post(`${process.env.REACT_APP_API_URL}/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/addCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{
@@ -140,7 +140,7 @@ class CourseDescriptionPage extends Component {
       } else {
 
         //remove course from wishlist
-        axios.post(`${process.env.REACT_APP_API_URL}/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/removeCourse?username=${this.state.username}&code=${this.state.course_code}`, {
           'code': this.state.course_code, 'username':this.state.username
         })
         .then(resp =>{

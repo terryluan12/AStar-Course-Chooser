@@ -34,7 +34,7 @@ class LogIn extends Component {
     
 
     
-    axios.post(`${process.env.REACT_APP_API_URL}/user/login`, {
+    axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
         'username': this.state.username,
         'password': this.state.password
     })
@@ -75,8 +75,8 @@ class LogIn extends Component {
             className={"signup-input"}
           />
           <br />
-          <Link href={`/?username=${this.state.username}`} style={{textDecoration: "none"}}>
-            <button type="submit" className="signup-button">
+          <Link href={`?username=${this.state.username}`} style={{textDecoration: "none"}} className="signup-button">
+            <button type="submit" onClick={this.handleLogin}>
                 Log In
             </button>
           </Link>

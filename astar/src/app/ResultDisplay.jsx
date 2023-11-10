@@ -28,7 +28,7 @@ class SearchResultDisplay extends Component{
   }
 
   getData = (input) => {
-    axios.get(`${process.env.REACT_APP_API_URL}/searchc?input=${input}`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/searchc?input=${input}`)
       .then(res => {
         if (res.status === 200) {
           this.setState({results: []})

@@ -14,7 +14,7 @@ class Wishlist extends Component {
         this.state={
             wishlist_data:[],
             minor_list: [],
-            username: localStorage.getItem('username')
+            username: typeof window !== "undefined" ? localStorage.getItem('username') : null
         }
     }
 
