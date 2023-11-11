@@ -1,5 +1,5 @@
 'use client'
-import React, { Component } from "react";
+import React, { useState } from "react";
 import axios from 'axios'
 import Result from './search/Results'
 import '../css/Result.css'
@@ -7,74 +7,59 @@ import Label from './search/Label'
 import "../css/styles.css";
 
 
-class SearchResultDisplay extends Component{
+function HomePage(props) {
 
-  constructor() {
-    super();
-    this.state = {
-      input: "",
-      results: []
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  const [input, setInput] = useState("")
+  const [results, setResults] = useState([])
+
+  const handleChange = (event) => {
+    setInput(event.target.value)
   }
 
-  handleChange(event) {
-    this.setState({input: event.target.value});
-  }
-
-  handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    this.getData(this.state.input)
-  }
+    const res = await getSearch(input)
+    let result_temp = [<Label key="empty"></Label>]
 
-  getData = (input) => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/searchc?input=${input}`)
-      .then(res => {
-        if (res.status === 200) {
-          this.setState({results: []})
-          
-          if (res.data.length > 0) {
-            let len = res.data.length
-            let result_temp = []
-            result_temp.push(<Label key="empty"></Label>)
-            for (let i = 0; i < len; i++) {
-                result_temp.push(<Result course_code={res.data[i].code} course_name={res.data[i].name} key={res.data[i].code}></Result>)
-            }
-            this.setState({results: result_temp})
-          } else if (res.data.length === 0) {
-            alert("Course not found")
-          }else {
-            let result_temp = []
-            result_temp.push(<Label key="empty"></Label>)
-            result_temp.push(<Result course_code={res.data.course.code} course_name={res.data.course.name} key={res.data[i].code}></Result>)
-            this.setState({results: result_temp})
-          }
-
-        } else if (res.status === 400) {
-          alert("System Error. Please refresh")
+    switch (res.status){
+      case 200:
+        if (res.data.length === 0){
+          alert("Course not found")
+        } else {
+          result_temp = res.data.map(result => <Result course_code={result.code} course_name={result.name} key={result.code}></Result>)
         }
-    })
+        break
+      case 400:
+        alert("400 Error. Please refresh")
+        break
+      default:
+        alert("Unknown Error. Please contact website owner")
+        break
+    }
+
+    setResults(result_temp)
   }
 
-  render(){
-    return (
-      <div className="SearchQuery">
-        <div style={{ marginTop: "10%" }}>
-            <h1> A* Course Finder Search</h1>
-            <form onSubmit={this.handleSubmit} className={"search"}>
-                <input placeholder={"Search for course code, course name, keyword ..."} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
-                <input type="submit" value="Submit" className={"submit-button"}/>
-            </form>
-        </div>
+  const getSearch = async(input) => {
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/searchc?input=${input}`)
+  }
 
-        <div className={"search-result-display"} >
-            {this.state.results}
-        </div>
-        
+  return (
+    <div className="SearchQuery">
+      <div style={{ marginTop: "10%" }}>
+          <h1> A* Course Finder Search</h1>
+          <form onSubmit={handleSubmit} className={"search"}>
+              <input placeholder={"Search for course code, course name, keyword ..."} className={"text-input"} type="text" value={input} onChange={handleChange} />
+              <input type="submit" value="Submit" className={"submit-button"}/>
+          </form>
       </div>
-    );
-  }
+
+      <div className={"search-result-display"} >
+          {results}
+      </div>
+      
+    </div>
+  );
 }
 
-export default SearchResultDisplay;
+export default HomePage;
