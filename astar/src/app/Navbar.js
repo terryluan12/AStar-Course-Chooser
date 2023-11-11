@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../img/logo.png'
 import { Navbar, Nav } from "react-bootstrap";
 import Link from 'next/link'
+import Image from 'next/image'
+
 
 function NavbarComp(props) {
 
@@ -27,7 +29,7 @@ function NavbarComp(props) {
       <div>
         <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
           <Navbar.Brand>
-            <img src={logo} alt="" />{" "}
+            <Image layout="responsive" src={logo} alt="" />{" "}
             <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
               A* Course Finder
             </Nav.Link>

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image'
 import '../../../css/course-description.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import Container from 'react-bootstrap/Container';
@@ -10,8 +11,6 @@ import requisite_label from '../../../img/requisite-label.png'
 import empty_star from '../../../img/star.png'
 import starred from '../../../img/starred.png'
 import axios from "axios"
-
-let star = empty_star;
 
 function CourseDescriptionPage(props) {
 
@@ -120,7 +119,7 @@ function CourseDescriptionPage(props) {
             <h1>{course.course_code} : {course.course_name}</h1>
           </Col>
           <Col xs={4}>
-            <img src={star} onClick={course.check_star} alt="" />
+            <Image src={course.starred? starred:empty_star} onClick={check_star} alt="" />
           </Col>
         </Row>
         <Row>
@@ -161,8 +160,8 @@ function CourseDescriptionPage(props) {
           </Row>
           <Row>
             <div className={"req-graph"}>
-              <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label}></img>
-              <img src={`data:image/jpeg;base64,${course.graph}`} alt="" ></img>
+              <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label} />
+              <img src={`data:image/jpeg;base64,${course.graph}`} alt="" />
             </div>
           </Row>
         </Row>

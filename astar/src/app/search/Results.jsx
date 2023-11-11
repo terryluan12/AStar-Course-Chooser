@@ -8,6 +8,7 @@ import '../../css/Result.css'
 import unstarred from '../../img/star.png'
 import starred from '../../img/starred.png'
 import Link from 'next/link'
+import Image from 'next/image'
 
 let star;
 
@@ -59,7 +60,7 @@ if(this.state.username){
             </Col>
             <Col>{this.state.division}</Col>
             <Col>{this.state.faculty}</Col>
-            <Col><img src={star} alt=""/></Col>
+            <Col><Image src={star} alt=""/></Col>
         </Row>
         </Link>
       </Container>

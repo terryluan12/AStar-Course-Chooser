@@ -6,6 +6,7 @@ import user_profile from '../../img/user.png'
 import CourseCard from "./CourseCard";
 import axios from "axios"
 import MinorListCard from './MinorListCard'
+import Image from 'next/image'
 
 class Wishlist extends Component {
 
@@ -66,7 +67,7 @@ class Wishlist extends Component {
                 </div>
                 <div className="right-panel">
                     <div className="centered">
-                        <img src={user_profile} alt=""/>
+                        <Image layout="responsive" src={user_profile} alt=""/>
                         <h3>{this.state.username}</h3>
                         <p>Computer Engineering Student</p>
                         <br></br>
