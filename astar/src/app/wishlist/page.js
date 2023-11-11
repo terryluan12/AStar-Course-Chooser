@@ -1,5 +1,5 @@
 'use client'
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/wishlist.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import user_profile from '../../img/user.png'
@@ -8,82 +8,72 @@ import axios from "axios"
 import MinorListCard from './MinorListCard'
 import Image from 'next/image'
 
-class Wishlist extends Component {
-
-    constructor(props){
-        super(props)
-        this.state={
-            wishlist_data:[],
-            minor_list: [],
-            username: typeof window !== "undefined" ? localStorage.getItem('username') : null
-        }
-    }
-
-    componentDidMount() {
-
-        this.setState({username: localStorage.getItem('username')})
-        if(!this.state.username){
-            return
-        }
-
-        axios.get(`http://terryluan.com/astar/user/wishlist?username=${this.state.username}`, {
-            'username': this.state.username
-        })
-        .then(res => {
-            if(res.status === 200){
-                this.setState({wishlist_data: res.data.wishlist.course})
-            }
-            else {
-                alert("The system cannot return wishlist at the moment. Please try again later.")
-            }
-        })      
-
-        axios.get(`http://terryluan.com/astar/user/wishlist/minorCheck?username=${this.state.username}`, {
-            'username': this.state.username
-        })
-        .then(res => {
-            console.log("res: ", res.data.minorCheck)
-            let len = res.data.minorCheck.length
-            let temp_minor_list = []
-            for (let i = 0; i < len; i++) {
-                temp_minor_list.push(<MinorListCard minor_name={res.data.minorCheck[i].name}></MinorListCard>)
-            }
-
-            this.setState({minor_list: temp_minor_list})
-           
-        })      
-    }
-
+function Wishlist(props) {
     
-	render() {
-		return(
+    const [wishlist, setWishlist] = useState([])
+    const [minorlist, setMinorlist] = useState([])
+    const [username, setUsername] = useState(typeof window !== "undefined" ? localStorage.getItem('username') : null)
 
-            <div className="wishlist-page-content">
-                <div className="left-panel">
-                <h1 className="wishlist-title">My Wishlist</h1>    
-                {!this.state.wishlist_data.length && <h4 style={{color: '#8198B8'}}>Search for courses and add them to your wishlist.</h4>}      
-                <CourseCard className={"course-card-container"} wishlist_data={this.state.wishlist_data}></CourseCard>
+    const fetchMinorData = async () => {
+        return await axios.get(`http://terryluan.com/astar/user/wishlist/minorCheck?username=${username}`, {
+            'username': username
+        })
+    }
+    const fetchWishlistData = async () => {
+        return await axios.get(`http://terryluan.com/astar/user/wishlist?username=${username}`, {
+            'username': username
+        })
+    }
 
-                </div>
-                <div className="right-panel">
-                    <div className="centered">
-                        <Image layout="responsive" src={user_profile} alt=""/>
-                        <h3>{this.state.username}</h3>
-                        <p>Computer Engineering Student</p>
-                        <br></br>
-                        <br></br>
-                        <h4>Minor Fulfillment</h4>
-                        <div className={"minor-display"}>
-                            {this.state.minor_list}
-                        </div>
-                        
-                    </div>
-                </div>
+    useEffect(() => {
+        setUsername(localStorage.getItem('username'))
+        if(!username){
+            alert("ERROR: MUST BE LOGGED IN TO ACCESS WISHLIST")
+        }
+        const setWishlistPage = async () => {
+            const res = await fetchWishlistData()
+            if(res.status === 200)
+                setWishlist(res.data.wishlist.course)
+            else 
+                alert("The system cannot return wishlist at the moment. Please try again later.")
+        }
+        const checkMinor = async() => {
+            const res = await fetchMinorData()
+            let temp_minor_list = res.data.minorCheck.map(minor => <MinorListCard minor_name={minor.name}/>)
+            setMinorlist(temp_minor_list)
+        } 
+
+        setWishlistPage().catch(console.error)
+        checkMinor().catch(console.error)
+    }, [])
+        
+    return(
+
+        <div className="wishlist-page-content">
+            <div className="left-panel">
+            <h1 className="wishlist-title">My Wishlist</h1>    
+            {!wishlist.length && <h4 style={{color: '#8198B8'}}>Search for courses and add them to your wishlist.</h4>}      
+            <CourseCard className={"course-card-container"} wishlist_data={wishlist}></CourseCard>
 
             </div>
+            <div className="right-panel">
+                <div className="centered">
+                    <Image layout="responsive" src={user_profile} alt=""/>
+                    <h3>{username}</h3>
+                    <p>Computer Engineering Student</p>
+                    <br></br>
+                    <br></br>
+                    <h4>Minor Fulfillment</h4>
+                    <div className={"minor-display"}>
+                        {minorlist}
+                    </div>
+                    
+                </div>
+            </div>
 
-		)
-	}
+        </div>
+
+    )
 }
 
 export default Wishlist

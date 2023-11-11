@@ -1,20 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import "../../css/minorcard.css";
 import "bootstrap/dist/css/bootstrap.css";
 
-class MinorListCard extends Component{
+function MinorListCard(props) {
 
-    constructor(props) {
-        super(props)
-    }
-
-    render(){
         return (
             <div className={"minor-card"}>
-                {this.props.minor_name}
+                {props.minor_name}
             </div>
         )
-    }
 }
 
 

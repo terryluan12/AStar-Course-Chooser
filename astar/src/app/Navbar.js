@@ -38,7 +38,7 @@ function NavbarComp(props) {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav>
-              <Nav.Link as={Link} href="/search">
+              <Nav.Link as={Link} href="/">
                 Search
               </Nav.Link>
 

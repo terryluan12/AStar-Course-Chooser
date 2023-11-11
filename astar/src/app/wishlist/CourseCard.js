@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "../../css/coursecard.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Col from 'react-bootstrap/Col'
@@ -8,16 +8,15 @@ import Link from 'next/link'
 // receive  a list of courses called wishlist_data from the database
 // send modified comments to database. database saves it. the page rerenders to show the modified information
 
-class CourseCard extends Component{
+function CourseCard(props) {
 
-  render(){
     return (
       <div className={"course-card-render"}>
-        {this.props.wishlist_data.map((course)=>(
+        {props.wishlist_data.map((course)=>(
           <Link href={`/courseDetails/${course.code}`} className={"wishlist-link"}>
             <Col className={"text-center wishlist-card"}>
               <h5>
-                {course.codddde}: {course.name}
+                {course.code}: {course.name}
               </h5>
             </Col>
           </Link>
@@ -25,7 +24,6 @@ class CourseCard extends Component{
       </div>
     )
   }
-}
 
 
 export default CourseCard;

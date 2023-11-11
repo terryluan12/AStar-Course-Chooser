@@ -82,8 +82,7 @@ function CourseDescriptionPage(props) {
       isStarred = res.data.wishlist.some(course => course.course_code === searchParams.get("code"))
       setCourse({...course, starred: isStarred})
         }
-    setCoursePage()
-      .catch(console.error)
+    setCoursePage().catch(console.error)
     if(course.username)
         setWishlist().catch(console.error)
 
