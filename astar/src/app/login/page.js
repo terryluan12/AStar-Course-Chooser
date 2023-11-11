@@ -1,89 +1,78 @@
 'use client'
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import Link from 'next/link'
 import axios from "axios"
 import '../../css/LogIn.css'
 
-class LogIn extends Component {
+function LoginPage(props) {
     
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      password: "",
-      login: false
-    };
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [login, setLogin] = useState(false)
+  const history = useHistory()
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value)
   }
 
-  handleUsernameChange(event) {
-    this.setState({username: event.target.value})
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value)
   }
 
-  handlePasswordChange(event) {
-    this.setState({password: event.target.value})
-  }
-
-  handleLogin(event) {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    this.createAccount(this.state.username, this.state.password)
+    const res = await loginAccount(username, password)
+    console.log("AI IT IS ", res)
+    switch(res.status){
+      case 200:
+        setLogin(true)
+        localStorage.setItem('username', username);
+        history.push('/Wishlist');    
+        break
+      default:
+        alert("Invalid Username and Password. Please try again")
+        break
+      }
   }
-  createAccount = (username, password) => {
-    
-
-    
-    axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
-        'username': this.state.username,
-        'password': this.state.password
+  const loginAccount = async (username, password) => {
+    console.log("ILLLL, IT IS ", username, password)
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
+        'username': username,
+        'password': password
     })
-    .then(res => {
-        if (res.status === 200) {            
-            this.setState({login: true})
-            localStorage.setItem('username', this.state.username);
-            this.props.history.push('/Wishlist');    
-        }
-        
-    })
-    .catch(function (error) {
-      alert("Invalid Username and Password. Please try again")
-    })
- 
   }
 
-  render() {
-    return (
-      <div className={"sign-up"}>
-        <h1> Log In</h1>
-        <form onSubmit={this.handleLogin}>
-          <input
-            name="username"
-            onChange={this.handleUsernameChange}
-            required
-            type="text"
-            placeholder="Username"
-            className={"signup-input"}
-          />
-          <br />
-          <input
-            name="password"
-            onChange={this.handlePasswordChange}
-            required
-            type="text"
-            placeholder="Password"
-            className={"signup-input"}
-          />
-          <br />
-          <Link href={`?username=${this.state.username}`} style={{textDecoration: "none"}} className="signup-button">
-            <button type="submit" onClick={this.handleLogin}>
-                Log In
-            </button>
-          </Link>
-        </form>      
-      </div>
-    );
-  }
+  return (
+    <div className={"sign-up"}>
+      <h1> Log In</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          name="username"
+          onChange={handleUsernameChange}
+          required
+          type="text"
+          placeholder="Username"
+          className={"signup-input"}
+        />
+        <br />
+        <input
+          name="password"
+          onChange={handlePasswordChange}
+          required
+          type="text"
+          placeholder="Password"
+          className={"signup-input"}
+        />
+        <br />
+        <Link href={`?username=${username}`} style={{textDecoration: "none"}} className="signup-button">
+          <button type="submit" onClick={handleLogin}>
+              Log In
+          </button>
+        </Link>
+      </form>      
+    </div>
+  );
 }
 
-export default LogIn;
+export default LoginPage;
