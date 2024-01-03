@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from "react";
 import axios from 'axios'
-import Result from './search/Results'
+import Result from './Results'
 import '../css/Result.css'
-import Label from './search/Label'
+import Label from './Label'
 import "../css/styles.css";
 
 

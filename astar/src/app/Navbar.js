@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import '../css/navbar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../img/logo.png'
@@ -13,6 +14,7 @@ function NavbarComp(props) {
 
   const [username, setUsername] = useState(null)
   const [login, setLogin] = useState(null)
+  const router = useRouter()
 
   useEffect(() => {
     if (localStorage.getItem('username') !== "") {
@@ -22,7 +24,10 @@ function NavbarComp(props) {
 
   const logOut = () => {
     localStorage.setItem('username', "");
-      setUsername(localStorage.getItem(""))
+    setUsername(localStorage.getItem(""))
+    router.push("/")
+    router.refresh()
+    
   }
 
   return (
@@ -30,7 +35,7 @@ function NavbarComp(props) {
         <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
           <Navbar.Brand>
             <Image layout="responsive" src={logo} alt="" />{" "}
-            <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
+            <Nav.Link href="/astar" style={{ color: "white", display: "inline" }}>
               A* Course Finder
             </Nav.Link>
           </Navbar.Brand>

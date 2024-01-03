@@ -11,7 +11,6 @@ import config as config
 import controller as controller
 
 app = Flask(__name__)
-app.config['ENV'] = os.environ.get("STATUS", default="development")
 app.config['DEBUG'] = os.environ.get("DEBUG", default=True)
 app.config['TESTING'] = os.environ.get("TESTING", default=True)
 # MongoDB URI

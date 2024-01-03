@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 import json
 from config import app
 from model import *
-from fuzzy import nysiis
+from nysiis import nysiis
 import re
 
 
@@ -327,9 +327,7 @@ class UserWishlistMinorCheck(Resource):
         try:
             wl = User.get_wishlist(username_=username)
             courses = [c.code for c in wl.course]
-            print(courses)
             check = Minor.check(codes_=courses)
-            print(check)
             resp = jsonify({'minorCheck': check})
             resp.status_code = 200
             return resp
@@ -346,9 +344,7 @@ class UserWishlistMinorCheck(Resource):
         try:
             wl = User.get_wishlist(username_=username)
             courses = [c.code for c in wl.course]
-            print(courses)
             check = Minor.check(codes_=courses)
-            print(check)
             resp = jsonify({'minorCheck': check})
             resp.status_code = 200
             return resp

@@ -1,16 +1,19 @@
 'use client'
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import axios from "axios"
 import '../../css/LogIn.css'
 
+
 function LoginPage(props) {
-    
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [login, setLogin] = useState(false)
   const history = useHistory()
+
+  const router = useRouter()
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
@@ -23,12 +26,12 @@ function LoginPage(props) {
   const handleLogin = async (event) => {
     event.preventDefault();
     const res = await loginAccount(username, password)
-    console.log("AI IT IS ", res)
     switch(res.status){
       case 200:
         setLogin(true)
         localStorage.setItem('username', username);
-        history.push('/Wishlist');    
+        router.refresh();
+        router.push('/wishlist'); 
         break
       default:
         alert("Invalid Username and Password. Please try again")
@@ -36,7 +39,6 @@ function LoginPage(props) {
       }
   }
   const loginAccount = async (username, password) => {
-    console.log("ILLLL, IT IS ", username, password)
     return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
         'username': username,
         'password': password
