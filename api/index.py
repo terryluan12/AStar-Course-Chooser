@@ -44,6 +44,6 @@ def serve(path):
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=os.environ.get("PORT", default=5000))
+    app.run(threaded=True, port=os.environ.get("PORT", default=3001))
     
     

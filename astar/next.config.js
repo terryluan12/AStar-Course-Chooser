@@ -3,7 +3,7 @@ module.exports = () => {
       return [
         {
           source: "/astar/:path*",
-          destination: "http://localhost:5000/astar/:path*",
+          destination: "http://localhost:3001/astar/:path*",
         },
       ];
     };
