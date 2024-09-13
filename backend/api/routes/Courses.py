@@ -1,8 +1,8 @@
 from flask import jsonify, request
 from flask_restful import Resource, reqparse
 import json
-from src.utils.database import sql_db
-from src.models.sqlModel.Course import Course
+from api.utils.database import sql_db
+from api.models.sqlModel.Course import Course
 from nysiis import nysiis
 import re
 

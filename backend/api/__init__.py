@@ -1,8 +1,8 @@
 
 from mongoengine import connect
 from flask_cors import CORS
-from src.utils.database import sql_db
-from src.routes import api
+from api.utils.database import sql_db
+from api.routes import api
 
 from flask import Flask, send_from_directory
 import os

@@ -1,6 +1,6 @@
 # this is the flask core
 
-from src import app
+from api import app
 import os
 
 

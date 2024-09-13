@@ -1,7 +1,7 @@
 # This is the model
 
 from sqlalchemy.orm import mapped_column, Mapped
-from src.utils.database import sql_db
+from api.utils.database import sql_db
 
 class Course(sql_db.Model):
   __tablename__ = "course"

@@ -1,8 +1,8 @@
 from flask import jsonify, request
 from flask_restful import Resource, reqparse
-from src.models.mongoModel.User import User
-from src.models.mongoModel.Minor import Minor
-from src.models.sqlModel.Course import Course
+from api.models.mongoModel.User import User
+from api.models.mongoModel.Minor import Minor
+from api.models.sqlModel.Course import Course
 
 # -------------------- Wishlist related --------------------
 class UserWishlist(Resource):

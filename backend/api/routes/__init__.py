@@ -1,7 +1,7 @@
 from flask_restx import Api
-import src.routes.Courses as Courses
-import src.routes.Users as Users
-import src.routes.Wishlist as Wishlist
+import api.routes.Courses as Courses
+import api.routes.Users as Users
+import api.routes.Wishlist as Wishlist
 
 api = Api()
 api.add_resource(Users.UserRegistration, '/user/register')
