@@ -1,7 +1,7 @@
 # This is the model
 
-from sqlalchemy.orm import mapped_column, DeclarativeBase, Mapped
-from index import sql_db
+from sqlalchemy.orm import mapped_column, Mapped
+from src.utils.database import sql_db
 
 class Course(sql_db.Model):
   __tablename__ = "course"
@@ -21,6 +21,6 @@ class Course(sql_db.Model):
   def __repr__(self) -> str:
     return f"Course(course_code={self.code}, course_name={self.name}, credit_value={self.credit_value}, hours={self.hours}, description={self.description}, prerequisite={self.prereq}, corequisite={self.coreq}, exclusion={self.exclusion}, recommended_preparation={self.rec_prep}, total_au={self.total_au}, program_tags={self.program_tags})"
   
-  @classmethod
-  def get(cls, code_):
-      return cls.query.filter_by(code=code_).first()
+  # @classmethod
+  # def get(cls, code_):
+  #     return cls.query.filter_by(code=code_).first()

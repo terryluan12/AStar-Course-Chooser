@@ -1,4 +1,5 @@
 from mongoengine import Document, StringField
+from src.models.mongoModel.Wishlist import Wishlist
 
 class User(Document):
     username = StringField(required=True, unique=True)
