@@ -1,5 +1,5 @@
 "use client";
-import React, { Component, useImperativeHandle } from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -30,7 +30,7 @@ class Result extends Component {
     if (this.state.username) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${this.state.username}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${this.state.username}`
         )
         .then((res) => {
           let len = res.data.wishlist.course.length;

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../css/SignUp.css";
 
-function SignupPage(props) {
+function SignupPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

@@ -7,4 +7,6 @@ export default [
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
+  { ignores: [".next/*", "node_modules/*"] },
+  { rules: { "react/react-in-jsx-scope": "off", "react/prop-types": "off" } },
 ];

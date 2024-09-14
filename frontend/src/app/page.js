@@ -6,7 +6,7 @@ import "../css/Result.css";
 import Label from "./Label";
 import "../css/styles.css";
 
-function HomePage(props) {
+function HomePage() {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
 

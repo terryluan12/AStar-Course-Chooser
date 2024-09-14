@@ -7,12 +7,14 @@ import "bootstrap/dist/css/bootstrap.css";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import requisite_label from "../../../img/requisite-label.png";
+// import requisite_label from "../../../img/requisite-label.png";
 import empty_star from "../../../img/star.png";
 import starred from "../../../img/starred.png";
 import axios from "axios";
 
 function CourseDescriptionPage(props) {
+  let star = empty_star;
+
   const [course, setCourse] = useState({
     course_code: props.params.code,
     course_name: "",
@@ -90,8 +92,8 @@ function CourseDescriptionPage(props) {
     };
     const setWishlist = async () => {
       const res = await fetchWishlist();
-      isStarred = res.data.wishlist.some(
-        (course) => course.course_code === searchParams.get("code"),
+      const isStarred = res.data.wishlist.some(
+        (course) => course.course_code === searchParams.get("code"), // TODO Fix setWishlist
       );
       setCourse({ ...course, starred: isStarred });
     };
@@ -106,7 +108,7 @@ function CourseDescriptionPage(props) {
       setCourse({ ...course, starred: !course.starred });
       star = star == empty_star ? starred : empty_star;
       if (res.status != 200) {
-        console.log("error occured while modifying wishlist: ", resp.status);
+        console.log("error occured while modifying wishlist: ", res.status);
       }
     } else {
       //else, notify

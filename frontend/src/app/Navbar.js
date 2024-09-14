@@ -9,9 +9,8 @@ import { Navbar, Nav } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";
 
-function NavbarComp(props) {
+function NavbarComp() {
   const [username, setUsername] = useState(null);
-  const [login, setLogin] = useState(null);
   const router = useRouter();
 
   useEffect(() => {

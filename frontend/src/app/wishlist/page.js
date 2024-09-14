@@ -8,7 +8,7 @@ import axios from "axios";
 import MinorListCard from "./MinorListCard";
 import Image from "next/image";
 
-function Wishlist(props) {
+function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
   const [minorlist, setMinorlist] = useState([]);
   const [username, setUsername] = useState(
@@ -48,7 +48,7 @@ function Wishlist(props) {
     const checkMinor = async () => {
       const res = await fetchMinorData();
       let temp_minor_list = res.data.minorCheck.map((minor) => (
-        <MinorListCard minor_name={minor.name} />
+        <MinorListCard minor_name={minor.name} key={minor.name} />
       ));
       setMinorlist(temp_minor_list);
     };

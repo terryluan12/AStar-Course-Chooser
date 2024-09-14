@@ -1,16 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import "../../css/LogIn.css";
 
-function LoginPage(props) {
+function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [login, setLogin] = useState(false);
-  const history = useHistory();
+  const [_, setLogin] = useState(false);
 
   const router = useRouter();
 

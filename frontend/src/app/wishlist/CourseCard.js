@@ -13,6 +13,7 @@ function CourseCard(props) {
     <div className={"course-card-render"}>
       {props.wishlist_data.map((course) => (
         <Link
+          key={course.code}
           href={`/courseDetails/${course.code}`}
           className={"wishlist-link"}
         >
