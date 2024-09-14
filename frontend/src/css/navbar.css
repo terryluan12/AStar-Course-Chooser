@@ -1,6 +1,6 @@
 .navbar {
   width: 100vw;
-  background: #1C3E6F;
+  background: #1c3e6f;
 }
 
 .nav-item a {
@@ -11,7 +11,7 @@
 }
 
 .nav-item a:hover {
-  color: #C4D1E4;
+  color: #c4d1e4;
 }
 
 .navbar-brand img {

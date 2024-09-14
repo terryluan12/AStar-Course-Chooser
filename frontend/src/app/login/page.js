@@ -1,49 +1,48 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import axios from "axios"
-import '../../css/LogIn.css'
-
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import axios from "axios";
+import "../../css/LogIn.css";
 
 function LoginPage(props) {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [login, setLogin] = useState(false)
-  const history = useHistory()
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState(false);
+  const history = useHistory();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleUsernameChange = (event) => {
-    setUsername(event.target.value)
-  }
+    setUsername(event.target.value);
+  };
 
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
+    setPassword(event.target.value);
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    const res = await loginAccount(username, password)
-    switch(res.status){
+    const res = await loginAccount(username, password);
+    switch (res.status) {
       case 200:
-        setLogin(true)
-        localStorage.setItem('username', username);
+        setLogin(true);
+        localStorage.setItem("username", username);
         router.refresh();
-        router.push('/wishlist'); 
-        break
+        router.push("/wishlist");
+        break;
       default:
-        alert("Invalid Username and Password. Please try again")
-        break
-      }
-  }
+        alert("Invalid Username and Password. Please try again");
+        break;
+    }
+  };
   const loginAccount = async (username, password) => {
     return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
-        'username': username,
-        'password': password
-    })
-  }
+      username: username,
+      password: password,
+    });
+  };
 
   return (
     <div className={"sign-up"}>
@@ -67,12 +66,16 @@ function LoginPage(props) {
           className={"signup-input"}
         />
         <br />
-        <Link href={`?username=${username}`} style={{textDecoration: "none"}} className="signup-button">
+        <Link
+          href={`?username=${username}`}
+          style={{ textDecoration: "none" }}
+          className="signup-button"
+        >
           <button type="submit" onClick={handleLogin}>
-              Log In
+            Log In
           </button>
         </Link>
-      </form>      
+      </form>
     </div>
   );
 }

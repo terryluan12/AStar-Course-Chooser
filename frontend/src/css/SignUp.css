@@ -1,25 +1,25 @@
 .sign-up {
-    margin-top: 5%;
+  margin-top: 5%;
 }
 
 .signup-input {
-    margin-top: 2%;
-    width: 30%;
-    height: 3em;
-    padding-left: 1%;
-    border-radius: 15px;
-    color: #C4C4C4;
-    border: 2px solid #C4C4C4
+  margin-top: 2%;
+  width: 30%;
+  height: 3em;
+  padding-left: 1%;
+  border-radius: 15px;
+  color: #c4c4c4;
+  border: 2px solid #c4c4c4;
 }
 
 .signup-button {
-    margin-top: 2%;
-    border-radius: 15px;
-    background-color: #1C3E6E;
-    color: white;
-    width: 8em;
-    height: 3em;
-    border: none;
-    font-size: 1.2em;
-    text-align: center;
+  margin-top: 2%;
+  border-radius: 15px;
+  background-color: #1c3e6e;
+  color: white;
+  width: 8em;
+  height: 3em;
+  border: none;
+  font-size: 1.2em;
+  text-align: center;
 }
