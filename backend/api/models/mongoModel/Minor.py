@@ -1,15 +1,16 @@
 from mongoengine import Document, StringField, ListField
 
+
 class Minor(Document):
     name = StringField(required=True, unique=True)
     description = StringField()
-    requisites = ListField(ListField(ListField())) 
-            #[ (['code', 'code'], 2), (['code', 'code'], 1), ] 
+    requisites = ListField(ListField(ListField()))
+    # [ (['code', 'code'], 2), (['code', 'code'], 1), ]
 
     @classmethod
     def get(cls, name_):
         return cls.objects(name=name_).get()
-    
+
     @classmethod
     def check(cls, codes_):
         ret = []

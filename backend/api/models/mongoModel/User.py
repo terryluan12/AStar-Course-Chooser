@@ -1,6 +1,7 @@
 from mongoengine import Document, StringField
 from api.models.mongoModel.Wishlist import Wishlist
 
+
 class User(Document):
     username = StringField(required=True, unique=True)
     password = StringField(required=True)
@@ -9,9 +10,7 @@ class User(Document):
     def create(cls, username_, password_):
         usr = cls.objects(username=username_)
         Wishlist.create(username_)
-        usr.update_one(set__username=username_, 
-                       set__password=password_,
-                       upsert=True)
+        usr.update_one(set__username=username_, set__password=password_, upsert=True)
         return True
 
     @classmethod
@@ -29,9 +28,9 @@ class User(Document):
     def verify_password(cls, username_, password_):
         usr = cls.objects(username=username_).get()
         if usr and usr.password == password_:
-                return True
+            return True
         return False
-    
+
     @classmethod
     def get_wishlist(cls, username_):
         return Wishlist.objects(username=username_).get()
@@ -44,4 +43,3 @@ class User(Document):
             usr.save()
             return True
         return False
-
