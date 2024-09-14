@@ -9,7 +9,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 // import requisite_label from "../../../img/requisite-label.png";
 import empty_star from "../../../img/star.png";
-import starred from "../../../img/starred.png";
+import starred_star from "../../../img/starred.png";
 import axios from "axios";
 
 function CourseDescriptionPage(props) {
@@ -29,7 +29,7 @@ function CourseDescriptionPage(props) {
     exclusions: "",
     starred: false,
     graphics: [],
-    username: null,
+    username: null
   });
 
   const fetchCourse = async () => {
@@ -47,9 +47,9 @@ function CourseDescriptionPage(props) {
     );
   };
   const toggleStar = async () => {
-    if (!starred) {
+    if (!course.starred) {
       return await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/addCourse?username=${course.username}&code=${course.course_code}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/addCourse?username=${course.username}&course_code=${course.course_code}&course_name=${course.course_name}`,
         {
           code: course.course_code,
           username: course.username,
@@ -67,13 +67,14 @@ function CourseDescriptionPage(props) {
   };
 
   useEffect(() => {
+    const username = localStorage.getItem("username")
     const setCoursePage = async () => {
       const res = await fetchCourse();
       const prereq_str = res.data.course.prerequisite;
       const coreq_str = res.data.course.corequisite;
       const exclusion_str = res.data.course.exclusion;
 
-      let syllabus_link =
+      const syllabus_link =
         "http://courses.skule.ca/course/" + course.course_code;
 
       let temp_graph = [];
@@ -88,12 +89,14 @@ function CourseDescriptionPage(props) {
         corequisites: coreq_str,
         exclusions: exclusion_str,
         graphics: temp_graph,
+        username: username,
       });
     };
     const setWishlist = async () => {
       const res = await fetchWishlist();
+      // TODO Fix setWishlist
       const isStarred = res.data.wishlist.some(
-        (course) => course.course_code === searchParams.get("code"), // TODO Fix setWishlist
+        (course) => course.course_code === searchParams.get("code"),
       );
       setCourse({ ...course, starred: isStarred });
     };
@@ -106,7 +109,7 @@ function CourseDescriptionPage(props) {
     if (course.username) {
       const res = await toggleStar();
       setCourse({ ...course, starred: !course.starred });
-      star = star == empty_star ? starred : empty_star;
+      star = star == empty_star ? starred_star : empty_star;
       if (res.status != 200) {
         console.log("error occured while modifying wishlist: ", res.status);
       }
@@ -138,7 +141,7 @@ function CourseDescriptionPage(props) {
           </Col>
           <Col xs={4}>
             <Image
-              src={course.starred ? starred : empty_star}
+              src={course.starred ? starred_star : empty_star}
               onClick={check_star}
               alt=""
             />

@@ -54,7 +54,7 @@ function Wishlist() {
     };
 
     setWishlistPage().catch(console.error);
-    checkMinor().catch(console.error);
+    // checkMinor().catch(console.error);
   }, []);
 
   return (

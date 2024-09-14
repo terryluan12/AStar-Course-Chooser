@@ -33,9 +33,8 @@ class Result extends Component {
           `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${this.state.username}`
         )
         .then((res) => {
-          let len = res.data.wishlist.course.length;
-          for (let i = 0; i < len; i++) {
-            if (res.data.wishlist.course[i].code === this.state.course_code) {
+          for (const course in res.data.wishlist.course) {
+            if (course.code === this.state.course_code) {
               star = starred;
               this.setState({ starred: true });
             }
