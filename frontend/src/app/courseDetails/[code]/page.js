@@ -19,7 +19,7 @@ function CourseDescriptionPage(props) {
     course_name: "",
     division: "Faculty of Applied Science and Engineering",
     department: "Department of Edward S. Rogers Sr. Dept. of Electrical & Computer Engineering",
-    graph : "",
+    graph: "",
     course_description: "",
     syllabus: "",
     prerequisites: "",
@@ -37,17 +37,17 @@ function CourseDescriptionPage(props) {
   }
 
   const fetchWishlist = async () => {
-      return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${course.username}`)
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${course.username}`)
   }
   const toggleStar = async () => {
-    if (!starred){
+    if (!starred) {
       return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/addCourse?username=${course.username}&code=${course.course_code}`, {
-        'code': course.course_code, 'username':course.username
+        'code': course.course_code, 'username': course.username
       })
     }
-    else{
+    else {
       return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/removeCourse?username=${course.username}&code=${course.course_code}`, {
-        'code': course.course_code, 'username':course.username
+        'code': course.course_code, 'username': course.username
       })
     }
 
@@ -56,23 +56,22 @@ function CourseDescriptionPage(props) {
   useEffect(() => {
     const setCoursePage = async () => {
       const res = await fetchCourse()
-      const prereq_str = res.data.course.prereq.join(",")
-      const coreq_str = res.data.course.coreq.join(",")
-      const exclusion_str = res.data.course.exclusion.join(",")
+      const prereq_str = res.data.course.prerequisite
+      const coreq_str = res.data.course.corequisite
+      const exclusion_str = res.data.course.exclusion
 
       let syllabus_link = "http://courses.skule.ca/course/" + course.course_code
 
       let temp_graph = []
       //temp_graph.push(<ShowGraph graph_src={graph}></ShowGraph>)
-
       setCourse({
         ...course,
-        course_name: res.data.course.name,
+        course_name: res.data.course.course_name,
         graph: res.data.course.graph,
-        course_description : res.data.course.description, 
+        course_description: res.data.course.description,
         syllabus: syllabus_link,
-        prerequisites : prereq_str,
-        corequisites : coreq_str,
+        prerequisites: prereq_str,
+        corequisites: coreq_str,
         exclusions: exclusion_str,
         graphics: temp_graph
       })
@@ -80,24 +79,25 @@ function CourseDescriptionPage(props) {
     const setWishlist = async () => {
       const res = await fetchWishlist()
       isStarred = res.data.wishlist.some(course => course.course_code === searchParams.get("code"))
-      setCourse({...course, starred: isStarred})
-        }
+      setCourse({ ...course, starred: isStarred })
+    }
+
     setCoursePage().catch(console.error)
-    if(course.username)
-        setWishlist().catch(console.error)
+    if (course.username)
+      setWishlist().catch(console.error)
 
   }, [])
 
   const check_star = async () => {
 
-    if(course.username){
+    if (course.username) {
       const res = await toggleStar()
-      setCourse({...course, starred: !course.starred});
+      setCourse({ ...course, starred: !course.starred });
       star = (star == empty_star) ? starred : empty_star
-      if(res.status != 200){
+      if (res.status != 200) {
         console.log("error occured while modifying wishlist: ", resp.status)
       }
-    }else{ //else, notify
+    } else { //else, notify
       alert("You must login to save a course.")
     }
   }
@@ -109,7 +109,7 @@ function CourseDescriptionPage(props) {
     }
   }
 
-  return(
+  return (
 
     <div className="page-content">
       <Container className="course-template">
@@ -118,7 +118,7 @@ function CourseDescriptionPage(props) {
             <h1>{course.course_code} : {course.course_name}</h1>
           </Col>
           <Col xs={4}>
-            <Image src={course.starred? starred:empty_star} onClick={check_star} alt="" />
+            <Image src={course.starred ? starred : empty_star} onClick={check_star} alt="" />
           </Col>
         </Row>
         <Row>
@@ -159,7 +159,7 @@ function CourseDescriptionPage(props) {
           </Row>
           <Row>
             <div className={"req-graph"}>
-              <img style={{width: "70%", marginBottom: "3%"}} alt="" src={requisite_label} />
+              <img style={{ width: "70%", marginBottom: "3%" }} alt="" src={requisite_label} />
               <img src={`data:image/jpeg;base64,${course.graph}`} alt="" />
             </div>
           </Row>

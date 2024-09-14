@@ -1,6 +1,6 @@
 
 from flask import jsonify
-from flask_restful import Resource, reqparse
+from flask_restx import Resource, reqparse
 from api.models.mongoModel.User import User
 
 # -------------------- User related --------------------

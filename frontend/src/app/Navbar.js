@@ -35,7 +35,7 @@ function NavbarComp(props) {
         <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
           <Navbar.Brand>
             <Image layout="responsive" src={logo} alt="" />{" "}
-            <Nav.Link href="/astar" style={{ color: "white", display: "inline" }}>
+            <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
               A* Course Finder
             </Nav.Link>
           </Navbar.Brand>

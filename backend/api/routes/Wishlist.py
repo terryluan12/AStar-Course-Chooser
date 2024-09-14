@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse
+from flask_restx import Resource, reqparse
 from api.models.mongoModel.User import User
 from api.models.mongoModel.Minor import Minor
 from api.models.sqlModel.Course import Course

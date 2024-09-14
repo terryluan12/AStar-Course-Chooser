@@ -21,12 +21,12 @@ function HomePage(props) {
     const res = await getSearch(input)
     let result_temp = [<Label key="empty"></Label>]
 
-    switch (res.status){
+    switch (res.status) {
       case 200:
-        if (res.data.length === 0){
+        if (res.data.length === 0) {
           alert("Course not found")
         } else {
-          result_temp = res.data.map(result => <Result course_code={result.code} course_name={result.name} key={result.code}></Result>)
+          result_temp = res.data.courses.map(result => <Result course_code={result.course_code} course_name={result.course_name} key={result.code}></Result>)
         }
         break
       case 400:
@@ -40,24 +40,24 @@ function HomePage(props) {
     setResults(result_temp)
   }
 
-  const getSearch = async(input) => {
+  const getSearch = async (input) => {
     return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/searchc?input=${input}`)
   }
 
   return (
     <div className="SearchQuery">
       <div style={{ marginTop: "10%" }}>
-          <h1> A* Course Finder Search</h1>
-          <form onSubmit={handleSubmit} className={"search"}>
-              <input placeholder={"Search for course code, course name, keyword ..."} className={"text-input"} type="text" value={input} onChange={handleChange} />
-              <input type="submit" value="Submit" className={"submit-button"}/>
-          </form>
+        <h1> A* Course Finder Search</h1>
+        <form onSubmit={handleSubmit} className={"search"}>
+          <input placeholder={"Search for course code, course name, keyword ..."} className={"text-input"} type="text" value={input} onChange={handleChange} />
+          <input type="submit" value="Submit" className={"submit-button"} />
+        </form>
       </div>
 
       <div className={"search-result-display"} >
-          {results}
+        {results}
       </div>
-      
+
     </div>
   );
 }

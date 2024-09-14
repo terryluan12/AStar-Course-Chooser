@@ -2,7 +2,6 @@
 from mongoengine import connect
 from flask_cors import CORS
 from api.utils.database import sql_db
-from api.routes import api
 
 from flask import Flask, send_from_directory
 import os
@@ -20,12 +19,19 @@ app.config["MONGODB_HOST"] = os.environ.get("MONGODB_HOST", default=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI", default=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-cors = CORS(app)
+CORS(app)
 
 connect(host=app.config["MONGODB_HOST"])
 
 sql_db.init_app(app)
+with app.app_context():
+    # from api.models import *
+    sql_db.reflect()
+    
+    
+from api.routes import api
 api.init_app(app)
+
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
