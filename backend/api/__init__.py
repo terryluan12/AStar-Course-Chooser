@@ -1,6 +1,7 @@
 from mongoengine import connect
 from flask_cors import CORS
 from api.utils.database import sql_db
+from api.routes import api
 
 from flask import Flask, send_from_directory
 import os
@@ -27,11 +28,9 @@ connect(host=app.config["MONGODB_HOST"])
 
 sql_db.init_app(app)
 with app.app_context():
-    # from api.models import *
-    sql_db.reflect()
+    sql_db.create_all()
 
 
-from api.routes import api
 
 api.init_app(app)
 

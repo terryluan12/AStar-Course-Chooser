@@ -1,8 +1,9 @@
 from flask import jsonify, request
 from flask_restx import Resource, reqparse
-from api.models.mongoModel.User import User
-from api.models.mongoModel.Minor import Minor
+from api.models.sqlModel.User import User
+from api.models.sqlModel.Minor import Minor
 from api.models.sqlModel.Course import Course
+from api.models.sqlModel.Wishlist import Wishlist
 
 
 # -------------------- Wishlist related --------------------
@@ -10,11 +11,11 @@ class UserWishlist(Resource):
     def get(self):
         username = request.args.get("username")
         try:
-            resp = jsonify({"wishlist": User.get_wishlist(username_=username).expand()})
+            resp = jsonify({"wishlist": User.get_wishlist(username_=username)})
             resp.status_code = 200
             return resp
         except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
+            resp = jsonify({"error": e})
             resp.status_code = 400
             return resp
 
@@ -47,56 +48,22 @@ class UserWishlist(Resource):
 
 
 class UserWishlistAdd(Resource):
-    def get(self):
-        username = request.args.get("username")
-        code = request.args.get("code")
-        try:
-            course = Course.get(code)
-            wl = User.get_wishlist(username_=username)
-            wl.add_course(course)
-            resp = jsonify({"wishlist": wl.expand()})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
-
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("username", required=True)
-        parser.add_argument("code", required=True)
-        data = parser.parse_args()
-        username = data["username"]
-        code = data["code"]
+        username = request.args.get("username")
+        code = request.args.get("course_code")
+        name = request.args.get("course_name")
         try:
-            course = Course.get(code)
-            wl = User.get_wishlist(username_=username)
-            wl.add_course(course)
-            resp = jsonify({"wishlist": wl.expand()})
+            Wishlist.add_course(username, code, name)
+            resp = jsonify({"wishlist": "Course added"})
             resp.status_code = 200
             return resp
         except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
+            resp = jsonify({"error": e})
             resp.status_code = 400
             return resp
 
 
 class UserWishlistRemove(Resource):
-    def get(self):
-        username = request.args.get("username")
-        code = request.args.get("code")
-        try:
-            course = Course.get(code)
-            wl = User.get_wishlist(username_=username)
-            wl.remove_course(course)
-            resp = jsonify({"wishlist": wl.expand()})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -106,10 +73,8 @@ class UserWishlistRemove(Resource):
         username = data["username"]
         code = data["code"]
         try:
-            course = Course.get(code)
-            wl = User.get_wishlist(username_=username)
-            wl.remove_course(course)
-            resp = jsonify({"wishlist": wl.expand()})
+            Wishlist.remove_course(username, code)
+            resp = jsonify({"wishlist": "removed course"})
             resp.status_code = 200
             return resp
         except Exception as e:

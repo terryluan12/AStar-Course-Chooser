@@ -6,6 +6,7 @@ import api.routes.Wishlist as Wishlist
 api = Api()
 api.add_resource(Users.UserRegistration, "/api/user/register")
 api.add_resource(Users.UserLogin, "/api/user/login")
+api.add_resource(Users.UserDelete, "/api/user/delete")
 
 api.add_resource(Courses.SearchCourse, "/api/searchc")
 api.add_resource(Courses.ShowCourse, "/api/course/details")

@@ -1,11 +1,12 @@
-from mongoengine import Document, StringField, ListField
+from api.utils.database import sql_db
+from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import String
 
 
-class Minor(Document):
-    name = StringField(required=True, unique=True)
-    description = StringField()
-    requisites = ListField(ListField(ListField()))
-    # [ (['code', 'code'], 2), (['code', 'code'], 1), ]
+class Minor(sql_db.Model):
+    name: Mapped[str] = mapped_column(String(50), primary_key=True)
+    description: Mapped[str] = mapped_column(String(200), nullable=False)
+    requisites: Mapped[str] = mapped_column(String(200), nullable=False)
 
     @classmethod
     def get(cls, name_):
@@ -16,7 +17,6 @@ class Minor(Document):
         ret = []
 
         for mn in cls.objects:
-            print(f"checking {mn}")
             yes = True
             for req in mn.requisites:
                 if len(set(req[0]).intersection(set(codes_))) < req[1]:

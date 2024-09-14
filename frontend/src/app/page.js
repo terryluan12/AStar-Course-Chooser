@@ -26,9 +26,9 @@ function HomePage() {
         } else {
           result_temp = res.data.courses.map((result) => (
             <Result
+              key={result.course_code}
               course_code={result.course_code}
               course_name={result.course_name}
-              key={result.code}
             ></Result>
           ));
         }
