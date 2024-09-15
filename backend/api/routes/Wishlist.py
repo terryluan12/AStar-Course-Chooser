@@ -11,7 +11,8 @@ class UserWishlist(Resource):
     def get(self):
         username = request.args.get("username")
         try:
-            resp = jsonify({"wishlist": User.get_wishlist(username_=username)})
+            wishlistItems = [item.to_json() for item in User.get_wishlist(username_=username)]
+            resp = jsonify({"wishlist": wishlistItems})
             resp.status_code = 200
             return resp
         except Exception as e:

@@ -55,3 +55,10 @@ class Wishlist(sql_db.Model):
             "comments": self.comments,
         }
         return ret
+    
+    def to_json(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+    def __repr__(self) -> str:
+        return f"Wishlist(id={self.id}, username={self.username}, course_code={self.course_code}, course_name={self.course_name})"

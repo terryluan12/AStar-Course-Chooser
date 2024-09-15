@@ -17,7 +17,7 @@ function Wishlist() {
 
   const fetchMinorData = async () => {
     return await axios.get(
-      `http://terryluan.com/astar/user/wishlist/minorCheck?username=${username}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/minorCheck?username=${username}`,
       {
         username: username,
       },
@@ -25,7 +25,7 @@ function Wishlist() {
   };
   const fetchWishlistData = async () => {
     return await axios.get(
-      `http://terryluan.com/astar/user/wishlist?username=${username}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${username}`,
       {
         username: username,
       },
@@ -39,7 +39,8 @@ function Wishlist() {
     }
     const setWishlistPage = async () => {
       const res = await fetchWishlistData();
-      if (res.status === 200) setWishlist(res.data.wishlist.course);
+
+      if (res.status === 200) setWishlist(res.data.wishlist);
       else
         alert(
           "The system cannot return wishlist at the moment. Please try again later.",

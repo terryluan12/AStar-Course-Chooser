@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import "../../css/coursecard.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -13,13 +14,13 @@ function CourseCard(props) {
     <div className={"course-card-render"}>
       {props.wishlist_data.map((course) => (
         <Link
-          key={course.code}
-          href={`/courseDetails/${course.code}`}
+          key={course.course_code}
+          href={`/courseDetails/${course.course_code}`}
           className={"wishlist-link"}
         >
           <Col className={"text-center wishlist-card"}>
             <h5>
-              {course.code}: {course.name}
+              {course.course_code}: {course.course_name}
             </h5>
           </Col>
         </Link>
