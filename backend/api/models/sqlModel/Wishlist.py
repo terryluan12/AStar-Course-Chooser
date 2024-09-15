@@ -10,6 +10,11 @@ class Wishlist(sql_db.Model):
     course_name: Mapped[str] = mapped_column(String(50), nullable=False)
     # comments = DictField()
 
+    def __repr__(self) -> str:
+        return f"Wishlist(id={self.id}, username={self.username}, course_code={self.course_code}, course_name={self.course_name})"
+
+    def to_json(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     @classmethod
     def add_course(self, username, course_code, course_name):
@@ -55,10 +60,3 @@ class Wishlist(sql_db.Model):
             "comments": self.comments,
         }
         return ret
-    
-    def to_json(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-
-    def __repr__(self) -> str:
-        return f"Wishlist(id={self.id}, username={self.username}, course_code={self.course_code}, course_name={self.course_name})"

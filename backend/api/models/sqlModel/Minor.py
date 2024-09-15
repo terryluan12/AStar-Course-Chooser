@@ -9,17 +9,17 @@ class Minor(sql_db.Model):
     requisites: Mapped[str] = mapped_column(String(200), nullable=False)
 
     @classmethod
-    def get(cls, name_):
-        return cls.objects(name=name_).get()
+    def get(cls, name):
+        return cls.objects(name=name).get()
 
     @classmethod
-    def check(cls, codes_):
+    def check(cls, codes):
         ret = []
 
         for mn in cls.objects:
             yes = True
             for req in mn.requisites:
-                if len(set(req[0]).intersection(set(codes_))) < req[1]:
+                if len(set(req[0]).intersection(set(codes))) < req[1]:
                     yes = False
                     break
             if yes:

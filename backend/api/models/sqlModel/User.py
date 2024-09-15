@@ -7,6 +7,12 @@ class User(sql_db.Model):
     username: Mapped[str] = mapped_column(String(50), primary_key=True)
     password: Mapped[str] = mapped_column(String(150), nullable=False)
     
+    def to_json(self):
+        return {"username": self.username}
+
+    def __repr__(self) -> str:
+        return f"User(username={self.username})"
+
     @classmethod
     def get(cls, username):
         stmt = (
@@ -18,17 +24,17 @@ class User(sql_db.Model):
         
     
     @classmethod
-    def create(cls, username_, password_):
-        usr = cls(username=username_, password=password_)
+    def create(cls, username, password):
+        usr = cls(username=username, password=password)
         sql_db.session.add(usr)
         sql_db.session.commit()
         return True
 
     @classmethod
-    def delete(cls, username_, password):
+    def delete(cls, username, password):
         stmt = (
             delete(cls)
-            .where(cls.username == username_)
+            .where(cls.username == username)
             .where(cls.password==password)
             .execution_options(synchronize_session="fetch")
         )
@@ -37,25 +43,21 @@ class User(sql_db.Model):
         if num_deleted == 0:
           return False
         else:
-            Wishlist.delete(username=username_)
+            Wishlist.delete(username=username)
             return True
 
     @classmethod
-    def verify_password(cls, username_, password_):
-        usr = sql_db.get_or_404(cls, username_)
-        if usr.password == password_:
+    def verify_password(cls, username, password):
+        usr = sql_db.get_or_404(cls, username)
+        if usr.password == password:
                 return True
         return False
-    
-    @classmethod
-    def get_wishlist(cls, username_):
-        return Wishlist.get(username=username_)
 
     @classmethod
-    def add_comment(cls, username_, code_, comment_):
-        usr = cls.objects(username=username_).get()
+    def add_comment(cls, username, code, comment):
+        usr = cls.objects(username=username).get()
         if usr:
-            usr.comments[code_] = comment_
+            usr.comments[code] = comment
             usr.save()
             return True
         return False

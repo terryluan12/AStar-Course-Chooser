@@ -26,7 +26,7 @@ class UserWishlist(Resource):
         data = parser.parse_args()
         username = data["username"]
         try:
-            resp = jsonify({"wishlist": User.get_wishlist(username_=username).expand()})
+            resp = jsonify({"wishlist": User.get_wishlist(username).expand()})
             resp.status_code = 200
             return resp
         except Exception as e:
@@ -39,7 +39,7 @@ class UserWishlist(Resource):
         parser.add_argument("code", required=True)
         data = parser.parse_args()
         code = data["code"]
-        if not Course.objects(code=code):
+        if not Course.objects(code):
             resp = jsonify({"message": f"Course {code} doesn't exist"})
             resp.status_code = 404
             return resp
@@ -88,9 +88,9 @@ class UserWishlistMinorCheck(Resource):
     def get(self):
         username = request.args.get("username")
         try:
-            wl = User.get_wishlist(username_=username)
+            wl = Wishlist.get(username)
             courses = [c.code for c in wl.course]
-            check = Minor.check(codes_=courses)
+            check = Minor.check(courses)
             resp = jsonify({"minorCheck": check})
             resp.status_code = 200
             return resp
@@ -105,9 +105,9 @@ class UserWishlistMinorCheck(Resource):
         data = parser.parse_args()
         username = data["username"]
         try:
-            wl = User.get_wishlist(username_=username)
+            wl = User.get(username)
             courses = [c.code for c in wl.course]
-            check = Minor.check(codes_=courses)
+            check = Minor.check(courses)
             resp = jsonify({"minorCheck": check})
             resp.status_code = 200
             return resp
