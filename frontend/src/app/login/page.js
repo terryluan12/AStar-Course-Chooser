@@ -6,6 +6,7 @@ import axios from "axios";
 import "../../css/LogIn.css";
 
 function LoginPage() {
+  // TODO: fix username password procedure
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [_, setLogin] = useState(false);

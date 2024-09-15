@@ -11,7 +11,7 @@ class UserWishlist(Resource):
     def get(self):
         username = request.args.get("username")
         try:
-            wishlistItems = [item.to_json() for item in User.get_wishlist(username_=username)]
+            wishlistItems = [item.to_json() for item in Wishlist.get(username)]
             resp = jsonify({"wishlist": wishlistItems})
             resp.status_code = 200
             return resp
@@ -19,33 +19,6 @@ class UserWishlist(Resource):
             resp = jsonify({"error": e})
             resp.status_code = 400
             return resp
-
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("username", required=True)
-        data = parser.parse_args()
-        username = data["username"]
-        try:
-            resp = jsonify({"wishlist": User.get_wishlist(username).expand()})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
-
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("code", required=True)
-        data = parser.parse_args()
-        code = data["code"]
-        if not Course.objects(code):
-            resp = jsonify({"message": f"Course {code} doesn't exist"})
-            resp.status_code = 404
-            return resp
-
-
-# ------------------------------------------------------------
 
 
 class UserWishlistAdd(Resource):
