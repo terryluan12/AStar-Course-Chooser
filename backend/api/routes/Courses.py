@@ -8,49 +8,39 @@ import re
 
 
 # -------------------- Course related --------------------
-class SearchCourse(Resource):
+class CourseView(Resource):
     def get(self):
-        input = request.args.get("input")
+        input = request.args.get("code")
         codes = re.findall("[a-zA-Z]{3}\d{3}[a-zA-Z]?\d?", input)
-        for code in codes:
-            code = code.upper()
-            if len(code) == 6:
-                code += "H1"
-            elif len(code) == 5:
-                code += "1"
-            course = sql_db.get_or_404(Course, code) # add 400 error
+        print(f'codes is {codes}')
+        print(f'input is  is {input}')
+        if codes:
+            for code in codes:
+                code = code.upper()
+                if len(code) == 6:
+                    code += "[A-Z][0-9]"
+                elif len(code) == 5:
+                    code += "[0-9]"
+                courses = Course.get(code) # add 400 error
+                try:
+                    resp = jsonify({"courses": courses})
+                    resp.status_code = 200
+                    return resp
+                except Exception as e:
+                    resp = jsonify({"error": e})
+                    resp.status_code = 400
+                    return resp
+        else:
+            # TODO Implement Fuzzy Searching
+            courses = Course.get(input + '*')
             try:
-                resp = jsonify({"courses": [course.to_json()]})
+                resp = jsonify({"courses": courses})
                 resp.status_code = 200
                 return resp
             except Exception as e:
                 resp = jsonify({"error": e})
                 resp.status_code = 400
                 return resp
-        # input = ' '.join([nysiis(w) for w in input.split()])
-        try:
-            courses = Course.get(input + '*')
-            resp = jsonify({"courses": courses})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": e})
-            resp.status_code = 400
-            return resp
-
-
-class ShowCourse(Resource):
-    def get(self):
-        code = request.args.get("code")
-        course = sql_db.get_or_404(Course, code)
-        try:
-            resp = jsonify({"course": course.to_json()})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
 
 
 # class ShowCourseGraph(Resource):

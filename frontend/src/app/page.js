@@ -46,7 +46,7 @@ function HomePage() {
 
   const getSearch = async (input) => {
     return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/searchc?input=${input}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/course?code=${input}`,
     );
   };
 

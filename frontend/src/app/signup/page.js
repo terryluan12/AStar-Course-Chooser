@@ -30,7 +30,7 @@ function SignupPage() {
 
   const createAccount = async (username, password) => {
     return await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/register`,
+      `${process.env.NEXT_PUBLIC_API_URL}/user`,
       {
         username: username,
         password: password,

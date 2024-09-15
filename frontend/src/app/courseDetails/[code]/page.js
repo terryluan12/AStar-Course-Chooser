@@ -34,7 +34,7 @@ function CourseDescriptionPage(props) {
 
   const fetchCourse = async () => {
     return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/course/details?code=${course.course_code}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/course?code=${course.course_code}`,
       {
         code: course.course_code,
       },
@@ -43,21 +43,21 @@ function CourseDescriptionPage(props) {
 
   const fetchWishlist = async (username) => {
     return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${username}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${username}`,
     );
   };
   const toggleStar = async () => {
     if (!course.starred) {
       return await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/addCourse?username=${course.username}&course_code=${course.course_code}&course_name=${course.course_name}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${course.username}&course_code=${course.course_code}&course_name=${course.course_name}`,
         {
           code: course.course_code,
           username: course.username,
         },
       );
     } else {
-      return await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/removeCourse?username=${course.username}&code=${course.course_code}`,
+      return await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${course.username}&code=${course.course_code}`,
         {
           code: course.course_code,
           username: course.username,
@@ -68,7 +68,7 @@ function CourseDescriptionPage(props) {
 
   useEffect(() => {
     const setCoursePage = async () => {
-      const course_res = await fetchCourse().then((res) => res.data.course);
+      const course_res = await fetchCourse().then((res) => res.data.courses[0]);
       const username = localStorage.getItem("username")
       let isStarred = false
       if (username) {

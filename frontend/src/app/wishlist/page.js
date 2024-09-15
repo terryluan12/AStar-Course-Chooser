@@ -17,7 +17,7 @@ function Wishlist() {
 
   const fetchMinorData = async () => {
     return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist/minorCheck?username=${username}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/wishlist/minorCheck?username=${username}`,
       {
         username: username,
       },
@@ -25,7 +25,7 @@ function Wishlist() {
   };
   const fetchWishlistData = async () => {
     return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${username}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/user?username=${username}`,
       {
         username: username,
       },

@@ -37,7 +37,7 @@ function LoginPage() {
     }
   };
   const loginAccount = async (username, password) => {
-    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/session`, {
       username: username,
       password: password,
     });

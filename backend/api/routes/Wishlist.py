@@ -4,10 +4,11 @@ from api.models.sqlModel.User import User
 from api.models.sqlModel.Minor import Minor
 from api.models.sqlModel.Course import Course
 from api.models.sqlModel.Wishlist import Wishlist
+from flask.views import MethodView
 
 
 # -------------------- Wishlist related --------------------
-class UserWishlist(Resource):
+class WishlistView(Resource):
     def get(self):
         username = request.args.get("username")
         try:
@@ -20,8 +21,6 @@ class UserWishlist(Resource):
             resp.status_code = 400
             return resp
 
-
-class UserWishlistAdd(Resource):
     def post(self):
         username = request.args.get("username")
         code = request.args.get("course_code")
@@ -36,10 +35,7 @@ class UserWishlistAdd(Resource):
             resp.status_code = 400
             return resp
 
-
-class UserWishlistRemove(Resource):
-
-    def post(self):
+    def remove(self):
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
         parser.add_argument("code", required=True)
@@ -56,35 +52,34 @@ class UserWishlistRemove(Resource):
             resp.status_code = 400
             return resp
 
+# class UserWishlistMinorCheck(Resource):
+#     def get(self):
+#         username = request.args.get("username")
+#         try:
+#             wl = Wishlist.get(username)
+#             courses = [c.code for c in wl.course]
+#             check = Minor.check(courses)
+#             resp = jsonify({"minorCheck": check})
+#             resp.status_code = 200
+#             return resp
+#         except Exception as e:
+#             resp = jsonify({"error": "something went wrong"})
+#             resp.status_code = 400
+#             return resp
 
-class UserWishlistMinorCheck(Resource):
-    def get(self):
-        username = request.args.get("username")
-        try:
-            wl = Wishlist.get(username)
-            courses = [c.code for c in wl.course]
-            check = Minor.check(courses)
-            resp = jsonify({"minorCheck": check})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
-
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("username", required=True)
-        data = parser.parse_args()
-        username = data["username"]
-        try:
-            wl = User.get(username)
-            courses = [c.code for c in wl.course]
-            check = Minor.check(courses)
-            resp = jsonify({"minorCheck": check})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
+#     def post(self):
+#         parser = reqparse.RequestParser()
+#         parser.add_argument("username", required=True)
+#         data = parser.parse_args()
+#         username = data["username"]
+#         try:
+#             wl = User.get(username)
+#             courses = [c.code for c in wl.course]
+#             check = Minor.check(courses)
+#             resp = jsonify({"minorCheck": check})
+#             resp.status_code = 200
+#             return resp
+#         except Exception as e:
+#             resp = jsonify({"error": "something went wrong"})
+#             resp.status_code = 400
+#             return resp
