@@ -20,7 +20,7 @@ class SearchCourse(Resource):
                 code += "1"
             course = sql_db.get_or_404(Course, code) # add 400 error
             try:
-                resp = jsonify({"courses": list(course).to_json()})
+                resp = jsonify({"courses": [course.to_json()]})
                 resp.status_code = 200
                 return resp
             except Exception as e:
