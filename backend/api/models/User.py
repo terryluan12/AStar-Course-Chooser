@@ -1,4 +1,4 @@
-from api.models.sqlModel.Wishlist import Wishlist
+from api.models.Wishlist import Wishlist
 from api.utils.database import sql_db
 from sqlalchemy import String, delete, select, update
 from sqlalchemy.orm import mapped_column, Mapped

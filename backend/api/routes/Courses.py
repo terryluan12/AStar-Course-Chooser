@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restx import Namespace, Resource, reqparse, fields
 from api.utils.database import sql_db
-from api.models.sqlModel.Course import Course
+from api.models.Course import Course
 from nysiis import nysiis
 import re
 

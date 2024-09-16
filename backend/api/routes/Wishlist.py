@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_restx import Namespace, Resource, reqparse, fields
-from api.models.sqlModel.Wishlist import Wishlist
+from api.models.Wishlist import Wishlist
 
 
 api = Namespace('Wishlists', description='Wishlist related operations')

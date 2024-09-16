@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restx import Namespace, Resource, reqparse
-from api.models.sqlModel.User import User
+from api.models.User import User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Namespace('Users', description='User related operations')
