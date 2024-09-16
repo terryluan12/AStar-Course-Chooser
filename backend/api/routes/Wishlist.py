@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_restx import Namespace, Resource, reqparse, fields
-from api.models.Wishlist import Wishlist
+from api.models.User import User
 
 
 api = Namespace('Wishlists', description='Wishlist related operations')
@@ -20,7 +20,7 @@ class WishlistView(Resource):
     def get(self):
         username = request.args.get("username")
         try:
-            wishlistItems = [item.to_json() for item in Wishlist.get(username)]
+            wishlistItems = User.get(username).getWishlist()
             resp = jsonify({"wishlist": wishlistItems})
             resp.status_code = 200
             return resp
@@ -36,7 +36,7 @@ class WishlistView(Resource):
         code = request.args.get("course_code")
         name = request.args.get("course_name")
         try:
-            Wishlist.add_course(username, code, name)
+            User.get(username).appendWishlist(code)
             resp = jsonify({"wishlist": "Course added"})
             resp.status_code = 200
             return resp
@@ -55,7 +55,7 @@ class WishlistView(Resource):
         username = data["username"]
         code = data["code"]
         try:
-            Wishlist.remove_course(username, code)
+            User.get(username).delete(code)
             resp = jsonify({"wishlist": "removed course"})
             resp.status_code = 200
             return resp

@@ -1,6 +1,7 @@
 # This is the model
 
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import relationship, mapped_column, Mapped
+from api.models.Wishlist import Wishlist
 from api.utils.database import sql_db
 from sqlalchemy import desc
 from sqlalchemy.dialects.mysql import match
