@@ -17,27 +17,27 @@ class Wishlist(sql_db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     @classmethod
-    def add_course(self, username, course_code, course_name):
-        course = self(username=username, course_code=course_code, course_name=course_name)
+    def add_course(cls, username, course_code, course_name):
+        course = cls(username=username, course_code=course_code, course_name=course_name)
         sql_db.session.add(course)
         sql_db.session.commit()
 
     @classmethod
-    def remove_course(self, username, course_code):
+    def remove_course(cls, username, course_code):
         stmt = (
-            delete(self)
-            .where(self.username == username)
-            .where(self.course_code == course_code)
+            delete(cls)
+            .where(cls.username == username)
+            .where(cls.course_code == course_code)
             .execution_options(synchronize_session="fetch")
         )
         sql_db.session.execute(stmt)
         sql_db.session.commit()
 
     @classmethod
-    def delete(self, username):
+    def delete(cls, username):
         stmt = (
-            delete(self)
-            .where(self.username == username)
+            delete(cls)
+            .where(cls.username == username)
             .execution_options(synchronize_session="fetch")
         )
         test = sql_db.session.execute(stmt)
@@ -45,18 +45,18 @@ class Wishlist(sql_db.Model):
         print(f'test1 is {test}, and test2 is {test2}')
     
     @classmethod
-    def get(self, username):
+    def get(cls, username):
         stmt = (
-            select(self)
+            select(cls)
             .filter_by(username = username)
         )
         results = sql_db.session.execute(stmt).scalars().all()
         return results
         
-    def expand(self):
-        ret = {
-            "username": self.username,
-            "course": self.course,
-            "comments": self.comments,
-        }
-        return ret
+    # def expand(self):
+    #     ret = {
+    #         "username": self.username,
+    #         "course": self.course,
+    #         "comments": self.comments,
+    #     }
+    #     return ret
