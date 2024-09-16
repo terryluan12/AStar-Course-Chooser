@@ -1,6 +1,6 @@
 from api.models.sqlModel.Wishlist import Wishlist
 from api.utils.database import sql_db
-from sqlalchemy import String, delete, select
+from sqlalchemy import String, delete, select, update
 from sqlalchemy.orm import mapped_column, Mapped
 
 class User(sql_db.Model):
@@ -31,11 +31,10 @@ class User(sql_db.Model):
         return True
 
     @classmethod
-    def delete(cls, username, password):
+    def delete(cls, username):
         stmt = (
             delete(cls)
             .where(cls.username == username)
-            .where(cls.password==password)
             .execution_options(synchronize_session="fetch")
         )
         sql_db.session.execute(stmt)
@@ -45,13 +44,17 @@ class User(sql_db.Model):
         else:
             Wishlist.delete(username=username)
             return True
-
+    
     @classmethod
-    def verify_password(cls, username, password):
-        usr = sql_db.get_or_404(cls, username)
-        if usr.password == password:
-                return True
-        return False
+    def update(cls, username, password):
+        stmt = (
+            update(cls)
+            .where(cls.username == username)
+            .values(password=password)
+        )
+        sql_db.session.execute(stmt)
+        sql_db.session.commit()
+        return True
 
     @classmethod
     def add_comment(cls, username, code, comment):

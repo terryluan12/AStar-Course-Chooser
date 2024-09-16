@@ -60,7 +60,7 @@ function LoginPage() {
           name="password"
           onChange={handlePasswordChange}
           required
-          type="text"
+          type="password"
           placeholder="Password"
           className={"signup-input"}
         />

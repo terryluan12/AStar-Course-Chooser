@@ -1,14 +1,32 @@
 from flask import jsonify, request
-from flask_restx import Resource, reqparse
-import json
+from flask_restx import Namespace, Resource, reqparse, fields
 from api.utils.database import sql_db
 from api.models.sqlModel.Course import Course
 from nysiis import nysiis
 import re
 
+api = Namespace('Course', description='Course related operations')
 
-# -------------------- Course related --------------------
+model = api.model('Course', {
+    'course_code': fields.String,
+    'course_name': fields.String,
+    'credit_value': fields.String,
+    'hours': fields.String,
+    'description': fields.String,
+    'prerequisite': fields.String,
+    'corequisite': fields.String,
+    'exclusion': fields.String,
+    'recommended_preparation': fields.String,
+    'total_aus': fields.String,
+    'program_tags': fields.String,
+})
+
+@api.route('/course')
 class CourseView(Resource):
+    
+    @api.doc(params={'code': 'Course code'})
+    @api.doc(responses={404: 'Course not found'})
+    @api.marshal_with(model, code=200, description='Course found')
     def get(self):
         input = request.args.get("code")
         codes = re.findall("[a-zA-Z]{3}\d{3}[a-zA-Z]?\d?", input)

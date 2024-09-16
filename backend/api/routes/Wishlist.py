@@ -1,14 +1,22 @@
 from flask import jsonify, request
-from flask_restx import Resource, reqparse
-from api.models.sqlModel.User import User
-from api.models.sqlModel.Minor import Minor
-from api.models.sqlModel.Course import Course
+from flask_restx import Namespace, Resource, reqparse, fields
 from api.models.sqlModel.Wishlist import Wishlist
-from flask.views import MethodView
 
 
-# -------------------- Wishlist related --------------------
+api = Namespace('Wishlists', description='Wishlist related operations')
+
+model = api.model('WishlistItem', {
+    'id': fields.Integer,
+    'username': fields.String,
+    'course_code': fields.String,
+    'course_name': fields.String,
+})
+
+@api.route('/wishlist')
 class WishlistView(Resource):
+
+    @api.doc(params={'username': 'User\'s username'})
+    @api.marshal_with(model, code=200, description='Course Found')
     def get(self):
         username = request.args.get("username")
         try:
@@ -21,6 +29,8 @@ class WishlistView(Resource):
             resp.status_code = 400
             return resp
 
+    @api.doc(params={'username': 'User\'s username', 'course_code': 'Course Code', 'course_name': 'Course Name'})
+    @api.doc(responses={ 201: 'Wishlist Item created'})
     def post(self):
         username = request.args.get("username")
         code = request.args.get("course_code")
@@ -35,7 +45,9 @@ class WishlistView(Resource):
             resp.status_code = 400
             return resp
 
-    def remove(self):
+    @api.doc(params={'username': 'User\'s username', 'course_code': 'Course Code'})
+    @api.doc(responses={ 200: 'Wishlist Item deleted'})
+    def delete(self):
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
         parser.add_argument("code", required=True)
