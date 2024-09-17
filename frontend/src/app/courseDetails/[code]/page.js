@@ -72,7 +72,7 @@ function CourseDescriptionPage(props) {
       const username = localStorage.getItem("username")
       let isStarred = false
       if (username) {
-        const wishlist = await fetchWishlist(username).then((res) => res.data.wishlist);;
+        const wishlist = await fetchWishlist(username).then((res) => res.data.wishlist);
         isStarred = wishlist.some(
           (wishlist_course) => wishlist_course.course_code === course.course_code,
         );
@@ -106,7 +106,7 @@ function CourseDescriptionPage(props) {
       setCourse({ ...course, starred: !course.starred });
       star = star == empty_star ? starred_star : empty_star;
       if (res.status != 200) {
-        console.log("error occured while modifying wishlist: ", res.status);
+        alert("error occured while modifying wishlist: ", res.status);
       }
     } else {
       //else, notify

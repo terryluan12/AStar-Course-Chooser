@@ -7,7 +7,6 @@ from flask import Flask, send_from_directory
 import os
 
 from dotenv import load_dotenv
-
 load_dotenv()
 
 app = Flask(__name__)

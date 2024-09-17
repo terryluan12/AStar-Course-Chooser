@@ -11,31 +11,26 @@ class UserView(Resource):
     @api.doc(params={'username': 'User\'s username', 'password': 'User\'s password'})
     @api.doc(responses={ 201: 'User created', 409: 'Username already exists'})
     def post(self):
+        resp = {}
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
         parser.add_argument("password", required=True)
         data = parser.parse_args()
         username = data["username"]
-        password = generate_password_hash(data["password"])
+        password = data["password"]
 
         if User.get(username):
-            resp = jsonify({"message": "Username already exists"})
-            resp.status_code = 409
-            return resp
-
-        try:
-            User.put(username, password)
-            resp = jsonify({})
-            resp.status_code = 201
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": e})
-            resp.status_code = 400
-            return resp
+            resp["message"] = "User already exists"
+            return resp, 409
+        else:
+            User.put(username, generate_password_hash(password))
+            resp["message"] = "User "+ username + " created"
+            return resp, 201
     
     @api.doc(params={'username': 'User\'s username', 'oldPassword': 'Password to change from', 'newPassword': 'Password to change to'})
-    @api.doc(responses={200: 'Success - Password changed', 404: 'User not found'})
+    @api.doc(responses={200: 'Success - Password changed', 401: "Password Incorrect", 404: 'User not found'})
     def patch(self):
+        resp = {}
         # TODO FIX PASSWORD UPDATE
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
@@ -43,48 +38,43 @@ class UserView(Resource):
         parser.add_argument("newPassword", required=True)
         data = parser.parse_args()
         username = data["username"]
-        password = data["oldPassword"]
-        try:
-            User.update(username, generate_password_hash(password))
-            resp = jsonify({})
-            resp.status_code = 200
-            return resp
-        except Exception as e:
-            resp = jsonify({"error": "something went wrong"})
-            resp.status_code = 400
-            return resp
+        oldPassword = data["oldPassword"]
+        newPassword = data["newPassword"]
+        
+        user = User.get(username)
+        
+        if user is None:
+            resp["message"] = "User " + data["username"] + " could not be found"
+            return resp, 404
+        else:
+            if check_password_hash(user.password, oldPassword):
+                User.update(username, generate_password_hash(newPassword))
+                resp["message"] = "Password Changed"
+                return resp, 200
+            else:
+                resp["message"] = "Password Incorrect"
+                return resp, 401
 
     @api.doc(params={'username': 'User\'s username ', 'password': 'User\'s password'})
-    @api.doc(responses={200: 'Success - User deleted', 404: 'User not found', 404: 'Something went wrong'})
+    @api.doc(responses={200: 'Success - User deleted', 401: "Password Incorrect", 404: 'User not found'})
     def delete(self):
-        resp = jsonify()
+        resp = {}
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
         parser.add_argument("password", required=True)
         data = parser.parse_args()
-        user = User.get(data["username"])
         attemptedPassword = data["password"]
+
+        user = User.get(data["username"])
         
         if user is None:
-            resp.status = "error"
-            resp.status_code = 404
-            resp.message = "User " + data["username"] + " could not be found"
-
-        try:
+            resp["message"] = "User " + data["username"] + " could not be found"
+            return resp, 404
+        else:
             if check_password_hash(user.password, attemptedPassword):
                 User.delete(data["username"], user.password)
-                resp.status = "success"
-                resp.status_code = 200
-                resp.message = "User " + data["username"] + " deleted"
-                return resp
+                resp["message"] = "User " + data["username"] + " deleted"
+                return resp, 200
             else:
-                resp.status = "error"
-                resp.status_code = 401
-                resp.message = "Password Incorrect"
-                return resp
-        except Exception as e:
-            resp.status = "error"
-            resp.status_code = 400
-            resp.message = "something went wrong\n" + str(e)
-            return resp
-
+                resp["message"] = "Password Incorrect"
+                return resp, 401

@@ -1,4 +1,5 @@
 from api.models.Wishlist import Wishlist
+from api.models.Course import Course
 from api.utils.database import sql_db
 from sqlalchemy import Integer, String, delete, select, update
 from sqlalchemy.orm import relationship, mapped_column, Mapped
@@ -7,7 +8,7 @@ class User(sql_db.Model):
     user_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(50), unique=True)
     password: Mapped[str] = mapped_column(String(300), nullable=False)
-    wished_courses: Mapped["Wishlist"] = relationship('Course', secondary=Wishlist.__table__, backref='user')
+    wished_courses = relationship('Course', secondary=Wishlist.__table__, back_populates='subscribed_users')
     
     def to_json(self):
         return {"username": self.username}
@@ -16,15 +17,21 @@ class User(sql_db.Model):
         return f"User(username={self.username})"
     
     def getWishlist(self):
-        return self.wished_courses
+        return self.wished_courses if self.wished_courses else []
     
-    def appendWishlist(self, course_code):
-        self.wished_courses.append(course_code)
-        sql_db.commit()
+    def appendWishlist(self, course):
+        if not course in self.wished_courses:
+            self.wished_courses.append(course)
+            sql_db.session.commit()
+            return True
+        return False
 
-    def removeWishlist(self, course_code):
-        self.wished_courses.remove(course_code)
-        sql_db.commit()
+    def removeWishlist(self, course):
+        if course in self.wished_courses:
+            self.wished_courses.remove(course)
+            sql_db.session.commit()
+            return True
+        return False
 
     @classmethod
     def get(cls, username):

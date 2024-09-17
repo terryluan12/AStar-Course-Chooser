@@ -12,7 +12,7 @@ MAX_COURSES_PER_PAGE = 30
 TOTAL_PAGES = 19
 COURSE_REGEX = re.compile(r"[A-Z]{3}\d{3}[A-Z]\d\s-\s")
 KEYWORD_REGEX = re.compile(
-    r"Fixed Credit Value|Hours|Description|Prerequisite|Corequisite|Exclusion|Recommended Preparation|Total AUs|Program Tags|��Faculty of Applied Science & Engineering"
+    r"Fixed Credit Value|Hours|Description|Prerequisite|Corequisite|Exclusion|Recommended Preparation|Total AUs|Program Tags|©\xa0Faculty of Applied Science & Engineering"
 )
 
 courses = []
@@ -66,7 +66,6 @@ for course in courses:
                 continue
             value.append(strings[i])
         course[key] = value
-
 
 with open("courses.json", "a+") as writer:
     writer.write(json.dumps(courses, indent=2))

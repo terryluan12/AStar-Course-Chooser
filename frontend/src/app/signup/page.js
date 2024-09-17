@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from 'next/navigation'
 import "../../css/SignUp.css";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter()
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -17,25 +19,28 @@ function SignupPage() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    const res = await createAccount(username, password);
-    switch (res.status) {
-      case 200:
-        alert("Create Account Successfully!");
-        break;
-      default:
-        alert("Unknown Error. Please contact website owner");
-        break;
+    const res = await createAccount(username, password)
+    alert(res.data.message)
+    if (res.status === 201) {
+      localStorage.setItem("username", username);
+      router.push('/wishlist')
     }
   };
 
   const createAccount = async (username, password) => {
-    return await axios.post(
+    let response = null
+    await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/user`,
       {
         username: username,
         password: password,
       },
-    );
+    ).then((res) => {
+      response = res;
+    }).catch((err) => {
+      response = err.response;
+    });
+    return response;
   };
 
   return (

@@ -25,7 +25,7 @@ function Wishlist() {
   };
   const fetchWishlistData = async () => {
     return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/user?username=${username}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${username}`,
       {
         username: username,
       },

@@ -2,11 +2,13 @@ import mysql.connector
 import json
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 host = os.environ.get("HOST_URL")
 user = os.environ.get("DB_USER")
-password = user = os.environ.get("DB_PASSWORD")
+password = os.environ.get("DB_PASSWORD")
 database = os.environ.get("DATABASE")
-
 db_config = {"user": user, "password": password, "host": host, "database": database}
 
 # CREATE_COMMAND = """CREATE TABLE course ( \

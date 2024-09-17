@@ -30,7 +30,7 @@ class Result extends Component {
     if (this.state.username) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/wishlist?username=${this.state.username}`
+          `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${this.state.username}`
         )
         .then((res) => {
           for (const course of res.data.wishlist.values()) {
