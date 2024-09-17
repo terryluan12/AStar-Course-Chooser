@@ -12,14 +12,14 @@ class Course(sql_db.Model):
     course_code: Mapped[str] = mapped_column(String(10), primary_key=True)
     course_name: Mapped[str] = mapped_column(String(100))
     credit_value: Mapped[float]
-    hours: Mapped[str] = mapped_column(String(50))
+    hours: Mapped[str] = mapped_column(String(50), nullable=True)
     description: Mapped[str] = mapped_column(String(300))
-    prerequisite: Mapped[str] = mapped_column(String(150))
-    corequisite: Mapped[str] = mapped_column(String(150))
-    exclusion: Mapped[str] = mapped_column(String(150))
-    recommended_preparation: Mapped[str] = mapped_column(String(150))
-    total_aus: Mapped[str] = mapped_column(String(100))
-    program_tags: Mapped[str] = mapped_column(String(100))
+    prerequisite: Mapped[str] = mapped_column(String(150), nullable=True)
+    corequisite: Mapped[str] = mapped_column(String(150), nullable=True)
+    exclusion: Mapped[str] = mapped_column(String(150), nullable=True)
+    recommended_preparation: Mapped[str] = mapped_column(String(150), nullable=True)
+    total_aus: Mapped[str] = mapped_column(String(100), nullable=True)
+    program_tags: Mapped[str] = mapped_column(String(100), nullable=True)
     subscribed_users = relationship('User', secondary=Wishlist.__table__, back_populates='wished_courses')
 
     __table_args__ = (

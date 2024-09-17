@@ -7,4 +7,5 @@ env/
 *.pyc
 __pycache__
 node_modules/
+courses.json
 .next
