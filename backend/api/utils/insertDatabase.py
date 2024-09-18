@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # INSERT_COMMAND =    ("""
-#                     INSERT INTO course (course_code, course_name, credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags)
+#                     INSERT INTO course (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags)
 #                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 #                     """,
-#                       (course_code, course_name, credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags))
+#                       (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags))
 
 # UPDATE_COMMAND = ("""
 #                     UPDATE course
@@ -33,39 +33,39 @@ def insert_sql():
         json_data = reader.read()
         data = json.loads(json_data)
         for datapoint in data:
-            course_code = datapoint["Course Code"]
-            course_name = datapoint["Course Name"]
-            credit_value = float(datapoint.get("Fixed Credit Value", -1))
-            hours = datapoint.get("Hours", None)
-            description = datapoint.get("Description", None)
-            prerequisite = datapoint.get("Prerequisite", None)
-            corequisite = datapoint.get("Corequisite", None)
-            exclusion = datapoint.get("Exclusion", None)
-            recommended_preparation = datapoint.get("Recommended Preparation", None)
-            total_AUs = datapoint.get("Total AUs", None)
-            program_tags = datapoint.get("Program Tags", None)
+            course_code = datapoint["course_code"]
+            course_name = datapoint["course_name"]
+            fixed_credit_value = float(datapoint.get("fixed_credit_value", -1))
+            hours = datapoint.get("hours", None)
+            description = datapoint.get("description", None)
+            prerequisite = datapoint.get("prerequisite", None)
+            corequisite = datapoint.get("corequisite", None)
+            exclusion = datapoint.get("exclusion", None)
+            recommended_preparation = datapoint.get("recommended_preparation", None)
+            total_aus = datapoint.get("total_aus", None)
+            program_tags = datapoint.get("program_tags", None)
             cursor.execute(
                 """
-                        INSERT INTO course (course_code, course_name, credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags)
+                        INSERT INTO course (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_aus, program_tags)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         """,
                 (
                     course_code,
                     course_name,
-                    credit_value,
+                    fixed_credit_value,
                     hours,
                     description,
                     prerequisite,
                     corequisite,
                     exclusion,
                     recommended_preparation,
-                    total_AUs,
+                    total_aus,
                     program_tags,
                 ),
             )
             connection.commit()
 
-def put_opensearch():
+def insert_opensearch():
     # Define the URL and the payload
     url = os.environ.get("OPENSEARCH_URL")+"/courses/_bulk"
     username = os.environ.get("OPENSEARCH_USERNAME")
@@ -97,3 +97,6 @@ def put_opensearch():
         # Print the response
         print(response.status_code)
         # print(response.json())
+        
+# insert_sql()
+insert_opensearch()
