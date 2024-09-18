@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import "../../css/coursecard.css";
+import "@/css/coursecard.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Col from "react-bootstrap/Col";
 import Link from "next/link";

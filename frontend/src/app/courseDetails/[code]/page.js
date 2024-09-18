@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import "../../../css/course-description.css";
+import "@/css/course-description.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 // import requisite_label from "../../../img/requisite-label.png";
-import empty_star from "../../../img/star.png";
-import starred_star from "../../../img/starred.png";
+import empty_star from "@/img/star.png";
+import starred_star from "@/img/starred.png";
 import { addWishlist, deleteWishlist, fetchWishlist, fetchCourse } from "@/api.js";
 
 function CourseDescriptionPage(props) {

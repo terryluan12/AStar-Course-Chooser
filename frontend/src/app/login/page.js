@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import "../../css/LogIn.css";
+import "@/css/LogIn.css";
 import { loginAccount } from "@/api.js";
 
 function LoginPage() {

@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Result from "./Results";
-import "../css/Result.css";
-import Label from "./Label";
-import "../css/styles.css";
+import Result from "./_components/Result";
+import "@/css/Result.css";
+import Label from "./_components/Label";
+import "@/css/styles.css";
 import { fetchWishlist, searchCourse } from "@/api.js";
 
 function HomePage() {

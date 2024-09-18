@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "../../css/wishlist.css";
+import "@/css/wishlist.css";
 import "bootstrap/dist/css/bootstrap.css";
-import user_profile from "../../img/user.png";
-import CourseCard from "./CourseCard";
-import MinorListCard from "./MinorListCard";
+import user_profile from "@/img/user.png";
+import CourseCard from "./_components/CourseCard";
+import MinorListCard from "./_components/MinorListCard";
 import Image from "next/image";
 import { fetchWishlist, fetchMinor } from "@/api.js";
 

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import "../css/navbar.css";
+import "@/css/navbar.css";
 import "bootstrap/dist/css/bootstrap.css";
-import logo from "../img/logo.png";
+import logo from "@/img/logo.png";
 import { Navbar, Nav } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";

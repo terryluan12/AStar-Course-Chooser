@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import "../css/Label.css";
+import "@/css/Label.css";
 
 class Label extends Component {
   constructor(props) {

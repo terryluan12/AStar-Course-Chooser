@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from 'next/navigation'
 import { signupAccount } from "@/api.js";
-import "../../css/SignUp.css";
+import "@/css/SignUp.css";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
