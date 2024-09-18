@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
 import "../../css/LogIn.css";
+import { loginAccount } from "@/api.js";
 
 function LoginPage() {
   // TODO: fix username password procedure
@@ -35,12 +35,6 @@ function LoginPage() {
         alert("Invalid Username and Password. Please try again");
         break;
     }
-  };
-  const loginAccount = async (username, password) => {
-    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/session`, {
-      username: username,
-      password: password,
-    });
   };
 
   return (

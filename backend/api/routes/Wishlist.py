@@ -59,22 +59,22 @@ class WishlistView(Resource):
         parser.add_argument("code", required=True)
         data = parser.parse_args()
         username = data["username"]
-        code = data["code"]
+        course_code = data["course_code"]
         user = User.get(username)
-        courses = Course.get(code)
+        courses = Course.get(course_code)
             
         if user is None:
             resp["message"] = "User " + username + " could not be found"
             return resp, 404
         elif not courses or len(courses) != 1:
-            resp["message"] = "Course " + code + " not found"
+            resp["message"] = "Course " + course_code + " not found"
             return resp, 404
         
         if user.removeWishlist(courses[0]):
             resp["message"] = "Removed course"
             return resp, 200
         else:
-            resp["message"] = "Course " + code + " not in Wishlist"
+            resp["message"] = "Course " + course_code + " not in Wishlist"
             return resp, 400
 
 # class UserWishlistMinorCheck(Resource):

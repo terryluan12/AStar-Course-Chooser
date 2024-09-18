@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../css/Label.css";
 
-//header for SearchResultsDisplay
 class Label extends Component {
   constructor(props) {
     super(props);

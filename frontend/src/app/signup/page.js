@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import axios from "axios";
 import { useRouter } from 'next/navigation'
+import { signupAccount } from "@/api.js";
 import "../../css/SignUp.css";
 
 function SignupPage() {
@@ -29,13 +29,7 @@ function SignupPage() {
 
   const createAccount = async (username, password) => {
     let response = null
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/user`,
-      {
-        username: username,
-        password: password,
-      },
-    ).then((res) => {
+    await signupAccount(username, password).then((res) => {
       response = res;
     }).catch((err) => {
       response = err.response;

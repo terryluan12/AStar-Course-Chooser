@@ -8,17 +8,16 @@ api = Namespace('Course', description='Course related operations')
 
 @api.route('/course')
 class CourseView(Resource):
-    @api.doc(params={'code': 'Course code'})
+    @api.doc(params={'course_code': 'Course code'})
     @api.doc(responses={200: 'Course Found', 404: 'Course not found'})
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
-        code = request.args.get("code").upper()
+        code = request.args.get("course_code").upper()
         if len(code) == 6:
             code += "[A-Z][0-9]"
         elif len(code) == 5:
             code += "[0-9]"
-        
         try:
             course = Course.get(code)
             resp["message"] = "Course search success"
@@ -30,13 +29,13 @@ class CourseView(Resource):
                 
 @api.route('/course/search')
 class CourseSearchView(Resource):
-    @api.doc(params={'code': 'Course code'})
+    @api.doc(params={'course_code': 'Course code'})
     @api.doc(responses={200: 'Course Found', 404: 'Course index does not exist on OpenSearch'})
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
         try:
-            courses = Course.search(request.args.get("code"))
+            courses = Course.search(request.args.get("course_code"))
             resp["message"] = "Course search success"
             resp["courses"] = courses
             return resp, 200

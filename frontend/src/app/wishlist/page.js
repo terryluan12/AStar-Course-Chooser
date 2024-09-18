@@ -4,9 +4,9 @@ import "../../css/wishlist.css";
 import "bootstrap/dist/css/bootstrap.css";
 import user_profile from "../../img/user.png";
 import CourseCard from "./CourseCard";
-import axios from "axios";
 import MinorListCard from "./MinorListCard";
 import Image from "next/image";
+import { fetchWishlist, fetchMinor } from "@/api.js";
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
@@ -15,22 +15,6 @@ function Wishlist() {
     typeof window !== "undefined" ? localStorage.getItem("username") : null,
   );
 
-  const fetchMinorData = async () => {
-    return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/wishlist/minorCheck?username=${username}`,
-      {
-        username: username,
-      },
-    );
-  };
-  const fetchWishlistData = async () => {
-    return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${username}`,
-      {
-        username: username,
-      },
-    );
-  };
 
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
@@ -38,7 +22,7 @@ function Wishlist() {
       alert("ERROR: MUST BE LOGGED IN TO ACCESS WISHLIST");
     }
     const setWishlistPage = async () => {
-      const res = await fetchWishlistData();
+      const res = await fetchWishlist();
 
       if (res.status === 200) setWishlist(res.data.wishlist);
       else
@@ -47,7 +31,7 @@ function Wishlist() {
         );
     };
     const checkMinor = async () => {
-      const res = await fetchMinorData();
+      const res = await fetchMinor();
       let temp_minor_list = res.data.minorCheck.map((minor) => (
         <MinorListCard minor_name={minor.name} key={minor.name} />
       ));

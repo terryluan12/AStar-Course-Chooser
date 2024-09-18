@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row";
 // import requisite_label from "../../../img/requisite-label.png";
 import empty_star from "../../../img/star.png";
 import starred_star from "../../../img/starred.png";
-import axios from "axios";
+import { addWishlist, deleteWishlist, fetchWishlist, fetchCourse } from "@/api.js";
 
 function CourseDescriptionPage(props) {
   let star = empty_star;
@@ -32,43 +32,18 @@ function CourseDescriptionPage(props) {
     username: null
   });
 
-  const fetchCourse = async () => {
-    return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/course?code=${course.course_code}`,
-      {
-        code: course.course_code,
-      },
-    );
-  };
 
-  const fetchWishlist = async (username) => {
-    return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${username}`,
-    );
-  };
   const toggleStar = async () => {
     if (!course.starred) {
-      return await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${course.username}&course_code=${course.course_code}&course_name=${course.course_name}`,
-        {
-          code: course.course_code,
-          username: course.username,
-        },
-      );
+      return await addWishlist(course.username, course.course_code);
     } else {
-      return await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${course.username}&code=${course.course_code}`,
-        {
-          code: course.course_code,
-          username: course.username,
-        },
-      );
+      return await deleteWishlist(course.username, course.course_code);
     }
   };
 
   useEffect(() => {
     const setCoursePage = async () => {
-      const course_res = await fetchCourse().then((res) => res.data.course);
+      const course_res = await fetchCourse(course.course_code).then((res) => res.data.course);
       const username = localStorage.getItem("username")
       let isStarred = false
       if (username) {

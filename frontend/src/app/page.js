@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Result from "./Results";
 import "../css/Result.css";
 import Label from "./Label";
 import "../css/styles.css";
+import { fetchWishlist, searchCourse } from "@/api.js";
 
 function HomePage() {
   const [input, setInput] = useState("");
@@ -17,7 +17,7 @@ function HomePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await getSearch(input);
+    const res = await searchCourse(input);
     let result_temp = [<Label key="empty"></Label>];
 
     switch (res.status) {
@@ -56,18 +56,13 @@ function HomePage() {
   useEffect(() => {
     const username = localStorage.getItem("username")
     if (username) {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${username}`)
+      fetchWishlist(username)
         .then((res) => {
           setWishlist(res.data.wishlist)
         })
     }
   }, [])
 
-  const getSearch = async (input) => {
-    return await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/course/search?code=${input}`,
-    );
-  };
 
   return (
     <div className="SearchQuery">
