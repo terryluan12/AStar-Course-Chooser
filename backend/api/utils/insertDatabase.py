@@ -1,8 +1,9 @@
 import mysql.connector
 import requests
-from requests.auth import HTTPBasicAuth
 import json
 import os
+import boto3
+from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -65,24 +66,22 @@ def insert_sql():
             connection.commit()
 
 def insert_opensearch():
-    # Define the URL and the payload
-    url = os.environ.get("OPENSEARCH_URL")+"/courses/_bulk"
-    username = os.environ.get("OPENSEARCH_USERNAME")
-    password = os.environ.get("OPENSEARCH_PASSWORD")
+    
+    opensearch_host = os.environ.get("OPENSEARCH_HOST")
+    port = os.environ.get("OPENSEARCH_PORT")
+    region = os.environ.get("AWS_REGION")
+    credentials = boto3.Session().get_credentials()
+    auth = AWSV4SignerAuth(credentials, region, "es")
 
-    # Define the headers
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    # Define the authentication
-
-    auth = HTTPBasicAuth(username, password)
-
-
-
+    client = OpenSearch(
+        hosts=[{"host": opensearch_host, "port": port}],
+        http_auth=auth,
+        use_ssl=True,
+        verify_certs=True,
+        connection_class=RequestsHttpConnection,
+        pool_maxsize = 20
+    )
     with open("courses.json", "r") as file:
-        # Define the chunk size
         full_list = json.load(file)
         bulk_payload = ""
 
@@ -91,11 +90,8 @@ def insert_opensearch():
             bulk_payload += json.dumps(action) + "\n"
             bulk_payload += json.dumps(doc) + "\n"
 
-        # Make the PUT request
-        response = requests.post(url, headers=headers, auth=auth, data=bulk_payload)
-        # Print the response
+        response = client.bulk(body=bulk_payload)
         print(response.status_code)
-        # print(response.json())
         
 # insert_sql()
 insert_opensearch()

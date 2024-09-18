@@ -68,7 +68,7 @@ function CourseDescriptionPage(props) {
 
   useEffect(() => {
     const setCoursePage = async () => {
-      const course_res = await fetchCourse().then((res) => res.data.courses[0]);
+      const course_res = await fetchCourse().then((res) => res.data.course);
       const username = localStorage.getItem("username")
       let isStarred = false
       if (username) {

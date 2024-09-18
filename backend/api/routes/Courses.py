@@ -2,36 +2,36 @@ from flask import request
 from flask_restx import Namespace, Resource
 from api.models.Course import Course
 from opensearchpy import NotFoundError
+from sqlalchemy.exc import NoResultFound
 
 api = Namespace('Course', description='Course related operations')
 
 @api.route('/course')
 class CourseView(Resource):
     @api.doc(params={'code': 'Course code'})
-    @api.doc(responses={200: 'Course Found'})
+    @api.doc(responses={200: 'Course Found', 404: 'Course not found'})
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
-        code = request.args.get("code")
+        code = request.args.get("code").upper()
         if len(code) == 6:
             code += "[A-Z][0-9]"
         elif len(code) == 5:
             code += "[0-9]"
-            
-        course = Course.get(code)
         
-        if course:
+        try:
+            course = Course.get(code)
             resp["message"] = "Course search success"
-            resp["courses"] = course.to_json()
+            resp["course"] = course.to_json()
             return resp, 200
-        else:
+        except NoResultFound as e:
             resp["message"] = "Course not found"
             return resp, 404
                 
 @api.route('/course/search')
 class CourseSearchView(Resource):
     @api.doc(params={'code': 'Course code'})
-    @api.doc(responses={200: 'Course Found'})
+    @api.doc(responses={200: 'Course Found', 404: 'Course index does not exist on OpenSearch'})
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}

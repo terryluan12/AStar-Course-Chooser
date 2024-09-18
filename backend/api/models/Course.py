@@ -41,17 +41,11 @@ class Course(sql_db.Model):
 
     @classmethod
     def get(cls, code):
-        match_expr = match(
-                Course.course_code,
-                against=code,
-            )
-        courses = sql_db.session.execute(
+        course = sql_db.session.execute(
             sql_db.select(Course)
-            .where(match_expr.in_boolean_mode())
-            .order_by(desc(match_expr))
-            .limit(10)
-        ).scalars().all()
-        return courses if courses else []
+            .where(cls.course_code.regexp_match(code))
+        ).scalars().one()
+        return course
 
     @classmethod
     def search(cls, query):
