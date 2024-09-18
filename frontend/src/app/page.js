@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Result from "./Results";
 import "../css/Result.css";
@@ -9,6 +9,7 @@ import "../css/styles.css";
 function HomePage() {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -24,13 +25,21 @@ function HomePage() {
         if (res.data.length === 0) {
           alert("Course not found");
         } else {
-          result_temp = res.data.courses.map((result) => (
-            <Result
-              key={result.course_code}
-              course_code={result.course_code}
-              course_name={result.course_name}
-            ></Result>
-          ));
+          result_temp = res.data.courses.map((result) => {
+            let isStarred = false;
+            if (wishlist.some((course) => course.course_code === result.course_code)) {
+              isStarred = true;
+            }
+            return (
+              <Result
+                key={result.course_code}
+                course_code={result.course_code}
+                course_name={result.course_name}
+                isStarred={isStarred}
+              ></Result>
+            )
+          }
+          );
         }
         break;
       case 400:
@@ -43,6 +52,16 @@ function HomePage() {
 
     setResults(result_temp);
   };
+
+  useEffect(() => {
+    const username = localStorage.getItem("username")
+    if (username) {
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${username}`)
+        .then((res) => {
+          setWishlist(res.data.wishlist)
+        })
+    }
+  }, [])
 
   const getSearch = async (input) => {
     return await axios.get(

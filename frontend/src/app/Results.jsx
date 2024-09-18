@@ -1,6 +1,5 @@
 "use client";
 import React, { Component } from "react";
-import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,8 +9,6 @@ import starred from "../img/starred.png";
 import Link from "next/link";
 import Image from "next/image";
 
-let star;
-
 class Result extends Component {
   constructor(props) {
     super(props);
@@ -20,27 +17,8 @@ class Result extends Component {
       course_name: this.props.course_name,
       division: "Division of Computer Engineering",
       faculty: "Faculty of Applied Science and Engineering",
-      starred: false,
-      username: localStorage.getItem("username"),
+      isStarred: this.props.isStarred,
     };
-    star = unstarred;
-  }
-
-  componentDidMount() {
-    if (this.state.username) {
-      axios
-        .get(
-          `${process.env.NEXT_PUBLIC_API_URL}/wishlist?username=${this.state.username}`
-        )
-        .then((res) => {
-          for (const course of res.data.wishlist.values()) {
-            if (course.course_code === this.state.course_code) {
-              star = starred;
-              this.setState({ starred: true });
-            }
-          }
-        });
-    }
   }
 
   render() {
@@ -61,7 +39,7 @@ class Result extends Component {
             <Col>{this.state.division}</Col>
             <Col>{this.state.faculty}</Col>
             <Col>
-              <Image src={star} alt="" />
+              <Image src={this.state.isStarred ? starred : unstarred} alt="" />
             </Col>
           </Row>
         </Link>
