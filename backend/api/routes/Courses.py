@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Namespace, Resource
 from api.models.Course import Course
-from requests.auth import HTTPBasicAuth
+from opensearchpy import NotFoundError
 from nysiis import nysiis
 import re
 
@@ -14,21 +14,21 @@ class CourseView(Resource):
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
-        courses = []
-        input = request.args.get("code")
-        codes = re.findall("[a-zA-Z]{3}\d{3}[a-zA-Z]?\d?", input)
-        if codes:
-            for code in codes:
-                code = code.upper()
-                if len(code) == 6:
-                    code += "[A-Z][0-9]"
-                elif len(code) == 5:
-                    code += "[0-9]"
-                courses.extend(Course.get(code))
-        courses.extend(Course.get(input + '*'))
-        resp["message"] = "Course search success"
-        resp["courses"] = [course.to_json() for course in courses]
-        return resp, 200
+        code = request.args.get("code")
+        if len(code) == 6:
+            code += "[A-Z][0-9]"
+        elif len(code) == 5:
+            code += "[0-9]"
+            
+        course = Course.get(code)
+        
+        if course:
+            resp["message"] = "Course search success"
+            resp["courses"] = course.to_json()
+            return resp, 200
+        else:
+            resp["message"] = "Course not found"
+            return resp, 404
                 
 @api.route('/course/search')
 class CourseSearchView(Resource):
@@ -37,10 +37,14 @@ class CourseSearchView(Resource):
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
-        courses = Course.search(request.args.get("code"))
-        resp["message"] = "Course search success"
-        resp["courses"] = courses
-        return resp, 200
+        try:
+            courses = Course.search(request.args.get("code"))
+            resp["message"] = "Course search success"
+            resp["courses"] = courses
+            return resp, 200
+        except NotFoundError as e:
+            resp["message"] = "Course index not found in OpenSearch. Please contact the administrator."
+            return resp, 404
         
 # class ShowCourseGraph(Resource):
 #     def get(self):

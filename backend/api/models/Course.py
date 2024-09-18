@@ -6,10 +6,9 @@ from api.models.Wishlist import Wishlist
 from api.utils.database import sql_db
 from sqlalchemy import desc
 from sqlalchemy.dialects.mysql import match
-from opensearchpy import OpenSearch, RequestsHttpConnection
+from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 import boto3
 import json
-from requests.auth import HTTPBasicAuth
 import os
 
 from dotenv import load_dotenv
@@ -57,19 +56,18 @@ class Course(sql_db.Model):
     @classmethod
     def search(cls, query):
         opensearch_host = os.environ.get("OPENSEARCH_HOST")
-        # region = os.environ.get("AWS_REGION")
-        # service = "es"
-        # credentials = boto3.Session().get_credentials()
-        # auth
-        username = os.environ.get("OPENSEARCH_USERNAME")
-        password = os.environ.get("OPENSEARCH_PASSWORD")
-        auth = HTTPBasicAuth(username, password)
+        port = os.environ.get("OPENSEARCH_PORT")
+        region = os.environ.get("AWS_REGION")
+        credentials = boto3.Session().get_credentials()
+        auth = AWSV4SignerAuth(credentials, region, "es")
+
         client = OpenSearch(
-            hosts=[{"host": opensearch_host, "port": 443}],
+            hosts=[{"host": opensearch_host, "port": port}],
             http_auth=auth,
             use_ssl=True,
             verify_certs=True,
-            connection_class=RequestsHttpConnection
+            connection_class=RequestsHttpConnection,
+            pool_maxsize = 20
         )
 
         payload = json.dumps({
@@ -81,7 +79,6 @@ class Course(sql_db.Model):
                     }
             }
         })
-        
         results = client.search(index="courses", body=payload).get("hits").get("hits")
         courses = [course.get("_source") for course in results]
         return courses
