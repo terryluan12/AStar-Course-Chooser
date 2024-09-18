@@ -2,8 +2,6 @@ from flask import request
 from flask_restx import Namespace, Resource
 from api.models.Course import Course
 from opensearchpy import NotFoundError
-from nysiis import nysiis
-import re
 
 api = Namespace('Course', description='Course related operations')
 

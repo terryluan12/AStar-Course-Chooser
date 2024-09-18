@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import request
 from flask_restx import Namespace, Resource, reqparse
 from api.models.User import User
 from api.models.Course import Course

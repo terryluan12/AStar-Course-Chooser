@@ -1,4 +1,3 @@
-from flask import jsonify
 from api.models.User import User
 from flask_restx import Namespace, Resource, reqparse
 from werkzeug.security import check_password_hash

@@ -1,5 +1,4 @@
 import mysql.connector
-from mysql.connector import Error
 import requests
 from requests.auth import HTTPBasicAuth
 import json

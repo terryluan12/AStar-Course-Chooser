@@ -1,5 +1,5 @@
 from api.utils.database import sql_db
-from sqlalchemy import Integer, String, ForeignKey, UniqueConstraint, delete, select
+from sqlalchemy import Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import mapped_column, Mapped
 # from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
