@@ -1,10 +1,14 @@
-.sign-up {
+.astar-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 5%;
 }
 
-.signup-input {
-  margin-top: 2%;
+.astar-form input {
+  box-sizing: border-box;
   width: 30%;
+  margin-top: 10px;
   height: 3em;
   padding-left: 1%;
   border-radius: 15px;
@@ -12,7 +16,7 @@
   border: 2px solid #c4c4c4;
 }
 
-.signup-button {
+.astar-form button {
   margin-top: 2%;
   border-radius: 15px;
   background-color: #1c3e6e;

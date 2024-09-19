@@ -2,46 +2,33 @@
 import "@/css/Form.css";
 import { useRouter } from "next/navigation";
 
-export function Form({ onSubmit, name }) {
+export function Form({ children, onSubmit, name, redirect, button }) {
   // @todo add in JWT token usage
   const router = useRouter();
   const handler = async (event) => {
     event.preventDefault();
+    const names = children.map((child) => {
+      if (child.type !== "input") {
+        throw new Error("Form children must be input elements");
+      }
+      return child.props.name;
+    });
+
     const [message, status_code] = await onSubmit(
-      event.target.username.value,
-      event.target.password.value
+      ...names.map((name) => event.target[name].value)
     );
     alert(message);
-    if (status_code === 200) {
-      router.push("/wishlist");
+    if (status_code === 200 && redirect) {
+      router.push(redirect);
     }
   };
 
   return (
-    <div className={"sign-up"}>
+    <form onSubmit={handler} className={"astar-form"}>
       <h1>{name}</h1>
-      <form onSubmit={handler}>
-        <input
-          name="username"
-          required
-          type="text"
-          placeholder="Username"
-          className={"signup-input"}
-        />
-        <br />
-        <input
-          name="password"
-          required
-          type="password"
-          placeholder="Password"
-          className={"signup-input"}
-        />
-        <br />
-        <button type="submit" className="signup-button">
-          {name}
-        </button>
-      </form>
-    </div>
+      {children}
+      <button type="submit">{button ? button : name}</button>
+    </form>
   );
 }
 
