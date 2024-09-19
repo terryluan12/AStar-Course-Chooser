@@ -1,5 +1,5 @@
 import NavbarComp from "./_components/Navbar";
-import "./global.css";
+import "@/css/global.css";
 
 export const metadata = {
   title: "AStar Chooser",
