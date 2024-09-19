@@ -39,38 +39,38 @@ class WishlistView(Resource):
         if user is None:
             resp["message"] = "User " + username + " could not be found"
             return resp, 404
-        elif not courses or len(courses) != 1:
+        elif not courses:
             resp["message"] = "Course " + code + " not found"
             return resp, 404
         
-        if user.appendWishlist(courses[0]):
+        if user.appendWishlist(courses):
             resp["message"] = "Course added to wishlist"
             return resp, 200
         else:
             resp["message"] = "Course " + code + " already in Wishlist"
             return resp, 400
 
-    @api.doc(params={'username': 'User\'s username', 'code': 'Course Code'})
+    @api.doc(params={'username': 'User\'s username', 'course_code': 'Course Code'})
     @api.doc(responses={ 200: 'Wishlist Item deleted', 400: 'Course not in Wishlist', 404: 'User or Course not found'})
     def delete(self):
         resp = {}
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
-        parser.add_argument("code", required=True)
+        parser.add_argument("course_code", required=True)
         data = parser.parse_args()
         username = data["username"]
         course_code = data["course_code"]
         user = User.get(username)
-        courses = Course.get(course_code)
+        course = Course.get(course_code)
             
-        if user is None:
+        if not user:
             resp["message"] = "User " + username + " could not be found"
             return resp, 404
-        elif not courses or len(courses) != 1:
+        elif not course:
             resp["message"] = "Course " + course_code + " not found"
             return resp, 404
         
-        if user.removeWishlist(courses[0]):
+        if user.removeWishlist(course):
             resp["message"] = "Removed course"
             return resp, 200
         else:

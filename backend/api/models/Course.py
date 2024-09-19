@@ -1,10 +1,7 @@
-# This is the model
-
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 from sqlalchemy import String, Index
 from api.models.Wishlist import Wishlist
 from api.utils.database import sql_db
-from sqlalchemy import desc
 from sqlalchemy.dialects.mysql import match
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 import boto3
@@ -44,7 +41,7 @@ class Course(sql_db.Model):
         course = sql_db.session.execute(
             sql_db.select(Course)
             .where(cls.course_code.regexp_match(code))
-        ).scalars().one()
+        ).scalar()
         return course
 
     @classmethod

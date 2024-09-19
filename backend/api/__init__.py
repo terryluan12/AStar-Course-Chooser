@@ -14,6 +14,7 @@ def create_app():
 
     app.config["DEBUG"] = os.environ.get("DEBUG", default=True)
     app.config["TESTING"] = os.environ.get("TESTING", default=True)
+    app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
     # Configure MongoEngine
     app.config["MONGODB_HOST"] = os.environ.get("MONGODB_HOST", default=True)
     # Configure SQLAlchemy
@@ -32,10 +33,4 @@ def create_app():
 
     api.init_app(app)
 
-    @app.route("/", defaults={"path": ""})
-    @app.route("/<path:path>")
-    def serve(path):
-        if path != "" and os.path.exists(app.static_folder + "/" + path):
-            return send_from_directory(app.static_folder, path)
-        else:
-            return send_from_directory(app.static_folder, "index.html")
+    return app

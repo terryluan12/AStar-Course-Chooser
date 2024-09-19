@@ -8,6 +8,7 @@ import logo from "@/img/logo.png";
 import { Navbar, Nav } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";
+import { logoutAccount } from "@/api";
 
 function NavbarComp() {
   const [username, setUsername] = useState(null);
@@ -22,6 +23,7 @@ function NavbarComp() {
   }, []);
 
   const logOut = () => {
+    logoutAccount(localStorage.getItem("username"));
     localStorage.setItem("username", "");
     setUsername(localStorage.getItem(""));
     router.push("/");

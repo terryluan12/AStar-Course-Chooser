@@ -23,6 +23,11 @@ export async function loginAccount(username, password) {
         password: password,
     });
 }
+export async function logoutAccount(username) {
+    return axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/session`, {
+        username: username
+    });
+}
 
 export async function signupAccount(username, password) {
     return axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, {

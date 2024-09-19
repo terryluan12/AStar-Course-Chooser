@@ -1,15 +1,20 @@
+from typing import List
 from api.models.Wishlist import Wishlist
-from api.models.Course import Course
+from api.models.Session import Session
 from api.utils.database import sql_db
 from sqlalchemy import Integer, String, delete, select, update
 from sqlalchemy.orm import relationship, mapped_column, Mapped
+from flask import current_app
+import time
+import uuid
+import jwt
 
 class User(sql_db.Model):
     user_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(50), unique=True)
     password: Mapped[str] = mapped_column(String(300), nullable=False)
-    wished_courses = relationship('Course', secondary=Wishlist.__table__, back_populates='subscribed_users')
-    
+    wished_courses: Mapped[List["Course"]] = relationship(secondary=Wishlist.__table__, back_populates='subscribed_users')
+    sessions: Mapped[List["Session"]] = relationship(back_populates='user')
     def to_json(self):
         return {"username": self.username}
 
@@ -32,6 +37,19 @@ class User(sql_db.Model):
             sql_db.session.commit()
             return True
         return False
+
+    def login(self):
+        session_id = str(uuid.uuid4())
+        token = jwt.encode({"name": self.username, "password": self.password, "created_time": str(time.time())}, current_app.config['SECRET_KEY'], algorithm="HS256")
+        session = Session(session_id=session_id, user_id=self.user_id, session_token=token)
+        self.sessions.append(session)
+        sql_db.session.commit()
+        return token
+
+    def logout(self, session):
+        sql_db.session.delete(session)
+        # self.sessions.remove(session)
+        sql_db.session.commit()
 
     @classmethod
     def get(cls, username):

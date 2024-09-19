@@ -93,5 +93,25 @@ def insert_opensearch():
         response = client.bulk(body=bulk_payload)
         print(response.status_code)
         
+
+def execute_sql(command): 
+    host = os.environ.get("HOST_URL")
+    user = os.environ.get("DB_USER")
+    password = os.environ.get("DB_PASSWORD")
+    database = os.environ.get("DATABASE")
+    config = {"user": user, "password": password, "host": host, "database": database}
+    
+    connection = mysql.connector.connect(**config)
+    with connection.cursor() as cursor:
+        
+        cursor.execute(command
+        )
+        connection.commit()
+
+# execute_sql("SHOW tables")
+# execute_sql("DROP TABLE wishlist")
+# execute_sql("DROP TABLE session")
+# execute_sql("DROP TABLE user")
+
 # insert_sql()
-insert_opensearch()
+# insert_opensearch()
