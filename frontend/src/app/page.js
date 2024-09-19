@@ -18,14 +18,13 @@ function HomePage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const res = await searchCourse(input);
-    let result_temp = [<Label key="empty"></Label>];
-
+    let results = [<Label key="empty"></Label>];
     switch (res.status) {
       case 200:
         if (res.data.length === 0) {
           alert("Course not found");
         } else {
-          result_temp = res.data.courses.map((result) => {
+          results.push(res.data.courses.map((result) => {
             let isStarred = false;
             if (wishlist.some((course) => course.course_code === result.course_code)) {
               isStarred = true;
@@ -39,7 +38,7 @@ function HomePage() {
               ></Result>
             )
           }
-          );
+          ));
         }
         break;
       case 400:
@@ -50,7 +49,7 @@ function HomePage() {
         break;
     }
 
-    setResults(result_temp);
+    setResults(results);
   };
 
   useEffect(() => {

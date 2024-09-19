@@ -1,49 +1,35 @@
-"use client";
-import React, { useState } from "react";
-import { useRouter } from 'next/navigation'
+'use client';
+import { useRouter } from "next/navigation";
 import { signupAccount } from "@/api.js";
-import "@/css/SignUp.css";
+import "@/css/Form.css";
 
 function SignupPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter()
+  // @todo: look into using server actions
+  // @todo: look into using direct form "action" submission
+  const router = useRouter();
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleLogin = async (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
-    const res = await createAccount(username, password)
-    alert(res.data.message)
-    if (res.status === 201) {
-      localStorage.setItem("username", username);
-      router.push('/wishlist')
+    const formData = {
+      username: event.target.username.value,
+      password: event.target.password.value
     }
-  };
 
-  const createAccount = async (username, password) => {
-    let response = null
-    await signupAccount(username, password).then((res) => {
-      response = res;
+    const res = await signupAccount(formData.username, formData.password).then((res) => {
+      localStorage.setItem("username", formData.username);
+      router.push("/wishlist");
     }).catch((err) => {
-      response = err.response;
+      return err.response
     });
-    return response;
+    alert(res.data.message)
   };
 
   return (
     <div className={"sign-up"}>
-      <h1> Sign Up</h1>
-      <form onSubmit={handleLogin}>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSignup}>
         <input
           name="username"
-          onChange={handleUsernameChange}
           required
           type="text"
           placeholder="Username"
@@ -52,7 +38,6 @@ function SignupPage() {
         <br />
         <input
           name="password"
-          onChange={handlePasswordChange}
           required
           type="password"
           placeholder="Password"
@@ -63,7 +48,7 @@ function SignupPage() {
           Sign Up
         </button>
       </form>
-    </div>
+    </div >
   );
 }
 

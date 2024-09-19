@@ -18,14 +18,14 @@ export async function fetchCourse(course_code) {
 // =============================User Functionalities=============================
 
 export async function loginAccount(username, password) {
-    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/session`, {
+    return axios.post(`${process.env.NEXT_PUBLIC_API_URL}/session`, {
         username: username,
         password: password,
     });
 }
 
 export async function signupAccount(username, password) {
-    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+    return axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
         username: username,
         password: password,
     });
@@ -59,7 +59,7 @@ export async function deleteWishlist(username, course_code) {
 // =============================Minor Functionalities=============================
 
 export async function fetchMinor(username) {
-    return await axios.get(
+    return axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/wishlist/minorCheck?username=${username}`,
         {
             username: username,

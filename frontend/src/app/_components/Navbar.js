@@ -14,6 +14,8 @@ function NavbarComp() {
   const router = useRouter();
 
   useEffect(() => {
+    // @todo: add contexts/use JWT tokens
+    // @todo: add refresh on each button press
     if (localStorage.getItem("username") !== "") {
       setUsername(localStorage.getItem("username"));
     }
@@ -30,7 +32,7 @@ function NavbarComp() {
     <div>
       <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
         <Navbar.Brand>
-          <Image layout="responsive" src={logo} alt="" />{" "}
+          <Image style={{ width: "100%", height: "auto" }} src={logo} alt="" />{" "}
           <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
             A* Course Finder
           </Nav.Link>
