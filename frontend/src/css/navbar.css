@@ -1,0 +1,20 @@
+.navbar {
+  width: 100vw;
+  background: #1c3e6f;
+}
+
+.nav-item a {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.nav-item a:hover {
+  color: #c4d1e4;
+}
+
+.navbar-brand img {
+  margin-left: 20px;
+  max-width: 40px;
+}

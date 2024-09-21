@@ -1,0 +1,29 @@
+.astar-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.astar-form input {
+  box-sizing: border-box;
+  width: 30%;
+  margin-top: 10px;
+  height: 3em;
+  padding-left: 1%;
+  border-radius: 15px;
+  color: #c4c4c4;
+  border: 2px solid #c4c4c4;
+}
+
+.astar-form button {
+  margin-top: 2%;
+  border-radius: 15px;
+  background-color: #1c3e6e;
+  color: white;
+  width: 8em;
+  height: 3em;
+  border: none;
+  font-size: 1.2em;
+  text-align: center;
+}

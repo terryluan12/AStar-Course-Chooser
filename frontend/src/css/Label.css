@@ -1,0 +1,12 @@
+.label {
+  background-color: #f1f6fd;
+  color: #1c3e6e;
+  border-radius: 15px;
+  margin-bottom: 3%;
+  height: 4em;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
