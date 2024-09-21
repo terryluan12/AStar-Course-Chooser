@@ -14,7 +14,6 @@ function Wishlist() {
   const [username, setUsername] = useState("");
   const { userContext, _ } = useContext(UserContext);
 
-
   useEffect(() => {
     setUsername(userContext.username);
     if (!userContext.loggedIn) {
@@ -25,10 +24,9 @@ function Wishlist() {
         if (res.status === 200) setWishlist(res.data.wishlist);
         else
           alert(
-            "The system cannot return wishlist at the moment. Please try again later.",
+            "The system cannot return wishlist at the moment. Please try again later."
           );
-      })
-
+      });
     };
     setWishlistPage().catch(console.error);
   }, []);
@@ -44,8 +42,7 @@ function Wishlist() {
         )}
         <CourseCard
           className={"course-card-container"}
-          wishlist_data={wishlist}
-        ></CourseCard>
+          wishlist_data={wishlist}></CourseCard>
       </div>
       <div className="right-panel">
         <div className="centered">

@@ -14,7 +14,9 @@ COURSE_REGEX = re.compile(r"[A-Z]{3}\d{3}[A-Z]\d\s-\s")
 KEYWORD_REGEX = re.compile(
     r"Fixed Credit Value|Hours|Description|Prerequisite|Corequisite|Exclusion|Recommended Preparation|Total AUs|Program Tags|©\xa0Faculty of Applied Science & Engineering"
 )
-KEYWORD_REQUISITES_REGEX = re.compile(r"Prerequisite|Corequisite|Exclusion|Recommended Preparation")
+KEYWORD_REQUISITES_REGEX = re.compile(
+    r"Prerequisite|Corequisite|Exclusion|Recommended Preparation"
+)
 courses = []
 # NOTE: ESC499 is a special case where Recommended Preparation is malformed
 
@@ -56,7 +58,12 @@ for course in courses:
         for i in range(index + 1, nextIndex):
             value.append(strings[i])
         if re.match(KEYWORD_REQUISITES_REGEX, key):
-            value = " ".join(value).replace(" . ", ". ").replace(" , ", ", ").replace(" / ", "/")
+            value = (
+                " ".join(value)
+                .replace(" . ", ". ")
+                .replace(" , ", ", ")
+                .replace(" / ", "/")
+            )
         else:
             value = "".join(value)
         course[key] = value

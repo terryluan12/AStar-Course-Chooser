@@ -6,6 +6,7 @@ import boto3
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # INSERT_COMMAND =    ("""
@@ -21,13 +22,14 @@ load_dotenv()
 #                     """,
 #                     (prerequisite, corequisite, exclusion, recommended_preparation, course_code))
 
-def insert_sql(): 
+
+def insert_sql():
     host = os.environ.get("HOST_URL")
     user = os.environ.get("DB_USER")
     password = os.environ.get("DB_PASSWORD")
     database = os.environ.get("DATABASE")
     config = {"user": user, "password": password, "host": host, "database": database}
-    
+
     connection = mysql.connector.connect(**config)
     with connection.cursor() as cursor, open("courses.json", "r") as reader:
         json_data = reader.read()
@@ -65,8 +67,9 @@ def insert_sql():
             )
             connection.commit()
 
+
 def insert_opensearch():
-    
+
     opensearch_host = os.environ.get("OPENSEARCH_HOST")
     port = os.environ.get("OPENSEARCH_PORT")
     region = os.environ.get("AWS_REGION")
@@ -79,7 +82,7 @@ def insert_opensearch():
         use_ssl=True,
         verify_certs=True,
         connection_class=RequestsHttpConnection,
-        pool_maxsize = 20
+        pool_maxsize=20,
     )
     with open("courses.json", "r") as file:
         full_list = json.load(file)
@@ -92,21 +95,21 @@ def insert_opensearch():
 
         response = client.bulk(body=bulk_payload)
         print(response.status_code)
-        
 
-def execute_sql(command): 
+
+def execute_sql(command):
     host = os.environ.get("HOST_URL")
     user = os.environ.get("DB_USER")
     password = os.environ.get("DB_PASSWORD")
     database = os.environ.get("DATABASE")
     config = {"user": user, "password": password, "host": host, "database": database}
-    
+
     connection = mysql.connector.connect(**config)
     with connection.cursor() as cursor:
-        
-        cursor.execute(command
-        )
+
+        cursor.execute(command)
         connection.commit()
+
 
 # execute_sql("SHOW tables")
 # execute_sql("DROP TABLE wishlist")

@@ -17,7 +17,7 @@ class Result extends Component {
       course_name: this.props.course_name,
       division: "Division of Computer Engineering",
       faculty: "Faculty of Applied Science and Engineering",
-      isStarred: this.props.isStarred,
+      isStarred: this.props.isStarred
     };
   }
 
@@ -27,8 +27,7 @@ class Result extends Component {
         <Link
           href={`/courseDetails/${this.state.course_code}`}
           className={"search-result-item"}
-          style={{ textDecoration: "none" }}
-        >
+          style={{ textDecoration: "none" }}>
           <Row className={"result-display"}>
             <Col>
               <h5>{this.state.course_code}</h5>

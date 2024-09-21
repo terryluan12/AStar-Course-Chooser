@@ -5,15 +5,17 @@ from api.models.Course import Course
 from api.middleware.auth import cookie_required
 
 
-api = Namespace('Wishlists', description='Wishlist related operations')
+api = Namespace("Wishlists", description="Wishlist related operations")
 
 
-@api.route('/wishlist')
+@api.route("/wishlist")
 class WishlistView(Resource):
 
-    @api.param('session_token', 'User\'s current session token', _in='cookie', required=True)
+    @api.param(
+        "session_token", "User's current session token", _in="cookie", required=True
+    )
     # @api.param('username', 'User\'s username', required=True)
-    @api.doc(responses={200: 'Wishlist Items retrieved', 404: 'User not found'})
+    @api.doc(responses={200: "Wishlist Items retrieved", 404: "User not found"})
     @cookie_required
     def get(self, session):
         resp = {}
@@ -24,12 +26,22 @@ class WishlistView(Resource):
         else:
             wishlistItems = user.getWishlist()
             resp["message"] = "Wishlist Items retrieved"
-            resp["wishlist"] = [wishlistItem.to_json() for wishlistItem in wishlistItems]
+            resp["wishlist"] = [
+                wishlistItem.to_json() for wishlistItem in wishlistItems
+            ]
             return resp, 200
 
-    @api.param('session_token', 'User\'s current session token', _in='cookie', required=True)
-    @api.param('course_code', 'Course\'s course code to add to wishlist', required=True)
-    @api.doc(responses={ 200: 'Course added to wishlist', 400: 'Course already in Wishlist', 404: 'User or Course not found'})
+    @api.param(
+        "session_token", "User's current session token", _in="cookie", required=True
+    )
+    @api.param("course_code", "Course's course code to add to wishlist", required=True)
+    @api.doc(
+        responses={
+            200: "Course added to wishlist",
+            400: "Course already in Wishlist",
+            404: "User or Course not found",
+        }
+    )
     @cookie_required
     def post(self, session):
         resp = {}
@@ -37,14 +49,14 @@ class WishlistView(Resource):
         # try:
         user = session.user
         courses = Course.get(code)
-        
+
         if user is None:
             resp["message"] = "User could not be found"
             return resp, 404
         elif not courses:
             resp["message"] = "Course " + code + " not found"
             return resp, 404
-        
+
         if user.appendWishlist(courses):
             resp["message"] = "Course added to wishlist"
             return resp, 200
@@ -52,10 +64,18 @@ class WishlistView(Resource):
             resp["message"] = "Course " + code + " already in Wishlist"
             return resp, 400
 
-    @api.param('session_token', 'User\'s current session token', _in='cookie', required=True)
-    @api.param('username', 'User\'s username', required=True)
-    @api.param('course_code', 'Course\'s course code to add to wishlist', required=True)
-    @api.doc(responses={ 200: 'Wishlist Item deleted', 400: 'Course not in Wishlist', 404: 'User or Course not found'})
+    @api.param(
+        "session_token", "User's current session token", _in="cookie", required=True
+    )
+    @api.param("username", "User's username", required=True)
+    @api.param("course_code", "Course's course code to add to wishlist", required=True)
+    @api.doc(
+        responses={
+            200: "Wishlist Item deleted",
+            400: "Course not in Wishlist",
+            404: "User or Course not found",
+        }
+    )
     @cookie_required
     def delete(self, session):
         resp = {}
@@ -65,20 +85,21 @@ class WishlistView(Resource):
         user = session.user
         course_code = data["course_code"]
         course = Course.get(course_code)
-            
+
         if not user:
             resp["message"] = "User could not be found"
             return resp, 404
         elif not course:
             resp["message"] = "Course " + course_code + " not found"
             return resp, 404
-        
+
         if user.removeWishlist(course):
             resp["message"] = "Removed course"
             return resp, 200
         else:
             resp["message"] = "Course " + course_code + " not in Wishlist"
             return resp, 400
+
 
 # class UserWishlistMinorCheck(Resource):
 #     def get(self):

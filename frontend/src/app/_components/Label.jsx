@@ -13,7 +13,7 @@ class Label extends Component {
       course_name: "Course Name",
       division: "Division",
       faculty: "Faculty",
-      starred: "Status",
+      starred: "Status"
     };
   }
 

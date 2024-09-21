@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import "@/css/coursecard.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -12,8 +12,7 @@ function CourseCard(props) {
         <Link
           key={course.course_code}
           href={`/courseDetails/${course.course_code}`}
-          className={"wishlist-link"}
-        >
+          className={"wishlist-link"}>
           <Col className={"text-center wishlist-card"}>
             <h5>
               {course.course_code}: {course.course_name}

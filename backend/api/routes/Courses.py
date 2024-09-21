@@ -4,12 +4,13 @@ from api.models.Course import Course
 from opensearchpy import NotFoundError
 from sqlalchemy.exc import NoResultFound
 
-api = Namespace('Course', description='Course related operations')
+api = Namespace("Course", description="Course related operations")
 
-@api.route('/course')
+
+@api.route("/course")
 class CourseView(Resource):
-    @api.doc(params={'course_code': 'Course code'})
-    @api.doc(responses={200: 'Course Found', 404: 'Course not found'})
+    @api.doc(params={"course_code": "Course code"})
+    @api.doc(responses={200: "Course Found", 404: "Course not found"})
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
@@ -18,7 +19,7 @@ class CourseView(Resource):
             code += "[A-Z][0-9]"
         elif len(code) == 5:
             code += "[0-9]"
-        
+
         course = Course.get(code)
         if course:
             resp["message"] = "Course search success"
@@ -27,11 +28,17 @@ class CourseView(Resource):
         else:
             resp["message"] = "Course not found"
             return resp, 404
-                
-@api.route('/course/search')
+
+
+@api.route("/course/search")
 class CourseSearchView(Resource):
-    @api.doc(params={'course_code': 'Course code'})
-    @api.doc(responses={200: 'Course Found', 404: 'Course index does not exist on OpenSearch'})
+    @api.doc(params={"course_code": "Course code"})
+    @api.doc(
+        responses={
+            200: "Course Found",
+            404: "Course index does not exist on OpenSearch",
+        }
+    )
     def get(self):
         # TODO Implement Fuzzy Searching
         resp = {}
@@ -41,9 +48,12 @@ class CourseSearchView(Resource):
             resp["courses"] = courses
             return resp, 200
         except NotFoundError as e:
-            resp["message"] = "Course index not found in OpenSearch. Please contact the administrator."
+            resp["message"] = (
+                "Course index not found in OpenSearch. Please contact the administrator."
+            )
             return resp, 404
-        
+
+
 # class ShowCourseGraph(Resource):
 #     def get(self):
 #         code = request.args.get('code')

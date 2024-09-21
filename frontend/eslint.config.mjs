@@ -8,5 +8,5 @@ export default [
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
   { ignores: [".next/*", "node_modules/*"] },
-  { rules: { "react/react-in-jsx-scope": "off", "react/prop-types": "off" } },
+  { rules: { "react/react-in-jsx-scope": "off", "react/prop-types": "off" } }
 ];

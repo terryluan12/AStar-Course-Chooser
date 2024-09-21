@@ -30,7 +30,7 @@ export const CourseDescription = ({ toggleStar }) => {
     prerequisites: "",
     corequisites: "",
     exclusions: "",
-    isStarred: false,
+    isStarred: false
   });
 
   const check_star = async () => {
@@ -58,7 +58,7 @@ export const CourseDescription = ({ toggleStar }) => {
         syllabus: syllabus_link,
         prerequisites: fetched_course.prerequisite,
         corequisites: fetched_course.corequisite,
-        exclusions: fetched_course.exclusion,
+        exclusions: fetched_course.exclusion
       });
     });
   }, []);

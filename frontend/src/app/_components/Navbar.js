@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import "@/css/navbar.css";
@@ -15,11 +15,11 @@ function NavbarComp({ logoutFunction, getInitialContext }) {
   useEffect(() => {
     getInitialContext().then((res) => {
       setUserContext(res);
-    })
-  }, [])
+    });
+  }, []);
 
   const logOut = () => {
-    logoutFunction()
+    logoutFunction();
     setUserContext({ loggedIn: false, username: null });
     router.push("/");
     router.refresh();

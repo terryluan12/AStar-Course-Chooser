@@ -7,14 +7,16 @@ from flask import Flask, send_from_directory
 import os
 
 from dotenv import load_dotenv
+
 load_dotenv()
+
 
 def create_app():
     app = Flask(__name__)
 
     app.config["DEBUG"] = os.environ.get("DEBUG", default=True)
     app.config["TESTING"] = os.environ.get("TESTING", default=True)
-    app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
     # Configure MongoEngine
     app.config["MONGODB_HOST"] = os.environ.get("MONGODB_HOST", default=True)
     # Configure SQLAlchemy

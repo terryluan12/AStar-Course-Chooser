@@ -24,7 +24,7 @@ export function Form({ children, onSubmit, name, redirect, button, doLogin }) {
       if (doLogin) {
         setUserContext({
           loggedIn: true,
-          username: event.target.username.value,
+          username: event.target.username.value
         });
       }
       return res;

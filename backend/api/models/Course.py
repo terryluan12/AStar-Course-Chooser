@@ -9,6 +9,7 @@ import json
 import os
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -24,12 +25,14 @@ class Course(sql_db.Model):
     recommended_preparation: Mapped[str] = mapped_column(String(150), nullable=True)
     total_aus: Mapped[str] = mapped_column(String(100), nullable=True)
     program_tags: Mapped[str] = mapped_column(String(100), nullable=True)
-    subscribed_users = relationship('User', secondary=Wishlist.__table__, back_populates='wished_courses')
+    subscribed_users = relationship(
+        "User", secondary=Wishlist.__table__, back_populates="wished_courses"
+    )
 
     __table_args__ = (
-        Index('course_code_index', 'course_code', mysql_prefix='FULLTEXT'),
+        Index("course_code_index", "course_code", mysql_prefix="FULLTEXT"),
     )
-    
+
     def __repr__(self) -> str:
         return f"Course(course_code={self.course_code}, course_name={self.course_name}, credit_value={self.fixed_credit_value}, hours={self.hours}, description={self.description}, prerequisite={self.prerequisite}, corequisite={self.corequisite}, exclusion={self.exclusion}, recommended_preparation={self.recommended_preparation}, total_au={self.total_aus}, program_tags={self.program_tags})"
 
@@ -39,8 +42,7 @@ class Course(sql_db.Model):
     @classmethod
     def get(cls, code):
         course = sql_db.session.execute(
-            sql_db.select(Course)
-            .where(cls.course_code.regexp_match(code))
+            sql_db.select(Course).where(cls.course_code.regexp_match(code))
         ).scalar()
         return course
 
@@ -58,18 +60,29 @@ class Course(sql_db.Model):
             use_ssl=True,
             verify_certs=True,
             connection_class=RequestsHttpConnection,
-            pool_maxsize = 20
+            pool_maxsize=20,
         )
 
-        payload = json.dumps({
-            "size": 10,
-            "query": {
-                "multi_match": {
-                    "query": query,
-                    "fields": ["course_code^3.0", "course_name", "description^2.0", "prerequisite", "corequisite", "exclusion", "recommended_preparation", "program_tags"]
+        payload = json.dumps(
+            {
+                "size": 10,
+                "query": {
+                    "multi_match": {
+                        "query": query,
+                        "fields": [
+                            "course_code^3.0",
+                            "course_name",
+                            "description^2.0",
+                            "prerequisite",
+                            "corequisite",
+                            "exclusion",
+                            "recommended_preparation",
+                            "program_tags",
+                        ],
                     }
+                },
             }
-        })
+        )
         results = client.search(index="courses", body=payload).get("hits").get("hits")
         courses = [course.get("_source") for course in results]
         return courses
