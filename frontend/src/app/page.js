@@ -7,6 +7,7 @@ import { fetchWishlist, searchCourse } from "@/api.js";
 
 function HomePage() {
   // @todo fix hydration error
+  // @todo add loading spinner
 
   const handleSubmit = async (input, isLoggedIn) => {
     "use server";

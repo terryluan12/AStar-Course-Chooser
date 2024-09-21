@@ -3,7 +3,7 @@ import { loginAccount } from "@/api";
 import { Form } from "@/app/_components/Form";
 
 function LoginPage() {
-  // @todo add in JWT token usage
+  // @todo Add SSO
 
   const handleLogin = async (username, password) => {
     "use server";

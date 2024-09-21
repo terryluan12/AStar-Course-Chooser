@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
-
+/* @todo Change CSS to use CSS modules */
 * {
   font-family: "Fredoka One", cursive;
   letter-spacing: 3px !important;

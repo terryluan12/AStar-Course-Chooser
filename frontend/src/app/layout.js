@@ -4,6 +4,7 @@ import NavbarComp from "./_components/Navbar";
 import { UserContextProvider } from "@/contexts";
 import "@/css/global.css";
 
+// @todo separate base components to a _components folder and a global components folder
 export const metadata = {
   title: "AStar Chooser",
   description:

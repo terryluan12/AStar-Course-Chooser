@@ -2,7 +2,7 @@ from app import app
 from minor import check_course_in_minor
 from flask.testing import FlaskClient
 
-
+# TODO Fix Tests + add new tests
 # Jean
 def test_check_course_in_minor():
     course = "MIE439H1S"

@@ -40,7 +40,10 @@ class CourseSearchView(Resource):
         }
     )
     def get(self):
-        # TODO Implement Fuzzy Searching
+        # TODO Implement Fuzzy Searching, and Partial word matches
+        # TODO Implement Pagination
+        # TODO Make search quicker
+        
         resp = {}
         try:
             courses = Course.search(request.args.get("course_code"))

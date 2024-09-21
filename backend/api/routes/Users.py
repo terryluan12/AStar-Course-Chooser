@@ -43,6 +43,7 @@ class UserView(Resource):
     @cookie_required
     def patch(self):
         resp = {}
+        # TODO Add frontend functionality to update password
         # TODO FIX PASSWORD UPDATE
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)
@@ -81,6 +82,7 @@ class UserView(Resource):
     )
     @cookie_required
     def delete(self):
+        # TODO Add frontend functionality to delete user
         resp = {}
         parser = reqparse.RequestParser()
         parser.add_argument("username", required=True)

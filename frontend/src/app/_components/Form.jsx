@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "@/contexts";
 
 export function Form({ children, onSubmit, name, redirect, button, doLogin }) {
-  // @todo check if there's a better way to implement isLogin
+  // @todo check if there's a better way to implement doLogin
   const router = useRouter();
   const { _, setUserContext } = useContext(UserContext);
 
