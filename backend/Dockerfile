@@ -5,4 +5,4 @@ ENV TESTING=False
 WORKDIR /astar-astar
 COPY . .
 RUN pip install -r requirements.txt
-CMD [ "gunicorn", "-w", "4", "-b", ":5121", "index:app" ]
+CMD [ "gunicorn", "-w", "4", "-b", ":3001", "index:app" ]
