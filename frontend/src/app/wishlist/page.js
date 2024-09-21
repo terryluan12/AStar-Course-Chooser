@@ -1,45 +1,36 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "@/css/wishlist.css";
 import "bootstrap/dist/css/bootstrap.css";
 import user_profile from "@/img/user.png";
 import CourseCard from "./_components/CourseCard";
-import MinorListCard from "./_components/MinorListCard";
 import Image from "next/image";
-import { fetchWishlist, fetchMinor } from "@/api.js";
+import { fetchWishlist } from "@/api.js";
+import { UserContext } from "@/contexts";
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
-  const [minorlist, setMinorlist] = useState([]);
-  const [username, setUsername] = useState(
-    typeof window !== "undefined" ? localStorage.getItem("username") : null,
-  );
+  const [minorlist, _] = useState([]);
+  const [username, setUsername] = useState("");
+  const { userContext, _ } = useContext(UserContext);
 
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username"));
-    if (!username) {
+    setUsername(userContext.username);
+    if (!userContext.loggedIn) {
       alert("ERROR: MUST BE LOGGED IN TO ACCESS WISHLIST");
     }
     const setWishlistPage = async () => {
-      const res = await fetchWishlist();
+      fetchWishlist().then((res) => {
+        if (res.status === 200) setWishlist(res.data.wishlist);
+        else
+          alert(
+            "The system cannot return wishlist at the moment. Please try again later.",
+          );
+      })
 
-      if (res.status === 200) setWishlist(res.data.wishlist);
-      else
-        alert(
-          "The system cannot return wishlist at the moment. Please try again later.",
-        );
     };
-    const checkMinor = async () => {
-      const res = await fetchMinor();
-      let temp_minor_list = res.data.minorCheck.map((minor) => (
-        <MinorListCard minor_name={minor.name} key={minor.name} />
-      ));
-      setMinorlist(temp_minor_list);
-    };
-
     setWishlistPage().catch(console.error);
-    // checkMinor().catch(console.error);
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-// import { cookies } from "next/headers";
+import { cookies } from "next/headers";
 import { loginAccount } from "@/api";
 import { Form } from "@/app/_components/Form"
 
@@ -10,13 +10,14 @@ function LoginPage() {
 
     return loginAccount(username, password).then(
       (res) => {
-        // cookies().set({
-        //   name: "auth_token",
-        //   value: res.data.token,
-        //   httpOnly: true,
-        //   path: "/",
-        // });
-        return [res.data.message, res.data.status]
+        cookies().set({
+          name: "session_token",
+          value: res.data.token,
+          httpOnly: true,
+          path: "/",
+          domain: "localhost"
+        });
+        return [res.data.message, res.status]
       }
     ).catch((err) => {
       const message = err.response.data.message ? err.response.data.message : "An unexpected error occurred"
@@ -25,7 +26,7 @@ function LoginPage() {
   };
 
   return (
-    <Form name="Log In" onSubmit={handleLogin} redirect="/wishlist" >
+    <Form name="Log In" onSubmit={handleLogin} redirect="/wishlist" doLogin={true} >
       <input
         name="username"
         required

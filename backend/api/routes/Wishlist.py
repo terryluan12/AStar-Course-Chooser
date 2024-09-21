@@ -2,6 +2,7 @@ from flask import request
 from flask_restx import Namespace, Resource, reqparse
 from api.models.User import User
 from api.models.Course import Course
+from api.middleware.auth import cookie_required
 
 
 api = Namespace('Wishlists', description='Wishlist related operations')
@@ -10,15 +11,15 @@ api = Namespace('Wishlists', description='Wishlist related operations')
 @api.route('/wishlist')
 class WishlistView(Resource):
 
-    @api.doc(params={'username': 'User\'s username'})
+    @api.param('session_token', 'User\'s current session token', _in='cookie', required=True)
+    # @api.param('username', 'User\'s username', required=True)
     @api.doc(responses={200: 'Wishlist Items retrieved', 404: 'User not found'})
-    def get(self):
+    @cookie_required
+    def get(self, session):
         resp = {}
-        username = request.args.get("username")
-        user = User.get(username)
-        
+        user = session.user
         if user is None:
-            resp["message"] = "User " + username + " could not be found"
+            resp["message"] = "User could not be found"
             return resp, 404
         else:
             wishlistItems = user.getWishlist()
@@ -26,18 +27,19 @@ class WishlistView(Resource):
             resp["wishlist"] = [wishlistItem.to_json() for wishlistItem in wishlistItems]
             return resp, 200
 
-    @api.doc(params={'username': 'User\'s username', 'course_code': 'Course Code'})
+    @api.param('session_token', 'User\'s current session token', _in='cookie', required=True)
+    @api.param('course_code', 'Course\'s course code to add to wishlist', required=True)
     @api.doc(responses={ 200: 'Course added to wishlist', 400: 'Course already in Wishlist', 404: 'User or Course not found'})
-    def post(self):
+    @cookie_required
+    def post(self, session):
         resp = {}
-        username = request.args.get("username")
         code = request.args.get("course_code")
         # try:
-        user = User.get(username)
+        user = session.user
         courses = Course.get(code)
         
         if user is None:
-            resp["message"] = "User " + username + " could not be found"
+            resp["message"] = "User could not be found"
             return resp, 404
         elif not courses:
             resp["message"] = "Course " + code + " not found"
@@ -50,21 +52,22 @@ class WishlistView(Resource):
             resp["message"] = "Course " + code + " already in Wishlist"
             return resp, 400
 
-    @api.doc(params={'username': 'User\'s username', 'course_code': 'Course Code'})
+    @api.param('session_token', 'User\'s current session token', _in='cookie', required=True)
+    @api.param('username', 'User\'s username', required=True)
+    @api.param('course_code', 'Course\'s course code to add to wishlist', required=True)
     @api.doc(responses={ 200: 'Wishlist Item deleted', 400: 'Course not in Wishlist', 404: 'User or Course not found'})
-    def delete(self):
+    @cookie_required
+    def delete(self, session):
         resp = {}
         parser = reqparse.RequestParser()
-        parser.add_argument("username", required=True)
         parser.add_argument("course_code", required=True)
         data = parser.parse_args()
-        username = data["username"]
+        user = session.user
         course_code = data["course_code"]
-        user = User.get(username)
         course = Course.get(course_code)
             
         if not user:
-            resp["message"] = "User " + username + " could not be found"
+            resp["message"] = "User could not be found"
             return resp, 404
         elif not course:
             resp["message"] = "Course " + course_code + " not found"

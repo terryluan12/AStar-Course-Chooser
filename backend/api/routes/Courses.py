@@ -18,12 +18,13 @@ class CourseView(Resource):
             code += "[A-Z][0-9]"
         elif len(code) == 5:
             code += "[0-9]"
-        try:
-            course = Course.get(code)
+        
+        course = Course.get(code)
+        if course:
             resp["message"] = "Course search success"
             resp["course"] = course.to_json()
             return resp, 200
-        except NoResultFound as e:
+        else:
             resp["message"] = "Course not found"
             return resp, 404
                 

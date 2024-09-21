@@ -40,16 +40,12 @@ class User(sql_db.Model):
 
     def login(self):
         session_id = str(uuid.uuid4())
-        token = jwt.encode({"name": self.username, "password": self.password, "created_time": str(time.time())}, current_app.config['SECRET_KEY'], algorithm="HS256")
-        session = Session(session_id=session_id, user_id=self.user_id, session_token=token)
+        token = jwt.encode({"username": self.username, "session_id": session_id, "created_time": str(time.time())}, current_app.config['SECRET_KEY'], algorithm="HS256")
+        session = Session(session_id=session_id, user_id=self.user_id)
         self.sessions.append(session)
         sql_db.session.commit()
         return token
 
-    def logout(self, session):
-        sql_db.session.delete(session)
-        # self.sessions.remove(session)
-        sql_db.session.commit()
 
     @classmethod
     def get(cls, username):

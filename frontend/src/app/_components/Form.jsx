@@ -1,10 +1,14 @@
 "use client";
 import "@/css/Form.css";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { UserContext } from "@/contexts";
 
-export function Form({ children, onSubmit, name, redirect, button }) {
-  // @todo add in JWT token usage
+export function Form({ children, onSubmit, name, redirect, button, doLogin }) {
+  // @todo check if there's a better way to implement isLogin
   const router = useRouter();
+  const { _, setUserContext } = useContext(UserContext);
+
   const handler = async (event) => {
     event.preventDefault();
     const names = children.map((child) => {
@@ -16,7 +20,15 @@ export function Form({ children, onSubmit, name, redirect, button }) {
 
     const [message, status_code] = await onSubmit(
       ...names.map((name) => event.target[name].value)
-    );
+    ).then((res) => {
+      if (doLogin) {
+        setUserContext({
+          loggedIn: true,
+          username: event.target.username.value,
+        });
+      }
+      return res;
+    });
     alert(message);
     if (status_code === 200 && redirect) {
       router.push(redirect);

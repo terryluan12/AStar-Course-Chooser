@@ -1,31 +1,26 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+'use client'
 import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
 import "@/css/navbar.css";
 import "bootstrap/dist/css/bootstrap.css";
 import logo from "@/img/logo.png";
 import { Navbar, Nav } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";
-import { logoutAccount } from "@/api";
+import { UserContext } from "@/contexts";
 
-function NavbarComp() {
-  const [username, setUsername] = useState(null);
+function NavbarComp({ logoutFunction, getInitialContext }) {
   const router = useRouter();
-
+  const { userContext, setUserContext } = useContext(UserContext);
   useEffect(() => {
-    // @todo: add contexts/use JWT tokens
-    // @todo: add refresh on each button press
-    if (localStorage.getItem("username") !== "") {
-      setUsername(localStorage.getItem("username"));
-    }
-  }, []);
+    getInitialContext().then((res) => {
+      setUserContext(res);
+    })
+  }, [])
 
   const logOut = () => {
-    logoutAccount(localStorage.getItem("username"));
-    localStorage.setItem("username", "");
-    setUsername(localStorage.getItem(""));
+    logoutFunction()
+    setUserContext({ loggedIn: false, username: null });
     router.push("/");
     router.refresh();
   };
@@ -47,13 +42,13 @@ function NavbarComp() {
               Search
             </Nav.Link>
 
-            {username && (
+            {userContext.loggedIn && (
               <Nav.Link as={Link} href="/wishlist">
                 My Wishlist
               </Nav.Link>
             )}
 
-            {!username ? (
+            {!userContext.loggedIn ? (
               <Nav.Link as={Link} href="/login">
                 Login
               </Nav.Link>
@@ -63,7 +58,7 @@ function NavbarComp() {
               </Nav.Link>
             )}
 
-            {!username && (
+            {!userContext.loggedIn && (
               <Nav.Link as={Link} href="/signup">
                 Sign Up
               </Nav.Link>
