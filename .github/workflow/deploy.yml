@@ -1,0 +1,26 @@
+name: AStar Deployment Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /srv/www/astar
+            git pull
+            cd frontend
+            npm install
+            npm run build
+            pm2 restart astar-frontend-app
+            pm2 restart astar-backend-app
