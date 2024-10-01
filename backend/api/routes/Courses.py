@@ -29,6 +29,23 @@ class CourseView(Resource):
             resp["message"] = "Course not found"
             return resp, 404
 
+    @api.doc(params={"course_code": "Course code", "course_name": "Course name", "fixed_credit_value": "Course Credit Value", "description": "Course Description"})
+    def post(self):
+        course_code = request.args.get("course_code").upper()
+        course_name = request.args.get("course_name")
+        fixed_credit_value= request.args.get("fixed_credit_value")
+        description = request.args.get("description")
+        if Course.get(course_name):
+            message = {'message': f"Course {course_code} already exists"}
+            return message, 404
+        try:
+            Course.put(course_code=course_code, course_name=course_name, fixed_credit_value=fixed_credit_value, description=description)
+            message = {'message': f"{course_code} added to the database"}
+            return message, 200
+        except Exception as e:
+            message = {'error': 'something went wrong'}
+            return message, 400
+
 
 @api.route("/course/search")
 class CourseSearchView(Resource):
@@ -44,9 +61,11 @@ class CourseSearchView(Resource):
         # TODO Implement Pagination
         # TODO Make search quicker
         
+        search_query = request.args.get("course_code") + "*"
+        
         resp = {}
         try:
-            courses = Course.search(request.args.get("course_code"))
+            courses = Course.search(search_query)
             resp["message"] = "Course search success"
             resp["courses"] = courses
             return resp, 200

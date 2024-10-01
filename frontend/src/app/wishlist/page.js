@@ -10,9 +10,9 @@ import { UserContext } from "@/contexts";
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
-  const [minorlist, _] = useState([]);
+  const [minorlist, _setMinorList] = useState([]);
   const [username, setUsername] = useState("");
-  const { userContext, _ } = useContext(UserContext);
+  const { userContext, _setUserContext } = useContext(UserContext);
 
   useEffect(() => {
     setUsername(userContext.username);

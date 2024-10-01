@@ -47,6 +47,13 @@ class Course(sql_db.Model):
         return course
 
     @classmethod
+    def put(cls, course_code, course_name, fixed_credit_value, description):
+        course = cls(course_code=course_code, course_name=course_name, fixed_credit_value=fixed_credit_value, description=description)
+        sql_db.session.add(course)
+        sql_db.session.commit()
+        return True
+
+    @classmethod
     def search(cls, query):
         opensearch_host = os.environ.get("OPENSEARCH_HOST")
         port = os.environ.get("OPENSEARCH_PORT")
@@ -67,7 +74,7 @@ class Course(sql_db.Model):
             {
                 "size": 10,
                 "query": {
-                    "multi_match": {
+                    "query_string": {
                         "query": query,
                         "fields": [
                             "course_code^3.0",
