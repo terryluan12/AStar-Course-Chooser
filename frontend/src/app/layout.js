@@ -15,14 +15,14 @@ export default function RootLayout({ children }) {
   const logoutFunction = async () => {
     "use server";
     return logoutAccount().then((_) => {
-      cookies().remove("session_token");
+      cookies().delete("session_token");
     });
   };
   const getInitialContext = async () => {
     "use server";
     // @todo make an endpoint to check if session token is valid
-    const isValid = cookies().get("session_token").value !== null;
-    return { loggedIn: isValid, username: isValid ? "username" : null };
+    const isLoggedIn = cookies().has("session_token");
+    return { loggedIn: isLoggedIn, username: isLoggedIn ? "username" : null };
   };
 
   return (

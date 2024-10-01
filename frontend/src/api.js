@@ -5,7 +5,9 @@ import { cookies } from "next/headers";
 axios.interceptors.request.use(
   function (config) {
     // @todo figure out why this is necessary, instead of setting in request (fetchWishlist is an issue here)
-    config.headers.Cookie = `session_token=${cookies().get("session_token").value}`;
+    if (cookies().has("session_token")) {
+      config.headers.Cookie = `session_token=${cookies().get("session_token").value}`;
+    }
     return config;
   },
   function (error) {

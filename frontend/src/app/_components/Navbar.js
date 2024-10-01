@@ -30,7 +30,7 @@ function NavbarComp({ logoutFunction, getInitialContext }) {
       <Navbar bg="myBlue" variant="dark" sticky="top" expand="lg">
         <Navbar.Brand>
           <Image style={{ width: "100%", height: "auto" }} src={logo} alt="" />{" "}
-          <Nav.Link href="/" style={{ color: "white", display: "inline" }}>
+          <Nav.Link href="/" as={Link} style={{ color: "white", display: "inline" }}>
             A* Course Finder
           </Nav.Link>
         </Navbar.Brand>

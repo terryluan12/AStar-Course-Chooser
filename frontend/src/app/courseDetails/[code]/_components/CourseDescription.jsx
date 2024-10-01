@@ -18,7 +18,7 @@ export const CourseDescription = ({ toggleStar }) => {
   const { userContext, _ } = useContext(UserContext);
 
   const params = useParams();
-
+  const [isStarred, setIsStarred] = useState(false);
   const [course, setCourse] = useState({
     course_code: params.code,
     course_name: "",
@@ -29,17 +29,16 @@ export const CourseDescription = ({ toggleStar }) => {
     syllabus: "",
     prerequisites: "",
     corequisites: "",
-    exclusions: "",
-    isStarred: false
+    exclusions: ""
   });
 
   const check_star = async () => {
     if (userContext.loggedIn) {
-      toggleStar(course).then((res) => {
+      toggleStar(isStarred).then((res) => {
         if (res.status != 200) {
           alert("error occured while modifying wishlist: ", res.status);
         } else {
-          setCourse({ ...course, isStarred: !course.isStarred });
+          setIsStarred(!isStarred);
         }
       });
     } else {
@@ -63,14 +62,13 @@ export const CourseDescription = ({ toggleStar }) => {
     });
   }, []);
   useEffect(() => {
-    let isStarred = false;
+    if (!userContext.loggedIn) return;
     fetchWishlist().then((res) => {
-      if (userContext.loggedIn) {
-        isStarred = res.data.wishlist.some((wishlist_course) => {
+      setIsStarred(
+        res.data.wishlist.some((wishlist_course) => {
           return wishlist_course.course_code === course.course_code;
-        });
-        setCourse({ ...course, isStarred: isStarred });
-      }
+        })
+      );
     });
   }, [userContext.loggedIn]);
 
@@ -95,7 +93,7 @@ export const CourseDescription = ({ toggleStar }) => {
           </Col>
           <Col xs={4}>
             <Image
-              src={course.isStarred ? starred_star : empty_star}
+              src={isStarred ? starred_star : empty_star}
               onClick={check_star}
               alt=""
             />
