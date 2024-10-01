@@ -15,7 +15,6 @@ function LoginPage() {
           value: res.data.token,
           httpOnly: true,
           path: "/",
-          domain: "localhost"
         });
         return [res.data.message, res.status];
       })
