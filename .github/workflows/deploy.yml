@@ -23,4 +23,4 @@ jobs:
             npm install
             npm run build
             pm2 restart astar-frontend-app
-            pm2 restart astar-backend-app
+            pm2 restart astar-backend-api
