@@ -5,7 +5,6 @@ export const UserContext = createContext({});
 
 export const UserContextProvider = ({ children }) => {
   const [userContext, setUserContext] = useState({
-    loggedIn: false,
     username: null
   });
   return (

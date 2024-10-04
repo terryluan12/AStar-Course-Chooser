@@ -9,18 +9,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserContext } from "@/contexts";
 
-function NavbarComp({ logoutFunction, getInitialContext }) {
+let userInitialized = false;
+
+function NavbarComp({ logoutFunction, username }) {
   const router = useRouter();
   const { userContext, setUserContext } = useContext(UserContext);
   useEffect(() => {
-    getInitialContext().then((res) => {
-      setUserContext(res);
-    });
+    if (!userInitialized) {
+      userInitialized = true;
+      setUserContext({ "username": username });
+    }
+
   }, []);
 
   const logOut = () => {
     logoutFunction();
-    setUserContext({ loggedIn: false, username: null });
+    setUserContext({ "username": null });
     router.push("/");
     router.refresh();
   };
@@ -42,13 +46,13 @@ function NavbarComp({ logoutFunction, getInitialContext }) {
               Search
             </Nav.Link>
 
-            {userContext.loggedIn && (
+            {userContext.username && (
               <Nav.Link as={Link} href="/wishlist">
                 My Wishlist
               </Nav.Link>
             )}
 
-            {!userContext.loggedIn ? (
+            {!userContext.username ? (
               <Nav.Link as={Link} href="/login">
                 Login
               </Nav.Link>
@@ -58,7 +62,7 @@ function NavbarComp({ logoutFunction, getInitialContext }) {
               </Nav.Link>
             )}
 
-            {!userContext.loggedIn && (
+            {!userContext.username && (
               <Nav.Link as={Link} href="/signup">
                 Sign Up
               </Nav.Link>

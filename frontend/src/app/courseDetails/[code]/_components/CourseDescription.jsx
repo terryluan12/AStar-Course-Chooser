@@ -15,7 +15,7 @@ import { useParams } from "next/navigation";
 import { UserContext } from "@/contexts";
 
 export const CourseDescription = ({ toggleStar }) => {
-  const { userContext, _ } = useContext(UserContext);
+  const { userContext, _setUserContext } = useContext(UserContext);
 
   const params = useParams();
   const [isStarred, setIsStarred] = useState(false);
@@ -33,7 +33,7 @@ export const CourseDescription = ({ toggleStar }) => {
   });
 
   const check_star = async () => {
-    if (userContext.loggedIn) {
+    if (userContext.username) {
       toggleStar(isStarred).then((res) => {
         if (res.status != 200) {
           alert("error occured while modifying wishlist: ", res.status);
@@ -62,7 +62,7 @@ export const CourseDescription = ({ toggleStar }) => {
     });
   }, []);
   useEffect(() => {
-    if (!userContext.loggedIn) return;
+    if (!userContext.username) return;
     fetchWishlist().then((res) => {
       setIsStarred(
         res.data.wishlist.some((wishlist_course) => {
@@ -70,7 +70,7 @@ export const CourseDescription = ({ toggleStar }) => {
         })
       );
     });
-  }, [userContext.loggedIn]);
+  }, [userContext.username]);
 
   const openLink = () => {
     const newWindow = window.open(

@@ -9,10 +9,10 @@ function HomePage() {
   // @todo fix hydration error
   // @todo add loading spinner
 
-  const handleSubmit = async (input, isLoggedIn) => {
+  const handleSubmit = async (input, username) => {
     "use server";
     let wishlist = [];
-    if (isLoggedIn) {
+    if (username) {
       wishlist = (await fetchWishlist()).data.wishlist;
     }
 

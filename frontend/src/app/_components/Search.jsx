@@ -14,7 +14,7 @@ function Search({ handler }) {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await handler(input, userContext.loggedIn);
+    const res = await handler(input, userContext.username);
     setResults(res);
   };
 

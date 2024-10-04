@@ -18,12 +18,9 @@ export default function RootLayout({ children }) {
       cookies().delete("session_token");
     });
   };
-  const getInitialContext = async () => {
-    "use server";
-    // @todo make an endpoint to check if session token is valid
-    const isLoggedIn = cookies().has("session_token");
-    return { loggedIn: isLoggedIn, username: isLoggedIn ? "username" : null };
-  };
+  // @todo make an endpoint to check if session token is valid
+  const isLoggedIn = cookies().has("session_token");
+  const username = isLoggedIn ? "user" : null;
 
   return (
     <html lang="en">
@@ -33,7 +30,7 @@ export default function RootLayout({ children }) {
             <UserContextProvider>
               <NavbarComp
                 logoutFunction={logoutFunction}
-                getInitialContext={getInitialContext}
+                username={username}
               />
               {children}
             </UserContextProvider>
