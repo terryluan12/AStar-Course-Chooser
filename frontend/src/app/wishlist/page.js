@@ -11,11 +11,9 @@ import { UserContext } from "@/contexts";
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
   const [minorlist, _setMinorList] = useState([]);
-  const [username, setUsername] = useState("");
   const { userContext, _setUserContext } = useContext(UserContext);
 
   useEffect(() => {
-    setUsername(userContext.username);
     if (!userContext.loggedIn) {
       alert("ERROR: MUST BE LOGGED IN TO ACCESS WISHLIST");
     }
@@ -47,7 +45,7 @@ function Wishlist() {
       <div className="right-panel">
         <div className="centered">
           <Image layout="responsive" src={user_profile} alt="" />
-          <h3>{username}</h3>
+          <h3>{userContext.username}</h3>
           <p>Computer Engineering Student</p>
           <br></br>
           <br></br>
