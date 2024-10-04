@@ -17,14 +17,14 @@ function NavbarComp({ logoutFunction, username }) {
   useEffect(() => {
     if (!userInitialized) {
       userInitialized = true;
-      setUserContext({ "username": username });
+      setUserContext({ username: username });
     }
 
   }, []);
 
   const logOut = () => {
     logoutFunction();
-    setUserContext({ "username": null });
+    setUserContext({ username: null });
     router.push("/");
     router.refresh();
   };

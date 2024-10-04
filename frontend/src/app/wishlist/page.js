@@ -14,7 +14,7 @@ function Wishlist() {
   const { userContext, _setUserContext } = useContext(UserContext);
 
   useEffect(() => {
-    if (!userContext.loggedIn) {
+    if (!userContext.username) {
       alert("ERROR: MUST BE LOGGED IN TO ACCESS WISHLIST");
     }
     const setWishlistPage = async () => {
