@@ -5,10 +5,10 @@ from api.models.Course import Course
 from api.middleware.auth import cookie_required
 
 
-api = Namespace("Wishlists", description="Wishlist related operations")
+api = Namespace("wishlist", description="Wishlist related operations")
 
 
-@api.route("/wishlist")
+@api.route("")
 class WishlistView(Resource):
 
     @api.param(

@@ -4,10 +4,10 @@ from api.models.Course import Course
 from opensearchpy import NotFoundError
 from sqlalchemy.exc import NoResultFound
 
-api = Namespace("Course", description="Course related operations")
+api = Namespace("course", description="Course related operations")
 
 
-@api.route("/course")
+@api.route("")
 class CourseView(Resource):
     @api.doc(params={"course_code": "Course code"})
     @api.doc(responses={200: "Course Found", 404: "Course not found"})
@@ -47,7 +47,7 @@ class CourseView(Resource):
             return message, 400
 
 
-@api.route("/course/search")
+@api.route("/search")
 class CourseSearchView(Resource):
     @api.doc(params={"course_code": "Course code"})
     @api.doc(

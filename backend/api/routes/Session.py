@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash
 api = Namespace("Session", description="Session/auth related operations")
 
 
-@api.route("/session")
+@api.route("")
 class SessionView(Resource):
 
     @api.doc(params={"username": "User's username", "password": "User's password"})

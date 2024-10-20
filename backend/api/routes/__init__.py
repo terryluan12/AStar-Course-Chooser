@@ -6,8 +6,8 @@ from api.routes.Session import api as sessionNameSpace
 
 api = Api()
 
-api.add_namespace(userNameSpace, "/")
-api.add_namespace(courseNameSpace, "/")
-api.add_namespace(wishListNameSpace, "/")
-api.add_namespace(sessionNameSpace, "/")
+api.add_namespace(userNameSpace)
+api.add_namespace(courseNameSpace)
+api.add_namespace(wishListNameSpace)
+api.add_namespace(sessionNameSpace)
 # api.add_resource(Courses.ShowCourseGraph, '/course/graph')

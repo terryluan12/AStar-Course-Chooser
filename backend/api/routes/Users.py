@@ -3,10 +3,10 @@ from api.models.User import User
 from api.middleware.auth import cookie_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
-api = Namespace("Users", description="User related operations")
+api = Namespace("user", description="User related operations")
 
 
-@api.route("/user")
+@api.route("")
 class UserView(Resource):
     # TODO Remove deprecated reqparse
     @api.doc(params={"username": "User's username", "password": "User's password"})
