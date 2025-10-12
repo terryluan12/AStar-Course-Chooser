@@ -1,19 +1,14 @@
-module.exports = () => {
-  const headers = () => {
+const nextConfig = {
+  output: 'standalone',
+
+  async headers() {
     return [
       {
-        // matching all API routes
         source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
-          {
-            key: "Access-Control-Allow-Origin",
-            value: "http://localhost:3001/"
-          }, // replace this your actual origin
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET,DELETE,PATCH,POST,PUT"
-          },
+          { key: "Access-Control-Allow-Origin", value: "http://localhost:3001/" },
+          { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
           {
             key: "Access-Control-Allow-Headers",
             value:
@@ -22,18 +17,16 @@ module.exports = () => {
         ]
       }
     ];
-  };
-  const rewrites = () => {
+  },
+
+  async rewrites() {
     return [
       {
         source: "/astar/:path*",
         destination: "http://localhost:3001/astar/:path*"
       }
     ];
-  };
-
-  return {
-    rewrites,
-    headers
-  };
+  }
 };
+
+module.exports = nextConfig;
