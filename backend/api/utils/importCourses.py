@@ -21,7 +21,6 @@ courses = []
 # NOTE: ESC499 is a special case where Recommended Preparation is malformed
 
 for page_num in range(0, TOTAL_PAGES):
-
     page = requests.get(BASE_COURSE_LANDPAGE_URL + str(page_num))
     soup = BeautifulSoup(page.text, "html.parser")
     strings = list(soup.stripped_strings)
@@ -36,7 +35,6 @@ for page_num in range(0, TOTAL_PAGES):
             for course_code, course_name in (title.split(" - ", 1) for title in titles)
         ]
     )
-
 
 for course in courses:
     page = requests.get(BASE_COURSE_SPECIFIC_URL + course["course_code"])
