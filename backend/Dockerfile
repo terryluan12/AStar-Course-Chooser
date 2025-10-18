@@ -1,8 +1,6 @@
-FROM python:3.11.2-slim
-EXPOSE 3001
-ENV DEBUG=False
-ENV TESTING=False
-WORKDIR /astar-astar
-COPY . .
-RUN pip install -r requirements.txt
-CMD [ "gunicorn", "-w", "4", "-b", ":3001", "index:app" ]
+FROM python:3.14.0-bookworm
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["gunicorn", "wsgi:app", "--bind", "0.0.0.0:8000"]

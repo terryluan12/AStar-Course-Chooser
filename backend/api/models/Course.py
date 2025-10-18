@@ -15,16 +15,16 @@ load_dotenv()
 
 class Course(sql_db.Model):
     course_code: Mapped[str] = mapped_column(String(10), primary_key=True)
-    course_name: Mapped[str] = mapped_column(String(100))
+    course_name: Mapped[str] = mapped_column(String(90))
     fixed_credit_value: Mapped[float]
-    hours: Mapped[str] = mapped_column(String(50), nullable=True)
-    description: Mapped[str] = mapped_column(String(300))
-    prerequisite: Mapped[str] = mapped_column(String(150), nullable=True)
+    hours: Mapped[str] = mapped_column(String(30), nullable=True)
+    description: Mapped[str] = mapped_column(String(2100))
+    prerequisite: Mapped[str] = mapped_column(String(350), nullable=True)
     corequisite: Mapped[str] = mapped_column(String(150), nullable=True)
-    exclusion: Mapped[str] = mapped_column(String(150), nullable=True)
-    recommended_preparation: Mapped[str] = mapped_column(String(150), nullable=True)
-    total_aus: Mapped[str] = mapped_column(String(100), nullable=True)
-    program_tags: Mapped[str] = mapped_column(String(100), nullable=True)
+    exclusion: Mapped[str] = mapped_column(String(270), nullable=True)
+    recommended_preparation: Mapped[str] = mapped_column(String(200), nullable=True)
+    total_aus: Mapped[str] = mapped_column(String(60), nullable=True)
+    program_tags: Mapped[str] = mapped_column(String(625), nullable=True)
     subscribed_users = relationship(
         "User", secondary=Wishlist.__table__, back_populates="wished_courses"
     )

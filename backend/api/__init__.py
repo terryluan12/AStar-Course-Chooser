@@ -1,6 +1,7 @@
 from flask_cors import CORS
 from api.utils.database import sql_db
 from api.routes import api
+from urllib.parse import quote_plus
 
 from flask import Flask
 import os
@@ -17,9 +18,16 @@ def create_app():
     app.config["TESTING"] = os.environ.get("TESTING", default=True)
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
     # Configure SQLAlchemy
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "SQLALCHEMY_DATABASE_URI", default=True
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = quote_plus(os.getenv("DB_PASSWORD"))
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "5432")
+    DB_NAME = os.getenv("DB_NAME")
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        f"postgresql+psycopg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
+
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     CORS(app)

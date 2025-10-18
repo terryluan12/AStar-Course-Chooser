@@ -1,14 +1,12 @@
 services:
   db:
     image: postgres:latest
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - ./astar.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/api/utils/astar.sql:/docker-entrypoint-initdb.d/init.sql
       - db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
@@ -20,15 +18,13 @@ services:
       - app-network
   api:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DATABASE=${DATABASE}
+      - DB_NAME=${DB_NAME}
       - SECRET_KEY=${SECRET_KEY}
-    ports:
-    - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
@@ -37,8 +33,8 @@ services:
       - app-network
   frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
     environment:
       - NEXT_PUBLIC_API_URL=astar
     ports:

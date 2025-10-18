@@ -13,7 +13,7 @@ import jwt
 class User(sql_db.Model):
     user_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(50), unique=True)
-    password: Mapped[str] = mapped_column(String(300), nullable=False)
+    password: Mapped[str] = mapped_column(String(500), nullable=False)
     wished_courses: Mapped[List["Course"]] = relationship(
         secondary=Wishlist.__table__, back_populates="subscribed_users"
     )

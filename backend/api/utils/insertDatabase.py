@@ -1,4 +1,3 @@
-import mysql.connector
 import requests
 import json
 import os
@@ -14,7 +13,7 @@ load_dotenv()
 host = os.environ.get("HOST_URL")
 user = os.environ.get("DB_USER")
 password = os.environ.get("DB_PASSWORD")
-database = os.environ.get("DATABASE")
+database = os.environ.get("DB_NAME")
 
 # Opensearch credentials
 opensearch_host = os.environ.get("OPENSEARCH_HOST")
@@ -26,7 +25,7 @@ region = os.environ.get("AWS_REGION")
 def create_postgres_table():
     config = {"user": user, "password": password, "host": host, "dbname": database}
     CREATE_COMMAND = """
-        CREATE TABLE IF NOT EXISTS courses (
+        CREATE TABLE IF NOT EXISTS course (
             id SERIAL PRIMARY KEY,
             course_code VARCHAR(20) NOT NULL,
             course_name TEXT NOT NULL,
@@ -45,7 +44,30 @@ def create_postgres_table():
     with psycopg.connect(**config) as connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_COMMAND)
-        connection.commit()             
+        connection.commit()
+
+def get_stats():
+    """Get stats for the courses.json file, and the largest size for each field
+    """
+    with open("courses.json", "r") as reader:
+        data = json.load(reader)
+        
+        field_max_lengths = {}
+        total_courses = len(data)
+        for course in data:
+            for key, value in course.items():
+                length = len(value)
+                if key not in field_max_lengths:
+                    field_max_lengths[key] = length
+                else:
+                    field_max_lengths[key] = max(field_max_lengths[key], length)
+        print(f"Total courses: {total_courses}")
+        print("Maximum field lengths:")
+        for field, max_len in field_max_lengths.items():
+            print(f"{field}: {max_len}")
+        print(field_max_lengths)
+
+    
 
 def insert_postgres():
     config = {"user": user, "password": password, "host": host, "dbname": database}
@@ -67,7 +89,7 @@ def insert_postgres():
                 program_tags = datapoint.get("program_tags", None)
                 cursor.execute(
                     """
-                            INSERT INTO courses (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_aus, program_tags)
+                            INSERT INTO course (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_aus, program_tags)
                             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                             """,
                     (
@@ -84,11 +106,13 @@ def insert_postgres():
                         program_tags,
                     ),
                 )
-                connection.commit()
+            connection.commit()
 
 
 ### SQL COMMANDS
 def insert_sql():
+    import mysql.connector
+    
     config = {"user": user, "password": password, "host": host, "database": database}
     connection = mysql.connector.connect(**config)
     with connection.cursor() as cursor, open("courses.json", "r") as reader:
@@ -108,7 +132,7 @@ def insert_sql():
             program_tags = datapoint.get("program_tags", None)
             cursor.execute(
                 """
-                INSERT INTO courses (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_aus, program_tags)
+                INSERT INTO course (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_aus, program_tags)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """,
                 (
@@ -128,6 +152,8 @@ def insert_sql():
             connection.commit()
 
 def execute_sql(command):
+    import mysql.connector
+    
     config = {"user": user, "password": password, "host": host, "database": database}
     connection = mysql.connector.connect(**config)
     with connection.cursor() as cursor:
@@ -161,18 +187,7 @@ def insert_opensearch():
         print(response.status_code)
 
 
-create_postgres_table()
-insert_postgres()
-
-# INSERT_COMMAND =    ("""
-#                     INSERT INTO courses (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags)
-#                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-#                     """,
-#                       (course_code, course_name, fixed_credit_value, hours, description, prerequisite, corequisite, exclusion, recommended_preparation, total_AUs, program_tags))
-
-# UPDATE_COMMAND = ("""
-#                     UPDATE courses
-#                     SET prerequisite=%s, corequisite=%s, exclusion=%s, recommended_preparation=%s
-#                     WHERE course_code = %s
-#                     """,
-#                     (prerequisite, corequisite, exclusion, recommended_preparation, course_code))
+if __name__ == "__main__":
+    # get_stats()
+    create_postgres_table()
+    insert_postgres()
